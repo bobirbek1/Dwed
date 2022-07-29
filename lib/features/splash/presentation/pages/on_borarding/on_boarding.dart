@@ -52,7 +52,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             child: Text(
               "Skip",
               style: TextStyle(
-                color: Colors.black,
+                color: AppColors.BLACK,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
@@ -70,7 +70,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: AppColors.BLACK,
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
                   ),
@@ -79,7 +79,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 Text(
                   subTitle,
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.GRAY_X11,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),

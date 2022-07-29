@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
 
 class Indicator extends StatelessWidget {
   Indicator({
@@ -14,10 +15,10 @@ class Indicator extends StatelessWidget {
   final int itemCount;
 
   /// Ordinary colours
-  final Color normalColor = Colors.blue.withOpacity(0.3);
+  final Color normalColor = AppColors.BUTTON_BLUE.withOpacity(0.3);
 
   /// Selected color
-  final Color selectedColor = Colors.blue;
+  final Color selectedColor = AppColors.BUTTON_BLUE;
 
   /// Size of points
   final double size = 8.0;
