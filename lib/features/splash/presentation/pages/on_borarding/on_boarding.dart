@@ -2,11 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 
-class OnBoardingPage extends StatelessWidget {
-  const OnBoardingPage({Key? key}) : super(key: key);
+import '../../widgets/indicator.dart';
+
+class OnBoardingPage extends StatefulWidget {
+   OnBoardingPage({Key? key}) : super(key: key);
+
+  @override
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
+
+}
+
+class _OnBoardingPageState extends State<OnBoardingPage> {
+  final PageController controller = PageController(initialPage: 3);
+
+  void _pageChanged(int index) {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            color: Colors.grey,
+            child: PageView.builder(
+              onPageChanged: _pageChanged,
+              controller: controller,
+              itemBuilder: (context, index) {
+                return getData(title[index], subTitle[index],);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  getData(String title, String subTitle) {
     return Scaffold(
       body: Column(
         children: [
@@ -33,10 +66,10 @@ class OnBoardingPage extends StatelessWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
-                  "Представление ",
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
@@ -44,7 +77,7 @@ class OnBoardingPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "Пора управлять временем,контролировать свою",
+                  subTitle,
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
@@ -57,48 +90,16 @@ class OnBoardingPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
+              top: 30,
               left: 32,
               right: 32,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/Rectangle 951.svg",
-                      width: 12,
-                      height: 4,
-                      color: Colors.blue,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    SvgPicture.asset(
-                      "assets/icons/Rectangle 951.svg",
-                      width: 12,
-                      height: 4,
-                      color: Colors.blue.withOpacity(0.3),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    SvgPicture.asset(
-                      "assets/icons/Rectangle 951.svg",
-                      width: 12,
-                      height: 4,
-                      color: Colors.blue.withOpacity(0.3),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    SvgPicture.asset(
-                      "assets/icons/Rectangle 951.svg",
-                      width: 12,
-                      height: 4,
-                      color: Colors.blue.withOpacity(0.3),
-                    ),
-                  ],
+                Indicator(
+                  controller: controller,
+                  itemCount: 5,
                 ),
                 FloatingActionButton(
                   onPressed: () {},
@@ -114,4 +115,18 @@ class OnBoardingPage extends StatelessWidget {
       ),
     );
   }
+
+  List<String> title = [
+    "Представление",
+    "Возможности",
+    "Представление",
+    "Представление",
+  ];
+
+  List<String> subTitle = [
+    "Пора управлять временем,контролировать свою",
+    "Контроль времени, Твое слово имеет слово быть",
+    "Пора управлять временем, контролировать свою",
+    "Пора управлять временем, контролировать свою",
+  ];
 }
