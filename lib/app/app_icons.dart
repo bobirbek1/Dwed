@@ -1,4 +1,4 @@
 class AppIcons {
-  static const String LOGO = "assets/icons/Logo.svg";
+  static const String LOGO = "assets/icons/Shape.svg";
 
 }
