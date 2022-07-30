@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'features/number_trivia/presentation/pages/number_trivia_page.dart';
+import 'features/login/presentation/pages/create_account/create_account_gender_page.dart';
+// import 'features/number_trivia/presentation/pages/number_trivia_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const NumberTriviaPage(),
+      home: const CreateAccountGenderPage(),
     );
   }
 }
