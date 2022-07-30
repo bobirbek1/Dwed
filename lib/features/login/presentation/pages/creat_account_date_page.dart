@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
-import '../widgets/login_page_skeleton.dart';
 
 class CreateAccountDatePage extends StatelessWidget {
   const CreateAccountDatePage({Key? key}) : super(key: key);
@@ -56,7 +56,7 @@ class CreateAccountDatePage extends StatelessWidget {
                   suffixIcon: RotatedBox(
                     quarterTurns: 135,
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(16),
                       child: SvgPicture.asset(
                         AppIcons.ARROW_LEFT,
                         color: AppColors.SHADOW_BLUE,

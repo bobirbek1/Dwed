@@ -58,7 +58,7 @@ class LoginPageSkeleton extends StatelessWidget {
                const SizedBox(height: 24,),
                Expanded(
                  child: SvgPicture.asset(
-                   "assets/icons/Logo.svg",
+                   AppIcons.LOGO,
                    fit: BoxFit.scaleDown,
                    color: Colors.white,
                  ),
