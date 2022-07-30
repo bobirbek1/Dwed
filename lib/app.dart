@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/features/login/presentation/pages/create_account/create_account_name_page.dart';
+import 'package:flutter_template/features/login/presentation/pages/creat_account_date_page.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const CreateAccountNamePage(),
+      home: const CreateAccountDatePage(),
     );
   }
 }
