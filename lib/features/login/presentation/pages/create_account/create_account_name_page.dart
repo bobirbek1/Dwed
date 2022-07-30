@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
 
 import '../../widgets/login_page_skeleton.dart';
 
@@ -7,78 +8,94 @@ class CreateAccountNamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget textField(String labelText) {
-      return Column(
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              labelText: labelText,
-              labelStyle: const TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-        ],
-      );
-    }
-
+    SizeConfig().init(context);
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
       title: "CREATE ACCOUNT",
       subtitle: "Enter the full name you use in real life",
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text(
-              "What\'s your name?",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 32,
               ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            const Text(
-              "Enter the full name you use in real life",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            textField("Name"),
-            textField("Surname"),
-            textField("Additional name"),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(393, 56),
-              ),
-              onPressed: () {},
-              child: const Text(
-                "NEXT",
+              const Text(
+                "What's your name?",
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 12,
+              ),
+              const Text(
+                "Enter the full name you use in real life",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              textField("Name"),
+              const SizedBox(
+                height: 24,
+              ),
+              textField("Surname"),
+              const SizedBox(
+                height: 24,
+              ),
+              textField("Additional name"),
+              const SizedBox(
+                height: 32,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size.fromHeight(
+                      56,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        6,
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    "NEXT",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget textField(String labelText) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          color: Colors.grey,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
