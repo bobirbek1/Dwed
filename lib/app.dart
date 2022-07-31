@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/features/login/presentation/pages/creat_account_date_page.dart';
+import 'package:flutter_template/features/login/presentation/pages/create_account/creat_account_date_page.dart';
 
 
 class MyApp extends StatelessWidget {
