@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
-// import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
@@ -14,6 +12,8 @@ class CreateAccountGenderPage extends StatefulWidget {
 }
 
 class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
+  int _radioValue = 1;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -52,14 +52,11 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
               getRadio("Male", 1),
               getRadio("Female", 2),
               getRadio("Prefer not to say", 3),
               const SizedBox(
-                height: 20,
+                height: 32,
               ),
               SizedBox(
                 width: double.infinity,
@@ -92,31 +89,29 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
   }
 
   Widget getRadio(String text, int index) {
-    int _value = 1;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: const TextStyle(fontSize: 16),
-          ),
-          Transform.scale(
-            scale: 1.5,
-            child: Radio(
-              value: index,
-              groupValue: _value,
-              onChanged: (val) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          text,
+          style: const TextStyle(fontSize: 16),
+        ),
+        Transform.scale(
+          scale: 1.2,
+          child: Radio(
+            value: index,
+            groupValue: _radioValue,
+            onChanged: (val) {
+              if(val != _radioValue) {
                 setState(() {
-                  _value = val as int;
-                });
-              },
-              activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
-            ),
+                _radioValue = val as int;
+              });
+              }
+            },
+            activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
