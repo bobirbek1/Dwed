@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/features/login/presentation/widgets/indicator.dart';
 
-import '../../../../../app/app_colors.dart';
-import '../../widgets/indicator.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
