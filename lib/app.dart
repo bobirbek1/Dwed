@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'features/login/presentation/pages/create_account/create_account_gender_page.dart';
+import 'package:flutter_template/features/login/presentation/pages/create_account/creat_account_date_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const CreateAccountGenderPage(),
+      home: const CreateAccountDatePage(),
     );
   }
 }
