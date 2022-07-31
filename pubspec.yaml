@@ -37,7 +37,7 @@ dependencies:
   # Service locator
   get_it: ^7.2.0
   #  Bloc 
-  bloc: ^8.0.2
+  bloc: ^8.0.3
   # Hive stroage for local cache
   hive: ^2.0.5
   # Value equality
