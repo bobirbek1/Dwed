@@ -6,9 +6,8 @@ import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
-
-class CreateAccountDatePage extends StatelessWidget {
-  const CreateAccountDatePage({Key? key}) : super(key: key);
+class CreateAccountNumberPage extends StatelessWidget {
+  const CreateAccountNumberPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,9 @@ class CreateAccountDatePage extends StatelessWidget {
       headerHeight: 286,
       title: "CREATE ACCOUNT",
       subtitle: "Connect with your friends today!",
-      bodyTitle: "When's your birthday?",
-      bodySubtitle: "Choose your date of birth. You can always\n make this private later",
+      bodyTitle: "Enter your phone number",
+      bodySubtitle:
+          "Enter the mobile number where you can be\n reached. You can hide this from your\n profile later",
       child: Column(
         children: [
           const SizedBox(
@@ -28,17 +28,7 @@ class CreateAccountDatePage extends StatelessWidget {
           TextField(
             enabled: false,
             decoration: InputDecoration(
-              suffixIcon: RotatedBox(
-                quarterTurns: 135,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: SvgPicture.asset(
-                    AppIcons.ARROW_LEFT,
-                    color: AppColors.SHADOW_BLUE,
-                  ),
-                ),
-              ),
-              labelText: "DD/MM/YYY",
+              labelText: "Phone Number",
               labelStyle: const TextStyle(
                 color: AppColors.SHADOW_BLUE,
                 fontSize: 16,
@@ -49,7 +39,9 @@ class CreateAccountDatePage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-         const LoginButton(buttonText: "NEXT",),
+          const LoginButton(
+            buttonText: "NEXT",
+          ),
         ],
       ),
     );

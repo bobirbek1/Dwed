@@ -22,7 +22,7 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
       canBack: true,
       headerHeight: 286,
       title: "CREATE ACCOUNT",
-      subtitle: "Enter the full name you use in real life",
+      subtitle: "Connect with your friends today!",
       bodyTitle: "What's your gender?",
       bodySubtitle:
           "You can change who sees your gender on\n your profile later",

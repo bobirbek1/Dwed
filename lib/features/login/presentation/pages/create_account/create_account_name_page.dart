@@ -14,7 +14,7 @@ class CreateAccountNamePage extends StatelessWidget {
       canBack: true,
       headerHeight: 286,
       title: "CREATE ACCOUNT",
-      subtitle: "Enter the full name you use in real life",
+      subtitle: "Connect with your friends today!",
       bodyTitle:  "What's your name?",
       bodySubtitle: "Enter the full name you use in real life",
       child: Column(
