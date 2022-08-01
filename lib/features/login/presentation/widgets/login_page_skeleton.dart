@@ -115,7 +115,7 @@ class LoginPageSkeleton extends StatelessWidget {
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                  ),),
+                  ),textAlign: TextAlign.center,),
               child,    
             ],
           ),
