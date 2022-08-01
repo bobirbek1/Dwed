@@ -101,22 +101,39 @@ class LoginPageSkeleton extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16,),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
           child: Column(
             children: [
-              if(bodyTitle != null) const SizedBox(height: 32,),
-              if(bodyTitle != null) Text(bodyTitle!,style: const TextStyle(
+              if (bodyTitle != null)
+                const SizedBox(
+                  height: 32,
+                ),
+              if (bodyTitle != null)
+                Text(
+                  bodyTitle!,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
-                  ),),
-              if(bodySubtitle != null) const SizedBox(height: 12,),  
-              if(bodySubtitle != null) Text(bodySubtitle!, style:  const TextStyle(
+                  ),
+                ),
+              if (bodySubtitle != null)
+                const SizedBox(
+                  height: 12,
+                ),
+              if (bodySubtitle != null)
+                Text(
+                  bodySubtitle!,
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                  ),),
-              child,    
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              child,
             ],
           ),
         ),
