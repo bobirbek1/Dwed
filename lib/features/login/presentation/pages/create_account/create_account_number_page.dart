@@ -21,25 +21,24 @@ class CreateAccountNumberPage extends StatelessWidget {
       bodySubtitle:
           "Enter the mobile number where you can be\n reached. You can hide this from your\n profile later",
       child: Column(
-        children: [
-          const SizedBox(
+        children: const [
+          SizedBox(
             height: 32,
           ),
           TextField(
-            enabled: false,
             decoration: InputDecoration(
               labelText: "Phone Number",
-              labelStyle: const TextStyle(
+              labelStyle: TextStyle(
                 color: AppColors.SHADOW_BLUE,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
             ),
           ),
-          const SizedBox(
+          SizedBox(
             height: 32,
           ),
-          const LoginButton(
+          LoginButton(
             buttonText: "NEXT",
           ),
         ],
