@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
+import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
-import '../../../../../app/app_colors.dart';
-import '../../../../../app/app_icons.dart';
-import '../../../../../core/utils/size_config.dart';
-import '../../widgets/login_button.dart';
-import '../../widgets/login_page_skeleton.dart';
+
 
 class CreateAccountLive extends StatelessWidget {
   const CreateAccountLive({Key? key}) : super(key: key);
