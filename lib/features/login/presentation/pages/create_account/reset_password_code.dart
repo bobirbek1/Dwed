@@ -31,16 +31,8 @@ class _ResetPasswordCodeState extends State<ResetPasswordCode> {
           const SizedBox(
             height: 32,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              const SizedBox(
-                width: 10,
-              ),
-              getNumberText(),
-            ],
-          ),
+         Padding(padding:const EdgeInsets.symmetric(horizontal: 10),
+         child: getNumberText()),
           const LoginButton(
             buttonText: "CONFIRM",
           ),

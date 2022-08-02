@@ -12,7 +12,7 @@ class VerificationCodeInput extends StatefulWidget {
   final TextStyle textStyle;
   final bool autofocus;
   final bool forceUpperCase;
-  VerificationCodeInput(
+  const VerificationCodeInput(
       {Key? key,
         this.forceUpperCase = true,
         required this.onCompleted,
@@ -110,7 +110,7 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
         }
       },
       controller: _listControllerText[index],
-      maxLengthEnforced: true,
+      maxLengthEnforcement: MaxLengthEnforcement.enforced,
       autocorrect: false,
       textAlign: TextAlign.center,
       autofocus: widget.autofocus,
