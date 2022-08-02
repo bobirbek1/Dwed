@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/features/login/presentation/pages/create_account/creat_account_date_page.dart';
-import 'package:flutter_template/features/login/presentation/pages/create_account/reset_password_code.dart';
+
+import 'features/login/presentation/pages/reset_page_3.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const ResetPasswordCode(),
+      home: const CreateAccountNewPasswordPage(),
     );
   }
 }
