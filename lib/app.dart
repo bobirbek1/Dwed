@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'features/login/presentation/pages/create_account/reset_password_new.dart';
+import 'features/login/presentation/pages/create_account/create_account_password_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const ResetPasswordNewPage(),
+      home: const CreateAccountPasswordPage(),
     );
   }
 }
