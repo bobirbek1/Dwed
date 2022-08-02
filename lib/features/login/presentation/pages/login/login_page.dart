@@ -4,8 +4,8 @@ import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
-class CreateAccountLoginPage extends StatelessWidget {
-  const CreateAccountLoginPage({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,10 @@ class CreateAccountLoginPage extends StatelessWidget {
       bodySubtitle: "Hello again, you’ve been missed!",
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               labelText: "Login or phone number",
               labelStyle: TextStyle(
@@ -30,10 +30,10 @@ class CreateAccountLoginPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               labelText: "Password",
               labelStyle: TextStyle(
@@ -52,10 +52,10 @@ class CreateAccountLoginPage extends StatelessWidget {
                   height: 16,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: AppColors.BLACK),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(
@@ -69,7 +69,7 @@ class CreateAccountLoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "Forgot password!",
                     style: TextStyle(fontSize: 12),
                   ),
@@ -77,58 +77,60 @@ class CreateAccountLoginPage extends StatelessWidget {
               ],
             ),
           ),
-          LoginButton(
+          const LoginButton(
             buttonText: "LOG IN",
           ),
-          Padding(
-            padding: const EdgeInsets.all(38.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 136,
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
-                  ),
+          const SizedBox(
+            height: 32,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Divider(
+                  thickness: 1,
+                  color: AppColors.BLACK.withOpacity(0.4),
                 ),
-                Text(
-                  "  OR  ",
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "OR",
                   style: TextStyle(
-                    color: Colors.black.withOpacity(0.4),
+                    color: AppColors.BLACK.withOpacity(0.4),
                     fontSize: 12,
                   ),
                 ),
-                Container(
-                  width: 136,
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
-                  ),
+              ),
+              Expanded(
+                child: Divider(
+                  thickness: 1,
+                  color: AppColors.BLACK.withOpacity(0.4),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 32,
           ),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: OutlinedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                side: BorderSide(color: Colors.black),
-                primary: Colors.white,
-                onPrimary: Colors.black,
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.BLACK),
+                primary: AppColors.BLACK,
                 fixedSize: const Size.fromHeight(
                   56,
                 ),
-                
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     6,
                   ),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 "CREATE NEW DWED ACCOUNT",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
