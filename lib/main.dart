@@ -5,7 +5,7 @@ import 'package:flutter_template/bloc_observer.dart';
 
 import 'injection_container.dart' as di;
 
-void main(List<String> args) async {
+ void main(List<String> args) async {
   // Initialize the injection container
   await di.init();
 
