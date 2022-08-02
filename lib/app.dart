@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/features/login/presentation/pages/create_account/create_account_specialty.dart';
+import 'package:flutter_template/features/login/presentation/pages/create_account/creat_account_date_page.dart';
+import 'package:flutter_template/features/login/presentation/pages/create_account/create_account_live.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const CreateAccountSpecialty(),
+      home: const CreateAccountLive(),
     );
   }
 }
