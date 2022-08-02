@@ -6,8 +6,8 @@ import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 
-class CreateAccountResetPasswordPage extends StatelessWidget {
-  const CreateAccountResetPasswordPage({Key? key}) : super(key: key);
+class ResetPasswordPhonePage extends StatelessWidget {
+  const ResetPasswordPhonePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

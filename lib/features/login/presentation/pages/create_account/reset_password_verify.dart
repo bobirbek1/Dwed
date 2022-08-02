@@ -5,14 +5,14 @@ import 'package:flutter_template/features/login/presentation/widgets/login_page_
 import 'package:flutter_template/features/login/presentation/widgets/verification_code_input.dart';
 
 
-class ResetPasswordCode extends StatefulWidget {
-  const ResetPasswordCode({Key? key}) : super(key: key);
+class ResetPasswordVerifyPage extends StatefulWidget {
+  const ResetPasswordVerifyPage({Key? key}) : super(key: key);
 
   @override
-  State<ResetPasswordCode> createState() => _ResetPasswordCodeState();
+  State<ResetPasswordVerifyPage> createState() => _ResetPasswordVerifyPageState();
 }
 
-class _ResetPasswordCodeState extends State<ResetPasswordCode> {
+class _ResetPasswordVerifyPageState extends State<ResetPasswordVerifyPage> {
   @override
   Widget build(BuildContext context) {
     String _onCompleted = "";
