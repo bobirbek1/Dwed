@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
@@ -42,7 +43,7 @@ class _ResetPasswordVerifyPageState extends State<ResetPasswordVerifyPage> {
           const Text(
             "You can resend confirmation code after\n01:20",
             style: TextStyle(
-              color: Colors.grey,
+              color: AppColors.GRAY_X11,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),

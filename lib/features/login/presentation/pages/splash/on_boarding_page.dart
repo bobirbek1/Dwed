@@ -25,7 +25,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       children: <Widget>[
         Expanded(
           child: Container(
-            color: Colors.grey,
+            color: AppColors.GRAY_X11,
             child: PageView.builder(
               onPageChanged: _pageChanged,
               controller: controller,
@@ -105,7 +105,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   onPressed: () {},
                   child: SvgPicture.asset(
                     "assets/icons/Combined Shape.svg",
-                    color: Colors.white,
+                    color: AppColors.WHITE,
                   ),
                 ),
               ],

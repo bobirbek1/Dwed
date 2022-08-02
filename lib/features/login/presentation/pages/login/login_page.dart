@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                   child: Text(
                     "Remember me",
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.7),
+                      color: AppColors.BLACK.withOpacity(0.6),
                       fontSize: 12,
                     ),
                   ),

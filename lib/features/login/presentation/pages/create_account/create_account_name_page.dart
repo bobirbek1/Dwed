@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
@@ -45,7 +46,7 @@ class CreateAccountNamePage extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: const TextStyle(
-          color: Colors.grey,
+          color: AppColors.GRAY_X11,
           fontSize: 16,
           fontWeight: FontWeight.w400,
         ),

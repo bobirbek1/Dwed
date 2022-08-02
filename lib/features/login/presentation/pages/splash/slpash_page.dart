@@ -18,7 +18,7 @@ class SplashPage extends StatelessWidget {
           SvgPicture.asset(
             AppIcons.LOGO,
             width: 150,
-            color: Colors.white,
+            color: AppColors.WHITE,
           ),
           const Padding(
             padding: EdgeInsets.only(right: 65.0, left: 65.0),

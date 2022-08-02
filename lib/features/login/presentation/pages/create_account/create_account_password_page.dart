@@ -57,28 +57,28 @@ class CreateAccountPasswordPage extends StatelessWidget {
           ),
           RichText(
             textAlign: TextAlign.center,
-            text: TextSpan(
+            text: const TextSpan(
               children: [
                 TextSpan(
                   text: "By tapping Sign Up, you agree to our ",
                   style: TextStyle(
-                    color: Colors.grey.withOpacity(0.7),
+                    color: AppColors.GRAY_X11,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: "Terms, ",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: AppColors.BUTTON_BLUE,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: "Data\n Policy",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: AppColors.BUTTON_BLUE,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -86,15 +86,15 @@ class CreateAccountPasswordPage extends StatelessWidget {
                 TextSpan(
                   text: " and ",
                   style: TextStyle(
-                    color: Colors.grey.withOpacity(0.7),
+                    color: AppColors.GRAY_X11,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: "Cookies Policy",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color:  AppColors.BUTTON_BLUE,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),

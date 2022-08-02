@@ -1,11 +1,7 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
 
-class Appthemes{
-
+class Appthemes {
   static final primarySwatch = MaterialColor(
     AppColors.BUTTON_BLUE.value,
     const <int, Color>{
@@ -23,10 +19,7 @@ class Appthemes{
   );
 
   static final LIGHT_THEME = ThemeData(
-    primarySwatch: primarySwatch,
-    scaffoldBackgroundColor: AppColors.WHITE,
-    fontFamily: "SF Pro Text"
-  );
-
+      primarySwatch: primarySwatch,
+      scaffoldBackgroundColor: AppColors.WHITE,
+      fontFamily: "SF Pro Text");
 }
-

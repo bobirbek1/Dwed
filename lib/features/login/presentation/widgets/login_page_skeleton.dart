@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_icons.dart';
-import '../../../../core/utils/size_config.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
 
 class LoginPageSkeleton extends StatelessWidget {
   final double headerHeight;
