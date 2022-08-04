@@ -33,13 +33,13 @@ class Indicator extends StatelessWidget {
     bool isCurrentPageSelected = index ==
         (controller.page != null ? controller.page!.round() % pageCount : 0);
 
-    return Container(
+    return SizedBox(
       height: size,
       width: size + (2 * spacing),
       child: Center(
         child: Material(
           color: isCurrentPageSelected ? selectedColor : normalColor,
-          type: MaterialType.circle,
+          type: MaterialType.button,
           child: SvgPicture.asset(
             "assets/icons/Rectangle 951.svg",
             color: isCurrentPageSelected ? selectedColor : normalColor,
@@ -51,9 +51,9 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: new List<Widget>.generate(itemCount, (int index) {
+      children: List<Widget>.generate(itemCount, (int index) {
         return _buildIndicator(index, itemCount, size, spacing);
       }),
     );

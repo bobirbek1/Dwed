@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/features/login/presentation/pages/splash/on_boarding_page.dart';
 
 import 'features/login/presentation/pages/login/login_page.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade800,
         accentColor: Colors.green.shade600,
       ),
-      home: const LoginPage(),
+      home: const OnBoardingPage(),
     );
   }
 }
