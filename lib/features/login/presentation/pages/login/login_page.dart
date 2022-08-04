@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -68,7 +70,9 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                Get.toNamed(AppRoutes.RESET_PASSWORD_PHONE);
+              },
                   child: const Text(
                     "Forgot password!",
                     style: TextStyle(fontSize: 12),
@@ -77,7 +81,8 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
-          const LoginButton(
+          LoginButton(
+            onPressed: (){},
             buttonText: "LOG IN",
           ),
           const SizedBox(
@@ -115,7 +120,9 @@ class LoginPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NAME);
+              },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.BLACK),
                 primary: AppColors.BLACK,

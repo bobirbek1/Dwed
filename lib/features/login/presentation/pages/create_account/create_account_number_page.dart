@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
+import 'package:get/get.dart';
 
 class CreateAccountNumberPage extends StatelessWidget {
   const CreateAccountNumberPage({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class CreateAccountNumberPage extends StatelessWidget {
       bodySubtitle:
           "Enter the mobile number where you can be\n reached. You can hide this from your\n profile later",
       child: Column(
-        children: const [
+        children:  [
           SizedBox(
             height: 32,
           ),
@@ -36,7 +38,9 @@ class CreateAccountNumberPage extends StatelessWidget {
           SizedBox(
             height: 32,
           ),
-          LoginButton(
+          LoginButton(onPressed: () {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
+              },
             buttonText: "NEXT",
           ),
         ],

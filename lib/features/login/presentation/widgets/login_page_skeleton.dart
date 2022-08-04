@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:get/get.dart';
 
 class LoginPageSkeleton extends StatelessWidget {
   final double headerHeight;
@@ -42,7 +44,9 @@ class LoginPageSkeleton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (canBack) SvgPicture.asset(AppIcons.ARROW_LEFT),
+                  if (canBack) InkWell(child: SvgPicture.asset(AppIcons.ARROW_LEFT),onTap: (){
+                    Get.back();
+                  },),
                   const Expanded(
                     child: SizedBox(),
                   ),

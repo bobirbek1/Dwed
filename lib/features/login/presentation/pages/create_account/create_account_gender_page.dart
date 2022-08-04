@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
+import 'package:get/get.dart';
 
 class CreateAccountGenderPage extends StatefulWidget {
   const CreateAccountGenderPage({Key? key}) : super(key: key);
@@ -37,7 +39,9 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
           const SizedBox(
             height: 32,
           ),
-         const LoginButton(buttonText: "NEXT",),
+          LoginButton(onPressed: () {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_SPECIALITY);
+              },buttonText: "NEXT",),
         ],
       ),
     );

@@ -49,7 +49,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          const LoginButton(
+          LoginButton(onPressed: (){},
             buttonText: "SIGN UP",
           ),
           const SizedBox(

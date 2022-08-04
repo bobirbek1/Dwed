@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
 import 'package:flutter_template/features/login/presentation/widgets/verification_code_input.dart';
+import 'package:get/get.dart';
 
 
 class ResetPasswordVerifyPage extends StatefulWidget {
@@ -34,7 +36,9 @@ class _ResetPasswordVerifyPageState extends State<ResetPasswordVerifyPage> {
           ),
          Padding(padding:const EdgeInsets.symmetric(horizontal: 10),
          child: getNumberText()),
-          const LoginButton(
+           LoginButton(onPressed: () {
+                Get.toNamed(AppRoutes.RESET_PASSWORD_NEW);
+              },
             buttonText: "CONFIRM",
           ),
           const SizedBox(

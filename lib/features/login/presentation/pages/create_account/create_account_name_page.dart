@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
-
+import 'package:get/get.dart';
 
 class CreateAccountNamePage extends StatelessWidget {
   const CreateAccountNamePage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class CreateAccountNamePage extends StatelessWidget {
       headerHeight: 286,
       title: "CREATE ACCOUNT",
       subtitle: "Connect with your friends today!",
-      bodyTitle:  "What's your name?",
+      bodyTitle: "What's your name?",
       bodySubtitle: "Enter the full name you use in real life",
       child: Column(
         children: [
@@ -35,7 +36,18 @@ class CreateAccountNamePage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-        const LoginButton(buttonText: "NEXT",),
+          InkWell(
+            child:  LoginButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_DATE);
+              },
+              buttonText: "NEXT",
+            ),
+            onTap: () {
+              Get.toNamed(AppRoutes.CREATE_ACCOUNT_DATE);
+              print(AppRoutes.CREATE_ACCOUNT_DATE);
+            },
+          ),
         ],
       ),
     );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
+import 'package:get/get.dart';
 
 class ResetPasswordPhonePage extends StatelessWidget {
   const ResetPasswordPhonePage({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class ResetPasswordPhonePage extends StatelessWidget {
       bodySubtitle:
           "Enter your phone number and we'll send\n you the 6-digit confirmation code to get\n back into your account",
       child: Column(
-        children: const [
+        children:  [
           SizedBox(
             height: 32,
           ),
@@ -36,7 +38,9 @@ class ResetPasswordPhonePage extends StatelessWidget {
           SizedBox(
             height: 32,
           ),
-          LoginButton(
+          LoginButton(onPressed: () {
+                Get.toNamed(AppRoutes.RESET_PASSWORD_VERIFY);
+              },
             buttonText: "RESET",
           ),
         ],

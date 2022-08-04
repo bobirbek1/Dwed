@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_button.dart';
 import 'package:flutter_template/features/login/presentation/widgets/login_page_skeleton.dart';
+import 'package:get/get.dart';
 
 
 
@@ -51,7 +53,9 @@ class CreateAccountLive extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          const LoginButton(
+          LoginButton(onPressed: () {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
+              },
             buttonText: "NEXT",
           ),
         ],

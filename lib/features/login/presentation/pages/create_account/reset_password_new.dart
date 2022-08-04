@@ -19,7 +19,7 @@ class ResetPasswordNewPage extends StatelessWidget {
       bodySubtitle:
           "Choose a new password with at least 6\n characters. It should be something others\n couldn't guess",
       child: Column(
-        children: const [
+        children:  [
           SizedBox(
             height: 32,
           ),
@@ -50,6 +50,7 @@ class ResetPasswordNewPage extends StatelessWidget {
             height: 32,
           ),
           LoginButton(
+            onPressed: (){},
             buttonText: "CONTINUE",
           ),
         ],
