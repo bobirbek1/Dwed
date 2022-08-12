@@ -18,4 +18,7 @@ class InputConverter {
 
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure({String? message}) : super(message: message);
+  
+  @override
+  List<Object?> get props => [message];
 }
