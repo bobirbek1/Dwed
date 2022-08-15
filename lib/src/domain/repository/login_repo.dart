@@ -17,9 +17,9 @@ abstract class LoginRepo {
       String phone,
       String password,
       );
-  Future<Either<Failure, SpecialtyModel>> specialty(String specialtyName);
-  Future<Either<Failure, RegionModel>> region(String regionName);
-  Future<Either<Failure, CountryModel>> country(String sectorName);
-  Future<Either<Failure, SectorModel>> sector(String sectorName);
+  Future<Either<Failure, SpecialtyModel>> specialty(String sectorName);
+  Future<Either<Failure, RegionModel>> region(int countryId);
+  Future<Either<Failure, CountryModel>> country();
+  Future<Either<Failure, SectorModel>> sector();
 
 }

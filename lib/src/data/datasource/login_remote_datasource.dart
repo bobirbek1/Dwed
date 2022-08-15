@@ -19,10 +19,10 @@ abstract class LoginRemoteDatasource {
     String password,
   );
   // Future<CreateAccountModel> specialty(String specilaty);
-  Future<RegionModel> region(String region);
-  Future<CountryModel> country(String country);
-  Future<SectorModel> sector(String sector);
-  Future<SpecialtyModel> specialty(String specialty);
+  Future<RegionModel> region(int countryId);
+  Future<CountryModel> country();
+  Future<SectorModel> sector();
+  Future<SpecialtyModel> specialty(String sectorName);
 }
 
 class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
@@ -105,14 +105,10 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<RegionModel> region(String region)async {
-    final data = FormData.fromMap({
-      "liveAddress": region,
-    });
+  Future<RegionModel> region(int countryId)async {
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
-        data: data,
       );
       return RegionModel.fromJson(result.data);
     } catch (e) {
@@ -124,14 +120,11 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
       }
 
   @override
-  Future<CountryModel> country(String country)async {
-    final data = FormData.fromMap({
-      "country": country,
-    });
+  Future<CountryModel> country()async {
+
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
-        data: data,
       );
       return CountryModel.fromJson(result.data);
     } catch (e) {
@@ -143,14 +136,11 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<SectorModel> sector(String sector) async {
-    final data = FormData.fromMap({
-      "sector": sector,
-    });
+  Future<SectorModel> sector() async {
+   
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
-        data: data,
       );
       return SectorModel.fromJson(result.data);
     } catch (e) {
@@ -162,14 +152,11 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<SpecialtyModel> specialty(String specialty) async {
-    final data = FormData.fromMap({
-      "specialty": specialty,
-    });
+  Future<SpecialtyModel> specialty(String sectorName) async {
+ 
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
-        data: data,
       );
       return SpecialtyModel.fromJson(result.data);
     } catch (e) {

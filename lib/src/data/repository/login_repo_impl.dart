@@ -71,59 +71,59 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, RegionModel>> region(String regionName) async {
+  Future<Either<Failure, RegionModel>> region(int countryId) async {
     if (await networkInfo.isConnected) {
-      Get.log("Create Account is connected");
+      Get.log("get region is connected");
       try {
-        final res = await remoteDatasource.region(regionName);
+        final res = await remoteDatasource.region(countryId);
         await localDatasource.setRegionDate(res);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
-        Get.log("Create Account failure $failure");
+        Get.log("get region failure $failure");
         return Left(failure);
       }
     } else {
-      Get.log("Create Account disconnected");
+      Get.log("get region disconnected");
       return const Left(NetworkFailure());
     }
   }
 
   @override
-  Future<Either<Failure, CountryModel>> country(String countryName) async {
+  Future<Either<Failure, CountryModel>> country() async {
     if (await networkInfo.isConnected) {
-      Get.log("Create Account is connected");
+      Get.log("get country is connected");
       try {
-        final res = await remoteDatasource.country(countryName);
+        final res = await remoteDatasource.country();
         await localDatasource.setCountryDate(res);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
-        Get.log("Create Account failure $failure");
+        Get.log("get country failure $failure");
         return Left(failure);
       }
     } else {
-      Get.log("Create Account disconnected");
+      Get.log("get country disconnected");
       return const Left(NetworkFailure());
     }
   }
 
   @override
-  Future<Either<Failure, SectorModel>> sector(String sectorName) async {
+  Future<Either<Failure, SectorModel>> sector() async {
     {
       if (await networkInfo.isConnected) {
-        Get.log("Create Account is connected");
+        Get.log("get sector is connected");
         try {
-          final res = await remoteDatasource.sector(sectorName);
+          final res = await remoteDatasource.sector();
           await localDatasource.setSectorDate(res);
           return Right(res);
         } catch (e) {
           final failure = handleException(e as Exception);
-          Get.log("Create Account failure $failure");
+          Get.log("get sector failure $failure");
           return Left(failure);
         }
       } else {
-        Get.log("Create Account disconnected");
+        Get.log("get sector disconnected");
         return const Left(NetworkFailure());
       }
     }
@@ -131,21 +131,21 @@ class LoginRepoImpl extends LoginRepo {
 
   @override
   Future<Either<Failure, SpecialtyModel>> specialty(
-      String specialtyName) async {
+      String sectorName) async {
     {
       if (await networkInfo.isConnected) {
-        Get.log("Create Account is connected");
+        Get.log("get speciality is connected");
         try {
-          final res = await remoteDatasource.specialty(specialtyName);
+          final res = await remoteDatasource.specialty(sectorName);
           await localDatasource.setSpecialtyDate(res);
           return Right(res);
         } catch (e) {
           final failure = handleException(e as Exception);
-          Get.log("Create Account failure $failure");
+          Get.log("get speciality failure $failure");
           return Left(failure);
         }
       } else {
-        Get.log("Create Account disconnected");
+        Get.log("get speciality disconnected");
         return const Left(NetworkFailure());
       }
     }

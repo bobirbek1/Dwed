@@ -8,10 +8,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
-import 'package:flutter_template/src/data/model/create_account_token_model.dart';
 import 'package:flutter_template/src/data/model/region_model.dart';
-import 'package:flutter_template/src/data/model/region_model.dart';
-import 'package:flutter_template/src/data/model/token_model.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
 
 class GetRegion extends Usecase<RegionModel, RegionParams> {
@@ -21,15 +18,15 @@ class GetRegion extends Usecase<RegionModel, RegionParams> {
 
   @override
   Future<Either<Failure, RegionModel>> call(RegionParams params) {
-    return repo.region(params.regionName);
+    return repo.region(params.countryId);
   }
 }
 
 class RegionParams extends Params {
-  final String regionName;
+  final int countryId;
 
-  RegionParams({required this.regionName,});
+  RegionParams({required this.countryId,});
 
   @override
-  List<Object?> get props => [regionName];
+  List<Object?> get props => [countryId];
 }
