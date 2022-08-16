@@ -35,7 +35,7 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
     final data = FormData.fromMap({"username": username, "password": password});
     try {
       final result = await client.post(
-        "/v1.0/api/account/login/",
+        "v1.0/api/account/login/",
         data: data,
       );
       return TokenModel.fromJson(result.data);

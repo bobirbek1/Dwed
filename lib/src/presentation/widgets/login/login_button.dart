@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
   final String? buttonText;
+  final Widget? child;
   final Function() onPressed;
 
-  const LoginButton({required this.onPressed, this.buttonText, Key? key})
-      : super(key: key);
+   const LoginButton({required this.onPressed, this.buttonText,this.child, Key? key})
+      : assert(buttonText == null && child != null || buttonText != null && child == null), super(key: key);
 
   @override
   Widget build(
@@ -26,13 +27,13 @@ class LoginButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
+        child: buttonText != null ? Text(
           buttonText ?? "",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ) : child,
       ),
     );
   }

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+
+  final _controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,41 +25,78 @@ class LoginPage extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          const TextField(
-            decoration: InputDecoration(
-              labelText: "Login or phone number",
-              labelStyle: TextStyle(
-                color: AppColors.SHADOW_BLUE,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
+          GetBuilder(
+              init: _controller,
+              id: _controller.loginId,
+              builder: (context) {
+                return TextField(
+                  controller: _controller.userNameController,
+                  decoration: InputDecoration(
+                    errorText: _controller.userNameError,
+                    labelText: "Login or phone number",
+                    labelStyle: const TextStyle(
+                      color: AppColors.SHADOW_BLUE,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              }),
           const SizedBox(
             height: 16,
           ),
-          const TextField(
-            decoration: InputDecoration(
-              labelText: "Password",
-              labelStyle: TextStyle(
-                color: AppColors.SHADOW_BLUE,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
+          GetBuilder(
+              init: _controller,
+              id: _controller.loginId,
+              builder: (context) {
+                return TextField(
+                  controller: _controller.passwordController,
+                  decoration: InputDecoration(
+                    errorText: _controller.passwordError,
+                    labelText: "Password",
+                    labelStyle: const TextStyle(
+                      color: AppColors.SHADOW_BLUE,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              }),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Row(
               children: [
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: AppColors.BLACK),
-                  ),
-                ),
+                GetBuilder(
+                    init: _controller,
+                    id: _controller.checkBoxId,
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          _controller.toggleCheckBox();
+                        },
+                        child: Container(
+                          width: 16,
+                          height: 16,
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: _controller.rememberMe
+                                ? null
+                                : Border.all(color: AppColors.BLACK),
+                            color: _controller.rememberMe
+                                ? AppColors.BUTTON_BLUE
+                                : null,
+                          ),
+                          child: _controller.rememberMe
+                              ? const Icon(
+                                  Icons.check,
+                                  color: AppColors.WHITE,
+                                  size: 12,
+                                )
+                              : null,
+                        ),
+                      );
+                    }),
                 const SizedBox(
                   width: 8,
                 ),
@@ -71,8 +111,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                Get.toNamed(AppRoutes.RESET_PASSWORD_PHONE);
-              },
+                    Get.toNamed(AppRoutes.RESET_PASSWORD_PHONE);
+                  },
                   child: const Text(
                     "Forgot password!",
                     style: TextStyle(fontSize: 12),
@@ -81,10 +121,23 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
-          LoginButton(
-            onPressed: (){},
-            buttonText: "LOG IN",
-          ),
+          GetBuilder(
+              init: _controller,
+              id: _controller.loginId,
+              builder: (ctrl) {
+                print("login page ${_controller.loginState != LoginState.loading}");
+                return LoginButton(
+                  onPressed: () {
+                    _controller.signIn();
+                  },
+                  child: _controller.loginState == LoginState.loading
+                      ? const CircularProgressIndicator.adaptive()
+                      : null,
+                  buttonText: _controller.loginState != LoginState.loading
+                      ? "LOG IN"
+                      : null,
+                );
+              }),
           const SizedBox(
             height: 32,
           ),

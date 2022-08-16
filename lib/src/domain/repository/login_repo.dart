@@ -8,7 +8,7 @@ import 'package:flutter_template/src/data/model/specialty_model.dart';
 import 'package:flutter_template/src/data/model/token_model.dart';
 
 abstract class LoginRepo {
-  Future<Either<Failure, TokenModel>> login(String username, String password);
+  Future<Either<Failure, TokenModel>> login(String username, String password, bool rememberMe);
   Future<Either<Failure, CreateAccountModel>> createAccount(
       String username,
       String name,

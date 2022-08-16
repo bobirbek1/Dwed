@@ -25,12 +25,14 @@ class LoginRepoImpl extends LoginRepo {
 
   @override
   Future<Either<Failure, TokenModel>> login(
-      String username, String password) async {
+      String username, String password,bool rememberMe) async {
     if (await networkInfo.isConnected) {
       Get.log("login is connected");
       try {
         final res = await remoteDatasource.login(username, password);
-        await localDatasource.setToken(res);
+        if(rememberMe) {
+          await localDatasource.setToken(res);
+        }
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
