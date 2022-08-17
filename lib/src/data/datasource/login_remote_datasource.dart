@@ -13,7 +13,6 @@ abstract class LoginRemoteDatasource {
   Future<CreateAccountModel> createAccount(
     String username,
     String name,
-    String? lastname,
     String? surname,
     String phone,
     String password,
@@ -51,7 +50,6 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   Future<CreateAccountModel> createAccount(
     String username,
     String name,
-    String? lastname,
     String? surname,
     String phone,
     String password,
@@ -59,7 +57,6 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
     final data = FormData.fromMap({
       "username": username,
       "name": name,
-      "lastname": lastname,
       "surname": surname,
       "phone": phone,
       "password": password

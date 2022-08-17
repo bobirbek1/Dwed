@@ -12,7 +12,6 @@ abstract class LoginRepo {
   Future<Either<Failure, CreateAccountModel>> createAccount(
       String username,
       String name,
-      String? lastname,
       String? surname,
       String phone,
       String password,

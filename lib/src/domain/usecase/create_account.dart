@@ -11,7 +11,7 @@ class CreateAccount extends Usecase<CreateAccountModel, CreateAccountParams> {
 
   @override
   Future<Either<Failure, CreateAccountModel>> call(CreateAccountParams params) {
-    return repo.createAccount(params.username, params.name, params.lastname,
+    return repo.createAccount(params.username, params.name,
         params.surname, params.phone, params.password);
   }
 }
@@ -19,7 +19,6 @@ class CreateAccount extends Usecase<CreateAccountModel, CreateAccountParams> {
 class CreateAccountParams extends Params {
   final String username;
   final String name;
-  final String? lastname;
   final String? surname;
   final String phone;
   final String password;
@@ -28,14 +27,27 @@ class CreateAccountParams extends Params {
   final String specialty;
   final String liveAddress;
 
-  CreateAccountParams(this.lastname, this.surname, this.birthday, this.gender,
-      this.specialty, this.liveAddress,
-      {required this.name,
+  CreateAccountParams(
+      {this.surname,
+      required this.birthday,
+      required this.gender,
+      required this.specialty,
+      required this.liveAddress,
+      required this.name,
       required this.phone,
       required this.username,
       required this.password});
 
   @override
-  List<Object?> get props =>
-      [username, name, lastname, surname, phone, password];
+  List<Object?> get props => [
+        surname,
+        birthday,
+        gender,
+        specialty,
+        liveAddress,
+        name,
+        phone,
+        username,
+        password,
+      ];
 }

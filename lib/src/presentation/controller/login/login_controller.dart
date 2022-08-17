@@ -70,6 +70,7 @@ class LoginController extends GetxController {
       update([loginId]);
     }
     return isValid;
+
   }
 
   void updateLoginState(LoginState state) {
@@ -80,6 +81,12 @@ class LoginController extends GetxController {
   void toggleCheckBox() {
     rememberMe = !rememberMe;
     update([checkBoxId]);
+  }
+  @override
+  void onClose() {
+    userNameController.dispose();
+    passwordController.dispose();
+    super.onClose();
   }
 }
 

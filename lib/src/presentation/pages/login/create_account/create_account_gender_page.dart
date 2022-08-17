@@ -33,9 +33,9 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
           const SizedBox(
             height: 32,
           ),
-          getRadio("Male", 1),
-          getRadio("Female", 2),
-          getRadio("Prefer not to say", 3),
+          getRadio( list[0],0),
+          getRadio( list[1],1),
+          getRadio( list[2],2),
           const SizedBox(
             height: 32,
           ),
@@ -46,6 +46,7 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
       ),
     );
   }
+  List<String> list=["Male","Female","Prefer not to say",];
 
   Widget getRadio(String text, int index) {
     return Row(
@@ -58,7 +59,7 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
         Transform.scale(
           scale: 1.2,
           child: Radio(
-            value: index,
+            value: index-1,
             groupValue: _radioValue,
             onChanged: (val) {
               if (val != _radioValue) {
