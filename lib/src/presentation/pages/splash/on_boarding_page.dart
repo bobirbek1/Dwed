@@ -4,7 +4,6 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/src/presentation/widgets/splash/indicator.dart';
 import 'package:get/get.dart';
-
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
 
@@ -14,7 +13,6 @@ class OnBoardingPage extends StatefulWidget {
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final PageController controller = PageController(initialPage: 0);
-  int index = 0;
 
   void _pageChanged(int index) {
     this.index = index;
@@ -23,11 +21,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            color: AppColors.GRAY_X11,
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: const [
+              Expanded(child: SizedBox()),
+              Padding(
+                padding: EdgeInsets.only(right: 32.0, top: 64),
+                child: Text(
+                  "Skip",
+                  style: TextStyle(
+                    color: AppColors.BLACK,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
             child: PageView.builder(
               itemCount: 4,
               onPageChanged: _pageChanged,
@@ -36,72 +49,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 return getData(
                   title[index],
                   subTitle[index],
-                );
+                 images[index]);
               },
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  getData(String title, String subTitle) {
-    return Scaffold(
-      body: Column(
-        children: [
           Padding(
             padding: const EdgeInsets.only(
-              top: 64,
-              left: 314,
-              right: 32,
-            ),
-            child: InkWell(
-              onTap: () {
-                Get.toNamed(AppRoutes.LOGIN);
-              },
-              child: const Text(
-                "Skip",
-                style: TextStyle(
-                  color: AppColors.BLACK,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 514,
-              left: 73,
-              right: 73,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: AppColors.BLACK,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  subTitle,
-                  style: const TextStyle(
-                    color: AppColors.GRAY_X11,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 30,
               left: 32,
               right: 32,
               bottom: 64,
@@ -111,29 +64,95 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               children: [
                 Indicator(
                   controller: controller,
-                  itemCount: 5,
+                  itemCount: 4,
                 ),
+                const Expanded(child: SizedBox()),
                 FloatingActionButton(
+                  onPressed: () {},
+                  child: SvgPicture.asset('assets/icons/Combined Shape.svg'),
                   backgroundColor: AppColors.BUTTON_BLUE,
-                  onPressed: () {
-                    if (index < 3) {
-                      controller.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.ease);
-                    } else {
-                      Get.offNamed(AppRoutes.LOGIN);
-                    }
-                  },
-                  child: SvgPicture.asset(
-                    "assets/icons/Combined Shape.svg",
-                    color: AppColors.WHITE,
-                  ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  getData(String title, String subTitle, dynamic image) {
+    return Column(
+      children: [
+        Expanded(
+          child: image,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            color: AppColors.BLACK,
+            fontSize: 28,
+            fontWeight: FontWeight.w600,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 78,
+            right: 78,
+            bottom: 74,
+          ),
+          child: Text(
+            subTitle,
+            style: const TextStyle(
+              color: AppColors.GRAY_X11,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  getData(String title, String subTitle, dynamic image) {
+    return Column(
+      children: [
+        Expanded(
+          child: image,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            color: AppColors.BLACK,
+            fontSize: 28,
+            fontWeight: FontWeight.w600,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 78,
+            right: 78,
+            bottom: 74,
+          ),
+          child: Text(
+            subTitle,
+            style: const TextStyle(
+              color: AppColors.GRAY_X11,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 
@@ -149,5 +168,35 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     "Контроль времени, Твое слово имеет слово быть",
     "Пора управлять временем, контролировать свою",
     "Пора управлять временем, контролировать свою",
+  ];
+  List<dynamic> images = [
+    SvgPicture.asset(
+      'assets/icons/icon_logo.svg',
+      color: AppColors.BUTTON_BLUE,
+      fit: BoxFit.contain,
+      width: 200,
+      height: 200,
+    ),
+    SvgPicture.asset(
+      'assets/icons/bag-2.svg',
+      color: AppColors.BUTTON_BLUE,
+      fit: BoxFit.contain,
+      width: 200,
+      height: 200,
+    ),
+    SvgPicture.asset(
+      'assets/images/video-square.svg',
+      color: AppColors.BUTTON_BLUE,
+      fit: BoxFit.contain,
+      width: 200,
+      height: 200,
+    ),
+    SvgPicture.asset(
+      'assets/icons/location.svg',
+      color: AppColors.BUTTON_BLUE,
+      fit: BoxFit.contain,
+      width: 200,
+      height: 200,
+    ),
   ];
 }
