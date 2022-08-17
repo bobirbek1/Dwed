@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/create_account/verification_code_input.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
@@ -9,7 +10,8 @@ import 'package:get/get.dart';
 
 
 class ResetPasswordVerifyPage extends StatefulWidget {
-  const ResetPasswordVerifyPage({Key? key}) : super(key: key);
+   ResetPasswordVerifyPage({Key? key}) : super(key: key);
+  final _controller = Get.find<CreateAccountController>();
 
   @override
   State<ResetPasswordVerifyPage> createState() => _ResetPasswordVerifyPageState();

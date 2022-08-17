@@ -49,7 +49,6 @@ class LoginRepoImpl extends LoginRepo {
   Future<Either<Failure, CreateAccountModel>> createAccount(
     String username,
     String name,
-    String? lastname,
     String? surname,
     String phone,
     String password,
@@ -58,7 +57,7 @@ class LoginRepoImpl extends LoginRepo {
       Get.log("Create Account is connected");
       try {
         final res = await remoteDatasource.createAccount(
-            username, name, lastname, surname, phone, password);
+            username, name, surname, phone, password);
         await localDatasource.setUserData(res);
         return Right(res);
       } catch (e) {

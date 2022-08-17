@@ -7,7 +7,9 @@ import 'package:flutter_template/src/data/datasource/login_local_datasource.dart
 import 'package:flutter_template/src/data/datasource/login_remote_datasource.dart';
 import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
+import 'package:flutter_template/src/domain/usecase/create_account.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
+import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -57,7 +59,12 @@ Future<void> init() async {
 
   // usecase
   Get.lazyPut(() => Login(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => CreateAccount(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
+  Get.lazyPut(
+      () =>
+          CreateAccountController(createAccount: Get.find(), login: Get.find()),
+      fenix: true);
 }
