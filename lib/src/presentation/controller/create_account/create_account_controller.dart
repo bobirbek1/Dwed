@@ -24,6 +24,10 @@ class CreateAccountController extends GetxController {
   final specialtyController = TextEditingController();
   final liveAddressController = TextEditingController();
   final phoneNumberController = TextEditingController();
+  final passwordResetPasswordController = TextEditingController();
+  final confirmResetPasswordController = TextEditingController();
+  final phoneResetPasswordController = TextEditingController();
+  final verifyResetPasswordController = TextEditingController();
 
   // states
   CreateAccountState createAccountState = CreateAccountState.initial;
@@ -40,6 +44,10 @@ class CreateAccountController extends GetxController {
   String? phoneNumberError;
   String? passwordError;
   String? confirmPasswordError;
+  String? passwordResetError;
+  String? confirmResetError;
+  String? phoneResetError;
+  String? verifyResetError;
 
   // data
 
@@ -51,6 +59,9 @@ class CreateAccountController extends GetxController {
   final String createAccountLiveAddressId = "create_account_address_id";
   final String createAccountPhoneNumberId = "create_account_phone_number_id";
   final String createAccountPasswordId = "create_account_password_id";
+  final String resetPasswordPasswordId = "create_account_password_id";
+  final String resetPasswordPhoneId = "create_account_password_id";
+  final String resetPasswordverifyId = "create_account_password_id";
 
 
   // final String checkBoxId = "check_box_id";
@@ -207,13 +218,67 @@ class CreateAccountController extends GetxController {
       }else{
         confirmPasswordError=null;
       }
-
     if (!isValid) {
       update([createAccountPasswordId]);
     }
     return isValid;
-
   }
+  bool validateResetPhoneNumber() {
+    var isValid = true;
+    if (phoneResetPasswordController.text.isEmpty) {
+      phoneResetError = "Phone number shouldn't be empty";
+      isValid = false;
+    } else {
+      phoneResetError = null;
+    }
+
+    if (!isValid) {
+      update([resetPasswordPasswordId]);
+    }
+    return isValid;
+  }
+  bool validateResetPassword() {
+    var isValid = true;
+    if (passwordResetPasswordController.text.isEmpty) {
+      passwordResetError = "Phone number shouldn't be empty";
+      isValid = false;
+    } else {
+      passwordResetError = null;
+    }
+    if (confirmResetPasswordController.text.isEmpty) {
+      confirmResetError = "Phone number shouldn't be empty";
+      isValid = false;
+    } else {
+      confirmResetError = null;
+    }
+    if (passwordResetPasswordController.text==confirmResetPasswordController.text) {
+      confirmResetError = "Password doesn't match";
+      isValid = false;
+    } else {
+      confirmResetError = null;
+    }
+
+    if (!isValid) {
+      update([resetPasswordPhoneId]);
+    }
+    return isValid;
+  }
+  bool validateResetVerify() {
+    var isValid = true;
+    if (verifyResetPasswordController.text.isEmpty) {
+      verifyResetError = "Phone number shouldn't be empty";
+      isValid = false;
+    } else {
+      verifyResetError = null;
+    }
+
+    if (!isValid) {
+      update([resetPasswordverifyId]);
+    }
+    return isValid;
+  }
+
+
 
   void updateCreateAccountState(CreateAccountState state) {
     createAccountState = state;
