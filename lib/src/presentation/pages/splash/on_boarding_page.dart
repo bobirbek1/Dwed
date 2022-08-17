@@ -4,6 +4,7 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/src/presentation/widgets/splash/indicator.dart';
 import 'package:get/get.dart';
+
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
 
@@ -14,10 +15,7 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final PageController controller = PageController(initialPage: 0);
 
-  void _pageChanged(int index) {
-    this.index = index;
-    setState(() {});
-  }
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +41,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           Expanded(
             child: PageView.builder(
               itemCount: 4,
-              onPageChanged: _pageChanged,
+              onPageChanged: (page) {
+                setState(() {
+                  currentPage = page;
+                });
+              },
               controller: controller,
               itemBuilder: (context, index) {
-                return getData(
-                  title[index],
-                  subTitle[index],
-                 images[index]);
+                return getData(title[index], subTitle[index], images[index]);
               },
             ),
           ),
@@ -68,7 +67,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
                 const Expanded(child: SizedBox()),
                 FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (currentPage == 3) {
+                      Get.offAllNamed(AppRoutes.LOGIN);
+                    } else {
+                      controller.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.ease);
+                    }
+                  },
                   child: SvgPicture.asset('assets/icons/Combined Shape.svg'),
                   backgroundColor: AppColors.BUTTON_BLUE,
                 ),
@@ -77,44 +84,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ],
       ),
-    );
-  }
-
-  getData(String title, String subTitle, dynamic image) {
-    return Column(
-      children: [
-        Expanded(
-          child: image,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            color: AppColors.BLACK,
-            fontSize: 28,
-            fontWeight: FontWeight.w600,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 78,
-            right: 78,
-            bottom: 74,
-          ),
-          child: Text(
-            subTitle,
-            style: const TextStyle(
-              color: AppColors.GRAY_X11,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
     );
   }
 
