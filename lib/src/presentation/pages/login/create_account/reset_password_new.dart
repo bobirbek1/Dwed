@@ -29,12 +29,12 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.resetPasswordPasswordId,
+              id: _controller.createAccountPasswordId,
               builder: (context) {
                 return TextField(
-                  controller: _controller.passwordResetPasswordController,
+                  controller: _controller.passwordController,
                   decoration: InputDecoration(
-                    errorText: _controller.passwordResetError,
+                    errorText: _controller.passwordError,
                     labelText: "New Password",
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
@@ -49,12 +49,12 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.resetPasswordPasswordId,
+              id: _controller.confirmPasswordController,
               builder: (context) {
                 return TextField(
                   controller: _controller.confirmPasswordController,
                   decoration: InputDecoration(
-                    errorText: _controller.confirmResetError,
+                    errorText: _controller.confirmPasswordError,
                     labelText: "Confirm New Password",
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
@@ -69,11 +69,11 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.resetPasswordPasswordId,
+              id: _controller.createAccountPasswordId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {
-                    if (_controller.validateResetPassword()) {
+                    if (_controller.validatePassword()) {
                       Get.toNamed(AppRoutes.LOGIN);
                     }
                   },

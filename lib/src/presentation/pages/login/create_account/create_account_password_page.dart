@@ -72,7 +72,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
               builder: (context) {
                 return LoginButton(
                   onPressed: () {
-                    if (_controller.validateCreateAccountPassword()) {
+                    if (_controller.validatePassword()) {
                       _controller.signUp();
                     }
                   },

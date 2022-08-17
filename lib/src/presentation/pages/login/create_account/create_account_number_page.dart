@@ -8,7 +8,7 @@ import 'package:flutter_template/src/presentation/widgets/login/login_page_skele
 import 'package:get/get.dart';
 
 class CreateAccountNumberPage extends StatelessWidget {
-   CreateAccountNumberPage({Key? key}) : super(key: key);
+  CreateAccountNumberPage({Key? key}) : super(key: key);
   final _controller = Get.find<CreateAccountController>();
 
   @override
@@ -23,44 +23,43 @@ class CreateAccountNumberPage extends StatelessWidget {
       bodySubtitle:
           "Enter the mobile number where you can be\n reached. You can hide this from your\n profile later",
       child: Column(
-        children:  [
+        children: [
           const SizedBox(
             height: 32,
           ),
           GetBuilder(
-            init: _controller,
-            id: _controller.createAccountPhoneNumberId,
-            builder: (context) {
-              return TextField(
-                controller: _controller.phoneNumberController,
-                decoration: InputDecoration(
-                  errorText: _controller.phoneNumberError,
-                  labelText: "Phone Number",
-                  labelStyle: const TextStyle(
-                    color: AppColors.SHADOW_BLUE,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+              init: _controller,
+              id: _controller.createAccountPhoneNumberId,
+              builder: (context) {
+                return TextField(
+                  controller: _controller.phoneNumberController,
+                  decoration: InputDecoration(
+                    errorText: _controller.phoneNumberError,
+                    labelText: "Phone Number",
+                    labelStyle: const TextStyle(
+                      color: AppColors.SHADOW_BLUE,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-              );
-            }
-          ),
+                );
+              }),
           const SizedBox(
             height: 32,
           ),
           GetBuilder(
-            init: _controller,
-            id: _controller.createAccountPhoneNumberId,
-            builder: (context) {
-              return LoginButton(onPressed: () {
-                if (_controller.validateCreateAccountPhoneNumber()) {
-                  Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
-                }
+              init: _controller,
+              id: _controller.createAccountPhoneNumberId,
+              builder: (context) {
+                return LoginButton(
+                  onPressed: () {
+                    if (_controller.validatePhoneNumber()) {
+                      Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
+                    }
                   },
-                buttonText: "NEXT",
-              );
-            }
-          ),
+                  buttonText: "NEXT",
+                );
+              }),
         ],
       ),
     );

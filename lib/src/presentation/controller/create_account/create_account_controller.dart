@@ -24,14 +24,10 @@ class CreateAccountController extends GetxController {
   final specialtyController = TextEditingController();
   final liveAddressController = TextEditingController();
   final phoneNumberController = TextEditingController();
-  final passwordResetPasswordController = TextEditingController();
-  final confirmResetPasswordController = TextEditingController();
-  final phoneResetPasswordController = TextEditingController();
-  final verifyResetPasswordController = TextEditingController();
+  final verifyCodeController = TextEditingController();
 
   // states
   CreateAccountState createAccountState = CreateAccountState.initial;
-
 
   // text field errors
   String? nameError;
@@ -44,10 +40,7 @@ class CreateAccountController extends GetxController {
   String? phoneNumberError;
   String? passwordError;
   String? confirmPasswordError;
-  String? passwordResetError;
-  String? confirmResetError;
-  String? phoneResetError;
-  String? verifyResetError;
+  String? verifyCodeError;
 
   // data
 
@@ -59,15 +52,12 @@ class CreateAccountController extends GetxController {
   final String createAccountLiveAddressId = "create_account_address_id";
   final String createAccountPhoneNumberId = "create_account_phone_number_id";
   final String createAccountPasswordId = "create_account_password_id";
-  final String resetPasswordPasswordId = "create_account_password_id";
-  final String resetPasswordPhoneId = "create_account_password_id";
-  final String resetPasswordverifyId = "create_account_password_id";
-
+  final String resetCodeVerifyId = "create_account_password_id";
 
   // final String checkBoxId = "check_box_id";
 
   void signUp() async {
-    if (validateCreateAccountPassword()) {
+    if (validatePassword()) {
       updateCreateAccountState(CreateAccountState.loading);
       final result = await createAccount.call(
         CreateAccountParams(
@@ -86,16 +76,12 @@ class CreateAccountController extends GetxController {
           Get.log("Internet connection is failed! Please try again");
         } else if (failure is ServerTimeOutFailure) {
           Get.log("Please check your network connection!");
-        } else {
-
-        }
+        } else {}
         updateCreateAccountState(CreateAccountState.error);
       }, (res) {
         updateCreateAccountState(CreateAccountState.loaded);
       });
     }
-
-
   }
 
   bool validateCreateAccountName() {
@@ -112,12 +98,10 @@ class CreateAccountController extends GetxController {
     } else {
       userNameError = null;
     }
-    if (!isValid) {
-      update([createAccountNameId]);
-    }
+    update([createAccountNameId]);
     return isValid;
-
   }
+
   bool validateCreateAccountBirthday() {
     var isValid = true;
     if (birthdayController.text.isEmpty) {
@@ -126,13 +110,10 @@ class CreateAccountController extends GetxController {
     } else {
       birthdayError = null;
     }
-
-    if (!isValid) {
-      update([createAccountNameId]);
-    }
+    update([createAccountNameId]);
     return isValid;
-
   }
+
   bool validateCreateAccountGender() {
     var isValid = true;
     if (genderController.text.isEmpty) {
@@ -141,17 +122,15 @@ class CreateAccountController extends GetxController {
     } else {
       genderError = null;
     }
-
-    if (!isValid) {
-      update([createAccountNameId]);
-    }
+    update([createAccountNameId]);
     return isValid;
-
   }
-  void updateLoginState( state) {
+
+  void updateLoginState(state) {
     createAccountState = state;
     update([createAccountNameId]);
   }
+
   bool validateCreateAccountSpecialty() {
     var isValid = true;
     if (specialtyController.text.isEmpty) {
@@ -160,13 +139,10 @@ class CreateAccountController extends GetxController {
     } else {
       specialtyError = null;
     }
-
-    if (!isValid) {
-      update([createAccountNameId]);
-    }
+    update([createAccountNameId]);
     return isValid;
-
   }
+
   bool validateCreateAccountLiveAddress() {
     var isValid = true;
     if (liveAddressController.text.isEmpty) {
@@ -176,29 +152,26 @@ class CreateAccountController extends GetxController {
       liveAddressError = null;
     }
 
-    if (!isValid) {
-      update([createAccountNameId]);
-    }
+    update([createAccountNameId]);
     return isValid;
-
   }
-  bool validateCreateAccountPhoneNumber() {
+
+  bool validatePhoneNumber() {
     var isValid = true;
     if (phoneNumberController.text.isEmpty) {
       phoneNumberError = "Phone number shouldn't be empty";
       isValid = false;
+    } else if (!phoneNumberController.text.isPhoneNumber) {
+      phoneNumberError = "Enter correct phone number";
+      isValid = false;
     } else {
       phoneNumberError = null;
     }
-
-    if (!isValid) {
-      update([createAccountPhoneNumberId]);
-    }
+    update([createAccountPhoneNumberId]);
     return isValid;
   }
 
-
-  bool validateCreateAccountPassword() {
+  bool validatePassword() {
     var isValid = true;
     if (passwordController.text.isEmpty) {
       passwordError = "Password shouldn't be empty";
@@ -206,79 +179,33 @@ class CreateAccountController extends GetxController {
     } else {
       passwordError = null;
     }
-      if (confirmPasswordController.text.isEmpty) {
-        confirmPasswordError = "Confirm password shouldn't be empty";
-        isValid = false;
-      } else {
-        confirmPasswordError = null;
-      }
-      if(passwordController.text!=confirmPasswordController.text){
-        confirmPasswordError = "Password doesn't match";
-        isValid = false;
-      }else{
-        confirmPasswordError=null;
-      }
-    if (!isValid) {
-      update([createAccountPasswordId]);
+    if (confirmPasswordController.text.isEmpty) {
+      confirmPasswordError = "Confirm password shouldn't be empty";
+      isValid = false;
+    } else {
+      confirmPasswordError = null;
     }
+    if (passwordController.text != confirmPasswordController.text) {
+      confirmPasswordError = "Password doesn't match";
+      isValid = false;
+    } else {
+      confirmPasswordError = null;
+    }
+    update([createAccountPasswordId]);
     return isValid;
   }
-  bool validateResetPhoneNumber() {
+
+  bool validateVerifyCode() {
     var isValid = true;
-    if (phoneResetPasswordController.text.isEmpty) {
-      phoneResetError = "Phone number shouldn't be empty";
+    if (verifyCodeController.text.isEmpty) {
+      verifyCodeError = "Phone number shouldn't be empty";
       isValid = false;
     } else {
-      phoneResetError = null;
+      verifyCodeError = null;
     }
-
-    if (!isValid) {
-      update([resetPasswordPasswordId]);
-    }
+    update([resetCodeVerifyId]);
     return isValid;
   }
-  bool validateResetPassword() {
-    var isValid = true;
-    if (passwordResetPasswordController.text.isEmpty) {
-      passwordResetError = "Phone number shouldn't be empty";
-      isValid = false;
-    } else {
-      passwordResetError = null;
-    }
-    if (confirmResetPasswordController.text.isEmpty) {
-      confirmResetError = "Phone number shouldn't be empty";
-      isValid = false;
-    } else {
-      confirmResetError = null;
-    }
-    if (passwordResetPasswordController.text==confirmResetPasswordController.text) {
-      confirmResetError = "Password doesn't match";
-      isValid = false;
-    } else {
-      confirmResetError = null;
-    }
-
-    if (!isValid) {
-      update([resetPasswordPhoneId]);
-    }
-    return isValid;
-  }
-  bool validateResetVerify() {
-    var isValid = true;
-    if (verifyResetPasswordController.text.isEmpty) {
-      verifyResetError = "Phone number shouldn't be empty";
-      isValid = false;
-    } else {
-      verifyResetError = null;
-    }
-
-    if (!isValid) {
-      update([resetPasswordverifyId]);
-    }
-    return isValid;
-  }
-
-
 
   void updateCreateAccountState(CreateAccountState state) {
     createAccountState = state;

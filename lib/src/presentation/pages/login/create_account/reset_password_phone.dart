@@ -29,12 +29,12 @@ class ResetPasswordPhonePage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.resetPasswordPhoneId,
+              id: _controller.createAccountPhoneNumberId,
               builder: (context) {
                 return TextField(
-                  controller: _controller.phoneResetPasswordController,
+                  controller: _controller.phoneNumberController,
                   decoration: InputDecoration(
-                    errorText: _controller.phoneResetError,
+                    errorText: _controller.phoneNumberError,
                     labelText: "Phone Number",
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
@@ -49,7 +49,7 @@ class ResetPasswordPhonePage extends StatelessWidget {
           ),
           LoginButton(
             onPressed: () {
-              if (_controller.validateResetPhoneNumber()) {
+              if (_controller.validatePhoneNumber()) {
                 Get.toNamed(AppRoutes.RESET_PASSWORD_VERIFY);
               }
             },
