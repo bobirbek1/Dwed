@@ -10,6 +10,12 @@ import 'package:flutter_template/src/data/model/token_model.dart';
 abstract class LoginRepo {
   Future<Either<Failure, TokenModel>> login(
       String username, String password, bool rememberMe);
+  Future<Either<Failure, bool>> sendPhone(
+      String phoneNumber);
+  Future<Either<Failure, bool>> smsCode(
+      String smsCode);
+  Future<Either<Failure, bool>> reset(
+      String newPassword, String confirmPassword,);
   Future<Either<Failure, CreateAccountModel>> createAccount(
     String username,
     String name,

@@ -78,6 +78,7 @@ class CreateAccountNamePage extends StatelessWidget {
                   buttonText: "NEXT",
                 );
               }),
+          const SizedBox(height: 40,),
         ],
       ),
     );

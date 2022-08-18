@@ -3,13 +3,14 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
+import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
 import 'package:get/get.dart';
 
 class ResetPasswordNewPage extends StatelessWidget {
   ResetPasswordNewPage({Key? key}) : super(key: key);
-  final _controller = Get.find<CreateAccountController>();
+  final _controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +30,12 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.passwordId,
+              id: _controller.resetPasswordId,
               builder: (context) {
                 return TextField(
-                  controller: _controller.passwordController,
+                  controller: _controller.resetpasswordController,
                   decoration: InputDecoration(
-                    errorText: _controller.passwordError,
+                    errorText: _controller.resetpasswordError,
                     labelText: "New Password",
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
@@ -69,7 +70,7 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.passwordId,
+              id: _controller.resetPasswordId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {

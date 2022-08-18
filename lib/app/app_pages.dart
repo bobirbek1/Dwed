@@ -5,10 +5,11 @@ import 'package:flutter_template/src/presentation/pages/login/create_account/cre
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_number_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_password_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_specialty.dart';
-import 'package:flutter_template/src/presentation/pages/login/create_account/reset_password_new.dart';
-import 'package:flutter_template/src/presentation/pages/login/create_account/reset_password_phone.dart';
-import 'package:flutter_template/src/presentation/pages/login/create_account/reset_password_verify.dart';
-import 'package:flutter_template/src/presentation/pages/login/login_page.dart';
+import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_verify.dart';
+import 'package:flutter_template/src/presentation/pages/login/login/reset_password.dart';
+import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
+import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
+import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
 import 'package:get/route_manager.dart';
@@ -40,6 +41,8 @@ class AppPages {
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_NUMBER,
         page: () => CreateAccountNumberPage()),
+    GetPage(
+        name: AppRoutes.CREATE_ACCOUNT_VERIFY, page: () => CreateAccountVerifyPage()),
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_PASSWORD,
         page: () => CreateAccountPasswordPage()),
