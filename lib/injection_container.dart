@@ -8,6 +8,8 @@ import 'package:flutter_template/src/data/datasource/login_remote_datasource.dar
 import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
+import 'package:flutter_template/src/domain/usecase/get_country.dart';
+import 'package:flutter_template/src/domain/usecase/get_region.dart';
 import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
@@ -64,11 +66,13 @@ Future<void> init() async {
   Get.lazyPut(() => CreateAccount(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetSector(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetSpecialty(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetRegion(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetCountry(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
   Get.lazyPut(
       () =>
-          CreateAccountController(createAccount: Get.find(), getSector: Get.find(),getSpecialty: Get.find()),
+          CreateAccountController(createAccount: Get.find(), getSector: Get.find(),getSpecialty: Get.find(),getRegion: Get.find(),getCountry: Get.find(),),
       fenix: true);
 }

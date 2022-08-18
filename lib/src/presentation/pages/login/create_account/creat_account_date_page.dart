@@ -15,7 +15,6 @@ class CreateAccountDatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,

@@ -1,8 +1,12 @@
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
+import 'package:flutter_template/src/data/model/country_model.dart';
+import 'package:flutter_template/src/data/model/region_model.dart';
 import 'package:flutter_template/src/data/model/sector_model.dart';
 import 'package:flutter_template/src/data/model/specialty_model.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
+import 'package:flutter_template/src/domain/usecase/get_country.dart';
+import 'package:flutter_template/src/domain/usecase/get_region.dart';
 import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
@@ -13,11 +17,16 @@ class CreateAccountController extends GetxController {
   final CreateAccount createAccount;
   final GetSector getSector;
   final GetSpecialty getSpecialty;
+  final GetCountry getCountry;
+  final GetRegion getRegion;
 
-  CreateAccountController(
-      {required this.createAccount,
-      required this.getSector,
-      required this.getSpecialty});
+  CreateAccountController({
+    required this.createAccount,
+    required this.getSector,
+    required this.getSpecialty,
+    required this.getCountry,
+    required this.getRegion,
+  });
 
   // text controllers
 
@@ -30,13 +39,14 @@ class CreateAccountController extends GetxController {
   final birthdayController = TextEditingController();
   final genderController = TextEditingController();
   final specialtyController = TextEditingController();
-  final liveAddressController = TextEditingController();
+  final regionController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final verifyCodeController = TextEditingController();
 
   // states
   CreateAccountState sectorState = CreateAccountState.initial;
   CreateAccountState specialityState = CreateAccountState.initial;
+  CreateAccountState regionState = CreateAccountState.initial;
   CreateAccountState createAccountState = CreateAccountState.initial;
 
   // text field errors
@@ -55,13 +65,15 @@ class CreateAccountController extends GetxController {
   // data
   List<Sector> sectorList = [];
   List<Speciality> specialityList = [];
+  List<Country> countryList = [];
+  List<Region> regionList = [];
 
   // ids
   final String nameId = "create_account_name_id";
   final String birthdayId = "create_account_birthday_id";
   final String genderId = "create_account_gender_id";
   final String specialityId = "create_account_speciality_id";
-  final String liveAddressId = "create_account_address_id";
+  final String regionId = "create_account_address_id";
   final String phoneNumberId = "create_account_phone_number_id";
   final String passwordId = "create_account_password_id";
   final String resetCodeVerifyId = "create_account_password_id";
@@ -70,6 +82,8 @@ class CreateAccountController extends GetxController {
   // additional
   int? specialityValue;
   Speciality? selectedSpec;
+  int? regionValue;
+  Region? selectedRegion;
 
   void signUp() async {
     if (validatePassword()) {
@@ -78,7 +92,7 @@ class CreateAccountController extends GetxController {
         CreateAccountParams(
           gender: genderController.text,
           specialty: specialtyController.text,
-          liveAddress: liveAddressController.text,
+          liveAddress: regionController.text,
           birthday: birthdayController.text,
           name: nameController.text,
           phone: phoneNumberController.text,
@@ -128,6 +142,40 @@ class CreateAccountController extends GetxController {
     }, (res) {
       specialityList = res.results ?? [];
       updateSpecialityState(CreateAccountState.loaded);
+    });
+  }
+
+  void getCountryList() async {
+    updateRegionState(CreateAccountState.loading);
+    Get.log("get country list called");
+    final result = await getCountry.call(NoParams());
+    Get.log("result is $result");
+    result.fold((failure) {
+      if (failure is NetworkFailure) {
+        Get.log("Internet connection is failed! Please try again");
+      } else if (failure is ServerTimeOutFailure) {
+        Get.log("Please check your network connection!");
+      } else {}
+      updateRegionState(CreateAccountState.error);
+    }, (res) {
+      countryList = res.results ?? [];
+      updateRegionState(CreateAccountState.loaded);
+    });
+  }
+
+  void getRegionList(int id) async {
+    updateRegionState(CreateAccountState.loading);
+    final result = await getRegion.call(RegionParams(countryId: id));
+    result.fold((failure) {
+      if (failure is NetworkFailure) {
+        Get.log("Internet connection is failed! Please try again");
+      } else if (failure is ServerTimeOutFailure) {
+        Get.log("Please check your network connection!");
+      } else {}
+      updateRegionState(CreateAccountState.error);
+    }, (res) {
+      regionList = res.results ?? [];
+      updateRegionState(CreateAccountState.loaded);
     });
   }
 
@@ -192,7 +240,7 @@ class CreateAccountController extends GetxController {
 
   bool validateCreateAccountLiveAddress() {
     var isValid = true;
-    if (liveAddressController.text.isEmpty) {
+    if (regionController.text.isEmpty) {
       liveAddressError = "Address shouldn't be empty";
       isValid = false;
     } else {
@@ -264,6 +312,11 @@ class CreateAccountController extends GetxController {
     update([specialityId]);
   }
 
+  void updateRegionState(CreateAccountState state) {
+    regionState = state;
+    update([regionId]);
+  }
+
   void changeSpecilityValue(val) {
     specialityValue = val;
     update([specialityId]);
@@ -273,6 +326,17 @@ class CreateAccountController extends GetxController {
     print("specialit name ${selectedSpec?.name ?? ""}");
     specialtyController.text = selectedSpec?.name ?? "";
     update([specialityId]);
+  }
+
+  void changeRegionValue(val) {
+    regionValue = val;
+    update([regionId]);
+  }
+
+  void selectRegion() {
+    print("specialit name ${selectedRegion?.name ?? ""}");
+    regionController.text = selectedRegion?.name ?? "";
+    update([regionId]);
   }
 }
 

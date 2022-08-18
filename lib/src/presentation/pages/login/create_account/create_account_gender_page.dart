@@ -19,7 +19,6 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,

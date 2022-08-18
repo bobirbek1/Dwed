@@ -104,8 +104,8 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   @override
   Future<RegionModel> region(int countryId) async {
     try {
-      final result = await client.patch(
-        "/v1.0/api/account/create/",
+      final result = await client.get(
+        "v1.0/api/regions/get_subs/$countryId/",
       );
       return RegionModel.fromJson(result.data);
     } catch (e) {
@@ -119,8 +119,9 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   @override
   Future<CountryModel> country() async {
     try {
-      final result = await client.patch(
-        "/v1.0/api/account/create/",
+      final result = await client.get(
+        "v1.0/api/regions/get_subs/0/",
+        queryParameters: {"limit": 1000},
       );
       return CountryModel.fromJson(result.data);
     } catch (e) {

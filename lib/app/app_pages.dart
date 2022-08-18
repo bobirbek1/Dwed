@@ -1,6 +1,6 @@
 import 'package:flutter_template/src/presentation/pages/login/create_account/creat_account_date_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_gender_page.dart';
-import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_live.dart';
+import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_address.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_name_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_number_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_password_page.dart';
@@ -36,7 +36,7 @@ class AppPages {
         page: () => CreateAccountSpecialty()),
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_LIVE,
-        page: () => const CreateAccountLive()),
+        page: () => CreateAccountAddress()),
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_NUMBER,
         page: () => CreateAccountNumberPage()),

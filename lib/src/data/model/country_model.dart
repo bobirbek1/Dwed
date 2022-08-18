@@ -4,7 +4,7 @@ class CountryModel extends Equatable {
   int? count;
   String? next;
   String? previous;
-  List<Results>? results;
+  List<Country>? results;
 
   @override
   List<Object?> get props => [
@@ -26,9 +26,9 @@ class CountryModel extends Equatable {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = <Results>[];
+      results = <Country>[];
       json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
+        results!.add(Country.fromJson(v));
       });
     }
   }
@@ -45,16 +45,16 @@ class CountryModel extends Equatable {
   }
 }
 
-class Results {
+class Country {
   int? id;
   String? name;
   String? regCode;
   String? parent;
   bool? hasSubs;
 
-  Results({this.id, this.name, this.regCode, this.parent, this.hasSubs});
+  Country({this.id, this.name, this.regCode, this.parent, this.hasSubs});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  Country.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     regCode = json['reg_code'];

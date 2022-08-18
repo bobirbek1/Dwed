@@ -4,16 +4,15 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/overlays/overlays.dart';
-import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/data/model/sector_model.dart';
-import 'package:flutter_template/src/data/model/specialty_model.dart';
+import 'package:flutter_template/src/data/model/country_model.dart';
+import 'package:flutter_template/src/data/model/region_model.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
 import 'package:get/get.dart';
 
-class CreateAccountSpecialty extends StatelessWidget {
-  CreateAccountSpecialty({Key? key}) : super(key: key);
+class CreateAccountAddress extends StatelessWidget {
+  CreateAccountAddress({Key? key}) : super(key: key);
 
   final _controller = Get.find<CreateAccountController>();
 
@@ -24,19 +23,19 @@ class CreateAccountSpecialty extends StatelessWidget {
       headerHeight: 286,
       title: "CREATE ACCOUNT",
       subtitle: "Connect with your friends today!",
-      bodyTitle: "What's your specialty?",
+      bodyTitle: "Where do you live?",
       bodySubtitle:
-          "You can change who sees your gender on your profile later.",
+          "Enter your current residence. You can always change it later.",
       child: Column(
         children: [
           const SizedBox(
             height: 32,
           ),
           GestureDetector(
-            onTap: () => showSpecialityModal(),
+            onTap: () => showRegionModal(),
             child: TextField(
               enabled: false,
-              controller: _controller.specialtyController,
+              controller: _controller.regionController,
               decoration: InputDecoration(
                 suffixIcon: RotatedBox(
                   quarterTurns: 135,
@@ -48,7 +47,7 @@ class CreateAccountSpecialty extends StatelessWidget {
                     ),
                   ),
                 ),
-                labelText: "Specialty",
+                labelText: "City/Region",
                 labelStyle: const TextStyle(
                   color: AppColors.SHADOW_BLUE,
                   fontSize: 16,
@@ -62,7 +61,7 @@ class CreateAccountSpecialty extends StatelessWidget {
           ),
           LoginButton(
             onPressed: () {
-              Get.toNamed(AppRoutes.CREATE_ACCOUNT_LIVE);
+              Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
             },
             buttonText: "NEXT",
           ),
@@ -71,16 +70,16 @@ class CreateAccountSpecialty extends StatelessWidget {
     );
   }
 
-  showSpecialityModal() {
-    bool isSector = true;
-    _controller.getSectorList();
+  showRegionModal() {
+    bool isCountry = true;
+    _controller.getCountryList();
     showBottomSheetDialog(
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             const Text(
-              "Select speciality",
+              "Select region",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
@@ -93,9 +92,9 @@ class CreateAccountSpecialty extends StatelessWidget {
             getSearchBox(),
             GetBuilder(
                 init: _controller,
-                id: _controller.specialityId,
+                id: _controller.regionId,
                 builder: (context) {
-                  switch (_controller.specialityState) {
+                  switch (_controller.regionState) {
                     case CreateAccountState.loading:
                       return const Expanded(
                         child: Center(
@@ -107,26 +106,25 @@ class CreateAccountSpecialty extends StatelessWidget {
                         child: ListView.separated(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           itemBuilder: (context, index) {
-                            final data = isSector
-                                ? _controller.sectorList[index]
-                                : _controller.specialityList[index];
-                            return isSector
-                                ? getSectorItem(
-                                    data as Sector,
+                            final data = isCountry
+                                ? _controller.countryList[index]
+                                : _controller.regionList[index];
+                            return isCountry
+                                ? getCountryItem(
+                                    data as Country,
                                     () {
-                                      isSector = false;
-                                      _controller
-                                          .getSpecialityList(data.slug ?? "");
+                                      isCountry = false;
+                                      _controller.getRegionList(data.id ?? 0);
                                     },
                                   )
                                 : getRadio(
-                                    (data as Speciality).name ?? "",
+                                    (data as Region).name ?? "",
                                     index,
-                                    _controller.specialityValue,
+                                    _controller.regionValue,
                                     (val) {
-                                      _controller.selectedSpec =
-                                          _controller.specialityList[val];
-                                      _controller.changeSpecilityValue(val);
+                                      _controller.selectedRegion =
+                                          _controller.regionList[val];
+                                      _controller.changeRegionValue(val);
                                     },
                                   );
                           },
@@ -136,9 +134,9 @@ class CreateAccountSpecialty extends StatelessWidget {
                               thickness: 1,
                             );
                           },
-                          itemCount: isSector
-                              ? _controller.sectorList.length
-                              : _controller.specialityList.length,
+                          itemCount: isCountry
+                              ? _controller.countryList.length
+                              : _controller.regionList.length,
                         ),
                       );
                     default:
@@ -158,16 +156,16 @@ class CreateAccountSpecialty extends StatelessWidget {
                 }),
             GetBuilder(
                 init: _controller,
-                id: _controller.specialityId,
+                id: _controller.regionId,
                 builder: (ctrl) {
-                  return isSector
+                  return isCountry
                       ? const SizedBox()
                       : SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
                               Get.back();
-                              _controller.selectSpeciality();
+                              _controller.selectRegion();
                             },
                             child: const Text(
                               "Select",
@@ -221,7 +219,7 @@ class CreateAccountSpecialty extends StatelessWidget {
     );
   }
 
-  getSectorItem(Sector sector, onPressed) {
+  getCountryItem(Country sector, onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(

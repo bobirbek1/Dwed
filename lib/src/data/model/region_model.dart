@@ -4,7 +4,7 @@ class RegionModel extends Equatable {
   int? count;
   String? next;
   String? previous;
-  List<Results>? results;
+  List<Region>? results;
 
   @override
   List<Object?> get props => [
@@ -26,9 +26,9 @@ class RegionModel extends Equatable {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = <Results>[];
+      results = <Region>[];
       json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
+        results!.add(Region.fromJson(v));
       });
     }
   }
@@ -45,16 +45,16 @@ class RegionModel extends Equatable {
   }
 }
 
-class Results {
+class Region {
   int? id;
   String? name;
   String? regCode;
   int? parent;
   bool? hasSubs;
 
-  Results({this.id, this.name, this.regCode, this.parent, this.hasSubs});
+  Region({this.id, this.name, this.regCode, this.parent, this.hasSubs});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  Region.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     regCode = json['reg_code'];

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
-import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/create_account/verification_code_input.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
@@ -21,7 +20,6 @@ class _ResetPasswordVerifyPageState extends State<ResetPasswordVerifyPage> {
   @override
   Widget build(BuildContext context) {
     String _onCompleted = "";
-    SizeConfig().init(context);
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
