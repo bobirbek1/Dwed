@@ -29,7 +29,7 @@ class CreateAccountNumberPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPhoneNumberId,
+              id: _controller.phoneNumberId,
               builder: (context) {
                 return TextField(
                   controller: _controller.phoneNumberController,
@@ -49,7 +49,7 @@ class CreateAccountNumberPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPhoneNumberId,
+              id: _controller.phoneNumberId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {

@@ -28,7 +28,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPasswordId,
+              id: _controller.passwordId,
               builder: (context) {
                 return TextField(
                   controller: _controller.passwordController,
@@ -48,7 +48,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPasswordId,
+              id: _controller.passwordId,
               builder: (context) {
                 return TextField(
                   controller: _controller.confirmPasswordController,
@@ -68,7 +68,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPasswordId,
+              id: _controller.passwordId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {

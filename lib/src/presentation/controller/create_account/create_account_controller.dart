@@ -1,15 +1,23 @@
 import 'package:flutter_template/core/error/failure.dart';
+import 'package:flutter_template/core/usecases/usecase.dart';
+import 'package:flutter_template/src/data/model/sector_model.dart';
+import 'package:flutter_template/src/data/model/specialty_model.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
-import 'package:flutter_template/src/domain/usecase/login.dart';
+import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
 import 'package:get/get.dart';
 
 class CreateAccountController extends GetxController {
   // usecases
   final CreateAccount createAccount;
-  final Login login;
+  final GetSector getSector;
+  final GetSpecialty getSpecialty;
 
-  CreateAccountController({required this.createAccount, required this.login});
+  CreateAccountController(
+      {required this.createAccount,
+      required this.getSector,
+      required this.getSpecialty});
 
   // text controllers
 
@@ -27,6 +35,8 @@ class CreateAccountController extends GetxController {
   final verifyCodeController = TextEditingController();
 
   // states
+  CreateAccountState sectorState = CreateAccountState.initial;
+  CreateAccountState specialityState = CreateAccountState.initial;
   CreateAccountState createAccountState = CreateAccountState.initial;
 
   // text field errors
@@ -43,18 +53,23 @@ class CreateAccountController extends GetxController {
   String? verifyCodeError;
 
   // data
+  List<Sector> sectorList = [];
+  List<Speciality> specialityList = [];
 
   // ids
-  final String createAccountNameId = "create_account_name_id";
-  final String createAccountBirthdayId = "create_account_birthday_id";
-  final String createAccountGenderId = "create_account_gender_id";
-  final String createAccountSpecialityId = "create_account_speciality_id";
-  final String createAccountLiveAddressId = "create_account_address_id";
-  final String createAccountPhoneNumberId = "create_account_phone_number_id";
-  final String createAccountPasswordId = "create_account_password_id";
+  final String nameId = "create_account_name_id";
+  final String birthdayId = "create_account_birthday_id";
+  final String genderId = "create_account_gender_id";
+  final String specialityId = "create_account_speciality_id";
+  final String liveAddressId = "create_account_address_id";
+  final String phoneNumberId = "create_account_phone_number_id";
+  final String passwordId = "create_account_password_id";
   final String resetCodeVerifyId = "create_account_password_id";
-
   // final String checkBoxId = "check_box_id";
+
+  // additional
+  int? specialityValue;
+  Speciality? selectedSpec;
 
   void signUp() async {
     if (validatePassword()) {
@@ -84,6 +99,38 @@ class CreateAccountController extends GetxController {
     }
   }
 
+  void getSectorList() async {
+    updateSpecialityState(CreateAccountState.loading);
+    final result = await getSector.call(NoParams());
+    result.fold((failure) {
+      if (failure is NetworkFailure) {
+        Get.log("Internet connection is failed! Please try again");
+      } else if (failure is ServerTimeOutFailure) {
+        Get.log("Please check your network connection!");
+      } else {}
+      updateSpecialityState(CreateAccountState.error);
+    }, (res) {
+      sectorList = res.results ?? [];
+      updateSpecialityState(CreateAccountState.loaded);
+    });
+  }
+
+  void getSpecialityList(String slug) async {
+    updateSpecialityState(CreateAccountState.loading);
+    final result = await getSpecialty.call(SpecialtyParams(sectorName: slug));
+    result.fold((failure) {
+      if (failure is NetworkFailure) {
+        Get.log("Internet connection is failed! Please try again");
+      } else if (failure is ServerTimeOutFailure) {
+        Get.log("Please check your network connection!");
+      } else {}
+      updateSpecialityState(CreateAccountState.error);
+    }, (res) {
+      specialityList = res.results ?? [];
+      updateSpecialityState(CreateAccountState.loaded);
+    });
+  }
+
   bool validateCreateAccountName() {
     var isValid = true;
     if (nameController.text.isEmpty) {
@@ -98,7 +145,7 @@ class CreateAccountController extends GetxController {
     } else {
       userNameError = null;
     }
-    update([createAccountNameId]);
+    update([nameId]);
     return isValid;
   }
 
@@ -110,7 +157,7 @@ class CreateAccountController extends GetxController {
     } else {
       birthdayError = null;
     }
-    update([createAccountNameId]);
+    update([nameId]);
     return isValid;
   }
 
@@ -122,13 +169,13 @@ class CreateAccountController extends GetxController {
     } else {
       genderError = null;
     }
-    update([createAccountNameId]);
+    update([nameId]);
     return isValid;
   }
 
   void updateLoginState(state) {
-    createAccountState = state;
-    update([createAccountNameId]);
+    specialityState = state;
+    update([nameId]);
   }
 
   bool validateCreateAccountSpecialty() {
@@ -139,7 +186,7 @@ class CreateAccountController extends GetxController {
     } else {
       specialtyError = null;
     }
-    update([createAccountNameId]);
+    update([nameId]);
     return isValid;
   }
 
@@ -152,7 +199,7 @@ class CreateAccountController extends GetxController {
       liveAddressError = null;
     }
 
-    update([createAccountNameId]);
+    update([nameId]);
     return isValid;
   }
 
@@ -167,7 +214,7 @@ class CreateAccountController extends GetxController {
     } else {
       phoneNumberError = null;
     }
-    update([createAccountPhoneNumberId]);
+    update([phoneNumberId]);
     return isValid;
   }
 
@@ -191,7 +238,7 @@ class CreateAccountController extends GetxController {
     } else {
       confirmPasswordError = null;
     }
-    update([createAccountPasswordId]);
+    update([passwordId]);
     return isValid;
   }
 
@@ -208,8 +255,24 @@ class CreateAccountController extends GetxController {
   }
 
   void updateCreateAccountState(CreateAccountState state) {
-    createAccountState = state;
-    update([createAccountNameId]);
+    specialityState = state;
+    update([nameId]);
+  }
+
+  void updateSpecialityState(CreateAccountState state) {
+    specialityState = state;
+    update([specialityId]);
+  }
+
+  void changeSpecilityValue(val) {
+    specialityValue = val;
+    update([specialityId]);
+  }
+
+  void selectSpeciality() {
+    print("specialit name ${selectedSpec?.name ?? ""}");
+    specialtyController.text = selectedSpec?.name ?? "";
+    update([specialityId]);
   }
 }
 

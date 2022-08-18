@@ -22,8 +22,8 @@ abstract class LoginLocalDatasource {
 
   Future setRegionDate(RegionModel regionModel);
   Future setCountryDate(CountryModel countryModel);
-  Future setSectorDate(SectorModel sectorModel);
-  Future setSpecialtyDate(SpecialtyModel specialtyModel);
+  Future setSectorData(SectorModel sectorModel);
+  Future setSpecialtyDate(SpecialityModel specialtyModel);
 }
 
 class LoginLocalDatasourceImpl extends LoginLocalDatasource {
@@ -94,7 +94,7 @@ class LoginLocalDatasourceImpl extends LoginLocalDatasource {
   }
 
   @override
-  Future setSectorDate(SectorModel sectorModel) async {
+  Future setSectorData(SectorModel sectorModel) async {
     return await prefs.setString(
       keyToken,
       json.encode(
@@ -104,7 +104,7 @@ class LoginLocalDatasourceImpl extends LoginLocalDatasource {
   }
 
   @override
-  Future setSpecialtyDate(SpecialtyModel specialtyModel) async {
+  Future setSpecialtyDate(SpecialityModel specialtyModel) async {
     return await prefs.setString(
       keyToken,
       json.encode(

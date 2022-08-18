@@ -125,7 +125,8 @@ class LoginPage extends StatelessWidget {
               init: _controller,
               id: _controller.loginId,
               builder: (ctrl) {
-                print("login page ${_controller.loginState != LoginState.loading}");
+                print(
+                    "login page ${_controller.loginState != LoginState.loading}");
                 return LoginButton(
                   onPressed: () {
                     _controller.signIn();
@@ -196,6 +197,9 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 40,
           ),
         ],
       ),

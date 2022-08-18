@@ -29,7 +29,7 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPasswordId,
+              id: _controller.passwordId,
               builder: (context) {
                 return TextField(
                   controller: _controller.passwordController,
@@ -69,7 +69,7 @@ class ResetPasswordNewPage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountPasswordId,
+              id: _controller.passwordId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {

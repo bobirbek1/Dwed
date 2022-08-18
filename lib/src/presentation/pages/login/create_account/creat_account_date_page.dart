@@ -31,39 +31,38 @@ class CreateAccountDatePage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountBirthdayId,
-            builder: (context) {
-              return TextField(
-                controller: _controller.birthdayController,
-                enabled: false,
-                decoration: InputDecoration(
-                  errorText: _controller.birthdayError,
-                  suffixIcon: RotatedBox(
-                    quarterTurns: 135,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: SvgPicture.asset(
-                        AppIcons.ARROW_LEFT,
-                        color: AppColors.SHADOW_BLUE,
+              id: _controller.birthdayId,
+              builder: (context) {
+                return TextField(
+                  controller: _controller.birthdayController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    errorText: _controller.birthdayError,
+                    suffixIcon: RotatedBox(
+                      quarterTurns: 135,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: SvgPicture.asset(
+                          AppIcons.ARROW_LEFT,
+                          color: AppColors.SHADOW_BLUE,
+                        ),
                       ),
                     ),
+                    labelText: "DD/MM/YYY",
+                    labelStyle: const TextStyle(
+                      color: AppColors.SHADOW_BLUE,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  labelText: "DD/MM/YYY",
-                  labelStyle: const TextStyle(
-                    color: AppColors.SHADOW_BLUE,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              );
-            }
-          ),
+                );
+              }),
           const SizedBox(
             height: 32,
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountBirthdayId,
+              id: _controller.birthdayId,
               builder: (context) {
                 return LoginButton(
                   onPressed: () {

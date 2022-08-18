@@ -25,12 +25,12 @@ class LoginRepoImpl extends LoginRepo {
 
   @override
   Future<Either<Failure, TokenModel>> login(
-      String username, String password,bool rememberMe) async {
+      String username, String password, bool rememberMe) async {
     if (await networkInfo.isConnected) {
       Get.log("login is connected");
       try {
         final res = await remoteDatasource.login(username, password);
-        if(rememberMe) {
+        if (rememberMe) {
           await localDatasource.setToken(res);
         }
         return Right(res);
@@ -116,7 +116,7 @@ class LoginRepoImpl extends LoginRepo {
         Get.log("get sector is connected");
         try {
           final res = await remoteDatasource.sector();
-          await localDatasource.setSectorDate(res);
+          // await localDatasource.setSectorData(res);
           return Right(res);
         } catch (e) {
           final failure = handleException(e as Exception);
@@ -131,8 +131,7 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, SpecialtyModel>> specialty(
-      String sectorName) async {
+  Future<Either<Failure, SpecialityModel>> specialty(String sectorName) async {
     {
       if (await networkInfo.isConnected) {
         Get.log("get speciality is connected");

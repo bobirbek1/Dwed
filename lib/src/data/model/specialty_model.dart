@@ -1,19 +1,19 @@
-class SpecialtyModel {
+class SpecialityModel {
   int? count;
   String? next;
   String? previous;
-  List<Results>? results;
+  List<Speciality>? results;
 
-  SpecialtyModel({this.count, this.next, this.previous, this.results});
+  SpecialityModel({this.count, this.next, this.previous, this.results});
 
-  SpecialtyModel.fromJson(Map<String, dynamic> json) {
+  SpecialityModel.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = <Results>[];
+      results = <Speciality>[];
       json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
+        results!.add(Speciality.fromJson(v));
       });
     }
   }
@@ -30,7 +30,7 @@ class SpecialtyModel {
   }
 }
 
-class Results {
+class Speciality {
   int? id;
   String? slug;
   String? name;
@@ -38,15 +38,15 @@ class Results {
   String? image;
   bool? hasSubs;
 
-  Results(
+  Speciality(
       {this.id,
-        this.slug,
-        this.name,
-        this.description,
-        this.image,
-        this.hasSubs});
+      this.slug,
+      this.name,
+      this.description,
+      this.image,
+      this.hasSubs});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  Speciality.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     slug = json['slug'];
     name = json['name'];

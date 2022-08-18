@@ -4,7 +4,7 @@ class SectorModel extends Equatable {
   int? count;
   String? next;
   String? previous;
-  List<Results>? results;
+  List<Sector>? results;
 
   List<Object?> get props => [count, next, previous, results];
 
@@ -15,9 +15,9 @@ class SectorModel extends Equatable {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = <Results>[];
+      results = <Sector>[];
       json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
+        results!.add(Sector.fromJson(v));
       });
     }
   }
@@ -34,7 +34,7 @@ class SectorModel extends Equatable {
   }
 }
 
-class Results {
+class Sector {
   int? id;
   String? slug;
   String? name;
@@ -42,15 +42,15 @@ class Results {
   String? image;
   bool? hasSubs;
 
-  Results(
+  Sector(
       {this.id,
-        this.slug,
-        this.name,
-        this.description,
-        this.image,
-        this.hasSubs});
+      this.slug,
+      this.name,
+      this.description,
+      this.image,
+      this.hasSubs});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  Sector.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     slug = json['slug'];
     name = json['name'];

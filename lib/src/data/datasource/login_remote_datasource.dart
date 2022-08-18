@@ -21,7 +21,7 @@ abstract class LoginRemoteDatasource {
   Future<RegionModel> region(int countryId);
   Future<CountryModel> country();
   Future<SectorModel> sector();
-  Future<SpecialtyModel> specialty(String sectorName);
+  Future<SpecialityModel> specialty(String sectorName);
 }
 
 class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
@@ -102,7 +102,7 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<RegionModel> region(int countryId)async {
+  Future<RegionModel> region(int countryId) async {
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
@@ -114,11 +114,10 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
       }
       rethrow;
     }
-      }
+  }
 
   @override
-  Future<CountryModel> country()async {
-
+  Future<CountryModel> country() async {
     try {
       final result = await client.patch(
         "/v1.0/api/account/create/",
@@ -134,11 +133,9 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
 
   @override
   Future<SectorModel> sector() async {
-   
     try {
-      final result = await client.patch(
-        "/v1.0/api/account/create/",
-      );
+      final result = await client.get("v1.0/api/cats/ucats/get_subs/0/",
+          queryParameters: {"limit": 1000, "show_empties": 1});
       return SectorModel.fromJson(result.data);
     } catch (e) {
       if (e is! DioError) {
@@ -149,13 +146,13 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<SpecialtyModel> specialty(String sectorName) async {
- 
+  Future<SpecialityModel> specialty(String sectorName) async {
     try {
-      final result = await client.patch(
-        "/v1.0/api/account/create/",
+      final result = await client.get(
+        "v1.0/api/cats/ucats/get_subs/$sectorName/",
+        queryParameters: {"limit": 1000, "show_empties": 1},
       );
-      return SpecialtyModel.fromJson(result.data);
+      return SpecialityModel.fromJson(result.data);
     } catch (e) {
       if (e is! DioError) {
         throw ServerUnknownException();
@@ -163,5 +160,4 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
       rethrow;
     }
   }
-
 }

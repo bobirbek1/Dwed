@@ -28,7 +28,7 @@ class CreateAccountNamePage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountNameId,
+              id: _controller.nameId,
               builder: (context) {
                 return textField(
                   "Name",
@@ -41,7 +41,7 @@ class CreateAccountNamePage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountNameId,
+              id: _controller.nameId,
               builder: (context) {
                 return textField(
                   "Surname",
@@ -54,7 +54,7 @@ class CreateAccountNamePage extends StatelessWidget {
           ),
           GetBuilder(
               init: _controller,
-              id: _controller.createAccountNameId,
+              id: _controller.nameId,
               builder: (context) {
                 return textField(
                   "Username",
@@ -66,7 +66,7 @@ class CreateAccountNamePage extends StatelessWidget {
             height: 32,
           ),
           GetBuilder(
-              id: _controller.createAccountNameId,
+              id: _controller.nameId,
               init: _controller,
               builder: (context) {
                 return LoginButton(
@@ -75,7 +75,7 @@ class CreateAccountNamePage extends StatelessWidget {
                       Get.toNamed(AppRoutes.CREATE_ACCOUNT_DATE);
                     }
                   },
-                 buttonText: "NEXT",
+                  buttonText: "NEXT",
                 );
               }),
         ],
