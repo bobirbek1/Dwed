@@ -94,8 +94,8 @@ class CreateAccountController extends GetxController {
       final result = await createAccount.call(
         CreateAccountParams(
           gender: genderController.text,
-          specialty: specialtyController.text,
-          liveAddress: regionController.text,
+          specialty: selectedSpec?.id,
+          liveAddress: selectedRegion?.id,
           birthday: birthdayController.text,
           name: nameController.text,
           phone: phoneNumberController.text,

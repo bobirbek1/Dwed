@@ -23,10 +23,10 @@ class CreateAccountParams extends Params {
   final String? surname;
   final String phone;
   final String password;
-  final String birthday;
+  final String? birthday;
   final String gender;
-  final int specialty;
-  final int liveAddress;
+  final int? specialty;
+  final int? liveAddress;
 
   CreateAccountParams(
       {this.surname,

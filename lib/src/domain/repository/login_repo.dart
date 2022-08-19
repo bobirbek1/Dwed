@@ -21,7 +21,7 @@ abstract class LoginRepo {
     String name,
     String? surname,
     String phone,
-    String password, String birthday, String gender, int liveAddress, int specialty,
+    String password, String? birthday, String gender, int? liveAddress, int? specialty,
   );
   Future<Either<Failure, SpecialityModel>> specialty(String sectorName);
   Future<Either<Failure, RegionModel>> region(int countryId);

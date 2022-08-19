@@ -52,7 +52,7 @@ class LoginRepoImpl extends LoginRepo {
     String? surname,
     String phone,
     String password,
-    String birthday, String gender, int liveAddress, int specialty,
+    String? birthday, String gender, int? liveAddress, int? specialty,
   ) async {
     if (await networkInfo.isConnected) {
       Get.log("Create Account is connected");
