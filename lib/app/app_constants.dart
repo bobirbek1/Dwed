@@ -5,6 +5,7 @@ const int RECEIVE_TIME_OUT = 10000;
 
 // shared preference keys
 const String keyToken = "key_token";
-const String keyCreateAccountToken='key_create_account_token';
+const String keyUserData = "key_user_data";
+const String isFirstRun = "is_first_run";
 
 // 

@@ -1,3 +1,4 @@
+import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/creat_account_date_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_gender_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_live.dart';
@@ -54,5 +55,6 @@ class AppPages {
         page: () => ResetPasswordVerifyPage()),
     GetPage(
         name: AppRoutes.RESET_PASSWORD_NEW, page: () => ResetPasswordNewPage()),
+    GetPage(name: AppRoutes.HOME, page: () => HomePage()) ,   
   ];
 }

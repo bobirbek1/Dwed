@@ -14,4 +14,5 @@ class AppRoutes {
   static const RESET_PASSWORD_PHONE = "/reset_password_phone";
   static const RESET_PASSWORD_VERIFY = "/reset_password_verify";
   static const RESET_PASSWORD_NEW = "/reset_password_new";
+  static const HOME = "/home";
 }

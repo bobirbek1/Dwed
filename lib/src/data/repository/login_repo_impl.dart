@@ -52,6 +52,7 @@ class LoginRepoImpl extends LoginRepo {
     String? surname,
     String phone,
     String password,
+    String birthday, String gender, int liveAddress, int specialty,
   ) async {
     if (await networkInfo.isConnected) {
       Get.log("Create Account is connected");
@@ -59,6 +60,7 @@ class LoginRepoImpl extends LoginRepo {
         final res = await remoteDatasource.createAccount(
             username, name, surname, phone, password);
         await localDatasource.setUserData(res);
+        await login(username, password, true);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
@@ -149,12 +151,14 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, bool>> reset(String newPassword, String confirmPassword)async {
+  Future<Either<Failure, bool>> reset(
+      String newPassword, String confirmPassword) async {
     {
       if (await networkInfo.isConnected) {
         Get.log("Reset password is connected");
         try {
-          final res = await remoteDatasource.reset(newPassword, confirmPassword);
+          final res =
+              await remoteDatasource.reset(newPassword, confirmPassword);
           return Right(res);
         } catch (e) {
           final failure = handleException(e as Exception);

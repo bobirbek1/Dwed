@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,6 @@ class LoginController extends GetxController {
   String? phoneNumberError;
   String? smsCodeError;
 
-
   // data
   bool rememberMe = false;
 
@@ -41,7 +41,6 @@ class LoginController extends GetxController {
   final String resetPasswordId = "create_account_password_id";
   final String phoneNumberId = "create_account_phone_number_id";
   final String smsCodeId = "create_account_phone_number_id";
-
 
   void signIn() async {
     if (validateLogin()) {
@@ -65,6 +64,7 @@ class LoginController extends GetxController {
         updateLoginState(LoginState.error);
       }, (res) {
         updateLoginState(LoginState.loaded);
+        Get.toNamed(AppRoutes.LOGIN);
       });
     }
   }
@@ -113,6 +113,7 @@ class LoginController extends GetxController {
       });
     }
   }
+
   void smsCodeReset() async {
     if (validateSendPhone()) {
       updateSmsCodeState(LoginState.loading);
@@ -134,6 +135,7 @@ class LoginController extends GetxController {
       });
     }
   }
+
   bool validateSmsCode() {
     var isValid = true;
     if (smsCodeResetController.text.isEmpty) {
@@ -146,6 +148,7 @@ class LoginController extends GetxController {
     update([smsCodeId]);
     return isValid;
   }
+
   bool validateSendPhone() {
     var isValid = true;
     if (phoneNumberController.text.isEmpty) {
@@ -158,8 +161,6 @@ class LoginController extends GetxController {
     update([phoneNumberId]);
     return isValid;
   }
-
-
 
   bool validatePassword() {
     var isValid = true;
@@ -209,19 +210,21 @@ class LoginController extends GetxController {
     loginState = state;
     update([loginId]);
   }
+
   void updateResetPasswordState(LoginState state) {
     resetPasswordState = state;
     update([resetPasswordId]);
   }
+
   void updateSendPhoneState(LoginState state) {
     resetPhoneState = state;
     update([resetPasswordId]);
   }
+
   void updateSmsCodeState(LoginState state) {
     resetPhoneState = state;
     update([resetPasswordId]);
   }
-
 
   void toggleCheckBox() {
     rememberMe = !rememberMe;

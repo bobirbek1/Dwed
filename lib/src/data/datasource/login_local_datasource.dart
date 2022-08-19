@@ -2,11 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
-import 'package:flutter_template/src/data/model/country_model.dart';
 import 'package:flutter_template/src/data/model/create_account_token_model.dart';
-import 'package:flutter_template/src/data/model/region_model.dart';
-import 'package:flutter_template/src/data/model/sector_model.dart';
-import 'package:flutter_template/src/data/model/specialty_model.dart';
 import 'package:flutter_template/src/data/model/token_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +46,7 @@ class LoginLocalDatasourceImpl extends LoginLocalDatasource {
 
   @override
   Future<CreateAccountModel> getUserData() async {
-    final jsonString = prefs.getString(keyCreateAccountToken);
+    final jsonString = prefs.getString(keyUserData);
     Get.log("token json string is $jsonString");
     if (jsonString != null) {
       return CreateAccountModel.fromJson(json.decode(jsonString));
@@ -62,7 +58,7 @@ class LoginLocalDatasourceImpl extends LoginLocalDatasource {
   @override
   Future setUserData(CreateAccountModel token) async {
     return await prefs.setString(
-      keyToken,
+      keyUserData,
       json.encode(
         token.toJson(),
       ),
