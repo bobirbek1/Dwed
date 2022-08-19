@@ -9,8 +9,10 @@ class AppRoutes {
   static const CREATE_ACCOUNT_SPECIALITY = "/create_account_speciality";
   static const CREATE_ACCOUNT_LIVE = "/create_account_live";
   static const CREATE_ACCOUNT_NUMBER = "/create_account_number";
+  static const CREATE_ACCOUNT_VERIFY = "/create_account_verify";
   static const CREATE_ACCOUNT_PASSWORD = "/create_account_password";
   static const RESET_PASSWORD_PHONE = "/reset_password_phone";
   static const RESET_PASSWORD_VERIFY = "/reset_password_verify";
   static const RESET_PASSWORD_NEW = "/reset_password_new";
+  static const HOME = "/home";
 }

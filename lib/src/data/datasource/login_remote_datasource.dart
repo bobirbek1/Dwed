@@ -9,6 +9,9 @@ import 'package:flutter_template/src/data/model/token_model.dart';
 
 abstract class LoginRemoteDatasource {
   Future<TokenModel> login(String username, String password);
+  Future<bool> reset(String newPassword, String confirmPassword);
+  Future<bool> sendPhone(String sendPhone);
+  Future<bool> smsCode(String smsCode);
 
   Future<CreateAccountModel> createAccount(
     String username,
@@ -154,6 +157,51 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
         queryParameters: {"limit": 1000, "show_empties": 1},
       );
       return SpecialityModel.fromJson(result.data);
+    } catch (e) {
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> reset(String newPassword, String confirmPassword) async {
+    try {
+      final result = await client.get(
+        "v1.0/api/cats/ucats/get_subs/$newPassword/",
+      );
+      return true;
+    } catch (e) {
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> sendPhone(String sendPhone)async {
+    try {
+      final result = await client.get(
+        "v1.0/api/cats/ucats/get_subs/$sendPhone/",
+      );
+      return true;
+    } catch (e) {
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> smsCode(String smsCode) async {
+    try {
+      final result = await client.get(
+        "v1.0/api/cats/ucats/get_subs/$smsCode/",
+      );
+      return true;
     } catch (e) {
       if (e is! DioError) {
         throw ServerUnknownException();

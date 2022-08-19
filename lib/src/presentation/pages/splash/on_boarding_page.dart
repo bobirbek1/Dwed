@@ -23,16 +23,21 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       body: Column(
         children: <Widget>[
           Row(
-            children: const [
-              Expanded(child: SizedBox()),
+            children:  [
+              const Expanded(child: SizedBox()),
               Padding(
-                padding: EdgeInsets.only(right: 32.0, top: 64),
-                child: Text(
-                  "Skip",
-                  style: TextStyle(
-                    color: AppColors.BLACK,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                padding: const EdgeInsets.only(right: 32.0, top: 64),
+                child: InkWell(
+                  onTap: (){
+                    Get.offAllNamed(AppRoutes.LOGIN);
+                  },
+                  child: const Text(
+                    "Skip",
+                    style: TextStyle(
+                      color: AppColors.BLACK,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),

@@ -11,6 +11,7 @@ import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CreateAccountController extends GetxController {
   // usecases
@@ -84,6 +85,8 @@ class CreateAccountController extends GetxController {
   Speciality? selectedSpec;
   int? regionValue;
   Region? selectedRegion;
+  DateTime? birthDate;
+  String gender = "";
 
   void signUp() async {
     if (validatePassword()) {
@@ -337,6 +340,13 @@ class CreateAccountController extends GetxController {
     print("specialit name ${selectedRegion?.name ?? ""}");
     regionController.text = selectedRegion?.name ?? "";
     update([regionId]);
+  }
+
+  void selectBirthDate(DateTime date) {
+    birthDate = date;
+    if (birthDate != null) {
+      birthdayController.text = DateFormat("dd/MM/yyyy").format(birthDate!);
+    }
   }
 }
 

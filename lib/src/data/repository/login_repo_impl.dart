@@ -52,6 +52,7 @@ class LoginRepoImpl extends LoginRepo {
     String? surname,
     String phone,
     String password,
+    String birthday, String gender, int liveAddress, int specialty,
   ) async {
     if (await networkInfo.isConnected) {
       Get.log("Create Account is connected");
@@ -59,6 +60,7 @@ class LoginRepoImpl extends LoginRepo {
         final res = await remoteDatasource.createAccount(
             username, name, surname, phone, password);
         await localDatasource.setUserData(res);
+        await login(username, password, true);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
@@ -77,7 +79,6 @@ class LoginRepoImpl extends LoginRepo {
       Get.log("get region is connected");
       try {
         final res = await remoteDatasource.region(countryId);
-        await localDatasource.setRegionDate(res);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
@@ -96,7 +97,6 @@ class LoginRepoImpl extends LoginRepo {
       Get.log("get country is connected");
       try {
         final res = await remoteDatasource.country();
-        await localDatasource.setCountryDate(res);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
@@ -137,7 +137,6 @@ class LoginRepoImpl extends LoginRepo {
         Get.log("get speciality is connected");
         try {
           final res = await remoteDatasource.specialty(sectorName);
-          await localDatasource.setSpecialtyDate(res);
           return Right(res);
         } catch (e) {
           final failure = handleException(e as Exception);
@@ -146,6 +145,68 @@ class LoginRepoImpl extends LoginRepo {
         }
       } else {
         Get.log("get speciality disconnected");
+        return const Left(NetworkFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> reset(
+      String newPassword, String confirmPassword) async {
+    {
+      if (await networkInfo.isConnected) {
+        Get.log("Reset password is connected");
+        try {
+          final res =
+              await remoteDatasource.reset(newPassword, confirmPassword);
+          return Right(res);
+        } catch (e) {
+          final failure = handleException(e as Exception);
+          Get.log("get speciality failure $failure");
+          return Left(failure);
+        }
+      } else {
+        Get.log("get speciality disconnected");
+        return const Left(NetworkFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> sendPhone(String phoneNumber) async {
+    {
+      if (await networkInfo.isConnected) {
+        Get.log("SendPhone password is connected");
+        try {
+          final res = await remoteDatasource.sendPhone(phoneNumber);
+          return Right(res);
+        } catch (e) {
+          final failure = handleException(e as Exception);
+          Get.log("SendPhone failure $failure");
+          return Left(failure);
+        }
+      } else {
+        Get.log("SendPhone disconnected");
+        return const Left(NetworkFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> smsCode(String smsCode) async {
+    {
+      if (await networkInfo.isConnected) {
+        Get.log("SendPhone password is connected");
+        try {
+          final res = await remoteDatasource.sendPhone(smsCode);
+          return Right(res);
+        } catch (e) {
+          final failure = handleException(e as Exception);
+          Get.log("SendPhone failure $failure");
+          return Left(failure);
+        }
+      } else {
+        Get.log("SendPhone disconnected");
         return const Left(NetworkFailure());
       }
     }

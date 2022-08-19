@@ -11,8 +11,53 @@ class Login extends Usecase<TokenModel, LoginParams> {
 
   @override
   Future<Either<Failure, TokenModel>> call(LoginParams params) {
-    return repo.login(params.username, params.password,params.rememberMe);
+    return repo.login(params.username, params.password, params.rememberMe);
   }
+  Future<Either<Failure, bool>> resetCall(ResetParams params) {
+    return repo.reset(params.newPassword, params.confirmPassword,);
+  }
+  Future<Either<Failure, bool>> sendCall(PhoneSendReset params) {
+    return repo.sendPhone(params.phoneNumber,);
+  }
+  Future<Either<Failure, bool>> smsCode(VerifySmsCode params) {
+    return repo.sendPhone(params.smsCode,);
+  }
+}
+
+class PhoneSendReset extends Params{
+  final String phoneNumber;
+
+  PhoneSendReset({
+    required this.phoneNumber,
+  });
+  @override
+  List<Object?> get props => [phoneNumber];
+
+}
+
+class VerifySmsCode extends Params{
+  final String smsCode;
+
+  VerifySmsCode({
+    required this.smsCode,
+  });
+  @override
+  List<Object?> get props => [smsCode];
+
+}
+
+
+class ResetParams extends Params {
+  final String newPassword;
+  final String confirmPassword;
+
+  ResetParams({
+    required this.newPassword,
+    required this.confirmPassword,
+  });
+
+  @override
+  List<Object?> get props => [newPassword, confirmPassword];
 }
 
 class LoginParams extends Params {
@@ -20,7 +65,11 @@ class LoginParams extends Params {
   final String password;
   final bool rememberMe;
 
-  LoginParams({required this.username, required this.password,required this.rememberMe,});
+  LoginParams({
+    required this.username,
+    required this.password,
+    required this.rememberMe,
+  });
 
   @override
   List<Object?> get props => [username, password];

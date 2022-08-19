@@ -12,7 +12,8 @@ class CreateAccount extends Usecase<CreateAccountModel, CreateAccountParams> {
   @override
   Future<Either<Failure, CreateAccountModel>> call(CreateAccountParams params) {
     return repo.createAccount(params.username, params.name,
-        params.surname, params.phone, params.password);
+        params.surname, params.phone, params.password,params.birthday,params.gender,
+        params.liveAddress,params.specialty);
   }
 }
 
@@ -24,8 +25,8 @@ class CreateAccountParams extends Params {
   final String password;
   final String birthday;
   final String gender;
-  final String specialty;
-  final String liveAddress;
+  final int specialty;
+  final int liveAddress;
 
   CreateAccountParams(
       {this.surname,
