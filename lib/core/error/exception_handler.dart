@@ -1,28 +1,30 @@
-
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter_template/core/error/failure.dart';
+import 'package:get/instance_manager.dart';
 
-Failure handleException(Exception e){
+Failure handleException(Exception e) {
   if (e is DioError) {
-          switch (e.type) {
-            case DioErrorType.cancel:
-              return ServerCancelFailure(message: e.message);
-            case DioErrorType.response:
-              if (e.response?.statusCode == 401) {
-                return ServerUnAuthorizeFailure(message: e.message);
-              } else if (e.response?.statusCode == 404) {
-                return ServerNotFoundFailure(message: e.message);
-              } else {
-                return ServerUnknownFailure(message: e.message);
-              }
-            case DioErrorType.other:
-              return ServerUnknownFailure(message: e.message);
-            default:
-              return ServerTimeOutFailure(message: e.message);
-          }
+    Get.log("response is ${e.response?.data}");
+    final errorMessage = e.response?.data["errors"].isNotEmpty
+        ? e.response?.data["errors"].first["message"]
+        : null;
+    switch (e.type) {
+      case DioErrorType.cancel:
+        return ServerCancelFailure(message: errorMessage);
+      case DioErrorType.response:
+        if (e.response?.statusCode == 401) {
+          return ServerUnAuthorizeFailure(message: errorMessage);
+        } else if (e.response?.statusCode == 404) {
+          return ServerNotFoundFailure(message: errorMessage);
         } else {
-          return ServerUnknownFailure(message: e.toString());
+          return ServerUnknownFailure(message: errorMessage);
         }
+      case DioErrorType.other:
+        return ServerUnknownFailure(message: errorMessage);
+      default:
+        return ServerTimeOutFailure(message: errorMessage);
+    }
+  } else {
+    return ServerUnknownFailure(message: e.toString());
+  }
 }

@@ -25,6 +25,11 @@ abstract class LoginRemoteDatasource {
   Future<CountryModel> country();
   Future<SectorModel> sector();
   Future<SpecialityModel> specialty(String sectorName);
+
+  Future<bool> updateAccount(String? birthday,
+    String gender,
+    int? liveAddress,
+    int? specialty,);
 }
 
 class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
@@ -78,24 +83,25 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
     }
   }
 
-  Future<CreateAccountModel> updateAccount(
-    final String birthday,
+  @override
+  Future<bool> updateAccount(
+    final String? birthday,
     final String gender,
-    final String specialty,
-    final String liveAddress,
+    final int? specialty,
+    final int? liveAddress,
   ) async {
     final data = FormData.fromMap({
       "birthday": birthday,
       "gender": gender,
-      "specialty": specialty,
-      "liveAddress": liveAddress,
+      "main_cat_id": specialty,
+      "region_id": liveAddress,
     });
     try {
       final result = await client.patch(
-        "/v1.0/api/account/create/",
+        "/v1.0/api/account/",
         data: data,
       );
-      return CreateAccountModel.fromJson(result.data);
+      return true;
     } catch (e) {
       if (e is! DioError) {
         throw ServerUnknownException();
@@ -181,7 +187,7 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<bool> sendPhone(String sendPhone)async {
+  Future<bool> sendPhone(String sendPhone) async {
     try {
       final result = await client.get(
         "v1.0/api/cats/ucats/get_subs/$sendPhone/",

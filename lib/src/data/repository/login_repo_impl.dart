@@ -52,7 +52,10 @@ class LoginRepoImpl extends LoginRepo {
     String? surname,
     String phone,
     String password,
-    String? birthday, String gender, int? liveAddress, int? specialty,
+    String? birthday,
+    String gender,
+    int? liveAddress,
+    int? specialty,
   ) async {
     if (await networkInfo.isConnected) {
       Get.log("Create Account is connected");
@@ -61,6 +64,7 @@ class LoginRepoImpl extends LoginRepo {
             username, name, surname, phone, password);
         await localDatasource.setUserData(res);
         await login(username, password, true);
+        await remoteDatasource.updateAccount(birthday,gender,liveAddress,specialty);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);

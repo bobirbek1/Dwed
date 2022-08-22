@@ -160,25 +160,32 @@ class CreateAccountAddress extends StatelessWidget {
                 builder: (ctrl) {
                   return isCountry
                       ? const SizedBox()
-                      : SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.back();
-                              _controller.selectRegion();
-                            },
-                            child: const Text(
-                              "Select",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.WHITE,
+                      : Column(
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.back();
+                                  _controller.selectRegion();
+                                },
+                                child: const Text(
+                                  "Select",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.WHITE,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: AppColors.BUTTON_BLUE,
+                                ),
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.BUTTON_BLUE,
+                            const SizedBox(
+                              height: 16,
                             ),
-                          ),
+                          ],
                         );
                 }),
           ],

@@ -1,3 +1,4 @@
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/country_model.dart';
@@ -96,7 +97,9 @@ class CreateAccountController extends GetxController {
           gender: genderController.text,
           specialty: selectedSpec?.id,
           liveAddress: selectedRegion?.id,
-          birthday: birthdayController.text,
+          birthday: birthDate != null
+              ? DateFormat("yyyy-MM-dd").format(birthDate!)
+              : null,
           name: nameController.text,
           phone: phoneNumberController.text,
           username: usernameController.text,
@@ -110,8 +113,10 @@ class CreateAccountController extends GetxController {
           Get.log("Please check your network connection!");
         } else {}
         updateCreateAccountState(CreateAccountState.error);
+        Get.offAllNamed(AppRoutes.HOME);
       }, (res) {
         updateCreateAccountState(CreateAccountState.loaded);
+        Get.offAllNamed(AppRoutes.HOME);
       });
     }
   }
@@ -307,7 +312,7 @@ class CreateAccountController extends GetxController {
 
   void updateCreateAccountState(CreateAccountState state) {
     specialityState = state;
-    update([nameId]);
+    update([passwordId]);
   }
 
   void updateSpecialityState(CreateAccountState state) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
+import 'package:flutter_template/core/overlays/overlays.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:get/get.dart';
 
@@ -54,17 +55,20 @@ class LoginController extends GetxController {
       );
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          Get.log("Internet connection is failed! Please try again");
+          showSnackbar("Internet connection is failed! Please try again");
         } else if (failure is ServerTimeOutFailure) {
-          Get.log("Please check your network connection!");
+          showSnackbar("Please check your network connection!");
         } else {
           userNameError = "username or password is not correct!";
           passwordError = "username or password is not correct!";
+          if (failure.message != null) {
+            showSnackbar(failure.message!);
+          }
         }
         updateLoginState(LoginState.error);
       }, (res) {
         updateLoginState(LoginState.loaded);
-        Get.toNamed(AppRoutes.LOGIN);
+        Get.toNamed(AppRoutes.HOME);
       });
     }
   }
