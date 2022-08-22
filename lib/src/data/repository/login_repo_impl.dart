@@ -63,8 +63,8 @@ class LoginRepoImpl extends LoginRepo {
         final res = await remoteDatasource.createAccount(
             username, name, surname, phone, password);
         await localDatasource.setUserData(res);
-        await login(username, password, true);
-        await remoteDatasource.updateAccount(birthday,gender,liveAddress,specialty);
+        // await login(username, password, true);
+        // await remoteDatasource.updateAccount(birthday,gender,liveAddress,specialty);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);

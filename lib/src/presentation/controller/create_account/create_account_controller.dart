@@ -1,5 +1,6 @@
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
+import 'package:flutter_template/core/overlays/overlays.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/country_model.dart';
 import 'package:flutter_template/src/data/model/region_model.dart';
@@ -111,9 +112,10 @@ class CreateAccountController extends GetxController {
           Get.log("Internet connection is failed! Please try again");
         } else if (failure is ServerTimeOutFailure) {
           Get.log("Please check your network connection!");
-        } else {}
+        } else {
+          showSnackbar(failure.message!);
+        }
         updateCreateAccountState(CreateAccountState.error);
-        Get.offAllNamed(AppRoutes.HOME);
       }, (res) {
         updateCreateAccountState(CreateAccountState.loaded);
         Get.offAllNamed(AppRoutes.HOME);
@@ -311,7 +313,7 @@ class CreateAccountController extends GetxController {
   }
 
   void updateCreateAccountState(CreateAccountState state) {
-    specialityState = state;
+    createAccountState = state;
     update([passwordId]);
   }
 
