@@ -15,7 +15,7 @@ class CreateAccountNumberPage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "akkount_yaratish",
+      title: "akkount_yaratish".tr,
       subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
       bodyTitle: "telefon_raqamni_kiriting".tr,
       bodySubtitle:
