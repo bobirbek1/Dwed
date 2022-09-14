@@ -192,13 +192,13 @@ class CreateAccountController extends GetxController {
   bool validateCreateAccountName() {
     var isValid = true;
     if (nameController.text.isEmpty) {
-      nameError = "Username shouldn't be empty";
+      nameError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       nameError = null;
     }
     if (usernameController.text.isEmpty) {
-      userNameError = "Password shouldn't be empty";
+      userNameError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       userNameError = null;
@@ -210,7 +210,7 @@ class CreateAccountController extends GetxController {
   bool validateCreateAccountBirthday() {
     var isValid = true;
     if (birthdayController.text.isEmpty) {
-      birthdayError = "Birthday shouldn't be empty";
+      birthdayError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       birthdayError = null;
@@ -222,7 +222,7 @@ class CreateAccountController extends GetxController {
   bool validateCreateAccountGender() {
     var isValid = true;
     if (genderController.text.isEmpty) {
-      genderError = "Username shouldn't be empty";
+      genderError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       genderError = null;
@@ -239,7 +239,7 @@ class CreateAccountController extends GetxController {
   bool validateCreateAccountSpecialty() {
     var isValid = true;
     if (specialtyController.text.isEmpty) {
-      specialtyError = "Speciality shouldn't be empty";
+      specialtyError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       specialtyError = null;
@@ -251,7 +251,7 @@ class CreateAccountController extends GetxController {
   bool validateCreateAccountLiveAddress() {
     var isValid = true;
     if (regionController.text.isEmpty) {
-      liveAddressError = "Address shouldn't be empty";
+      liveAddressError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       liveAddressError = null;
@@ -264,10 +264,10 @@ class CreateAccountController extends GetxController {
   bool validatePhoneNumber() {
     var isValid = true;
     if (phoneNumberController.text.isEmpty) {
-      phoneNumberError = "Phone number shouldn't be empty";
+      phoneNumberError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else if (!phoneNumberController.text.isPhoneNumber) {
-      phoneNumberError = "Enter correct phone number";
+      phoneNumberError = "xaqiqiy_raqamni_kiriting".tr;
       isValid = false;
     } else {
       phoneNumberError = null;
@@ -279,19 +279,19 @@ class CreateAccountController extends GetxController {
   bool validatePassword() {
     var isValid = true;
     if (passwordController.text.isEmpty) {
-      passwordError = "Password shouldn't be empty";
+      passwordError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       passwordError = null;
     }
     if (confirmPasswordController.text.isEmpty) {
-      confirmPasswordError = "Confirm password shouldn't be empty";
+      confirmPasswordError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       confirmPasswordError = null;
     }
     if (passwordController.text != confirmPasswordController.text) {
-      confirmPasswordError = "Password doesn't match";
+      confirmPasswordError = "maxfiy_sonlar_bir_xil_emas".tr;
       isValid = false;
     } else {
       confirmPasswordError = null;
@@ -303,7 +303,7 @@ class CreateAccountController extends GetxController {
   bool validateVerifyCode() {
     var isValid = true;
     if (verifyCodeController.text.isEmpty) {
-      verifyCodeError = "Phone number shouldn't be empty";
+      verifyCodeError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       verifyCodeError = null;

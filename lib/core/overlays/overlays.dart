@@ -17,7 +17,7 @@ void showSnackbar(String message,
         Get.showSnackbar(
     GetSnackBar(
       titleText: Text(
-        isError ? "An error occurred".tr : "Successfully completed".tr,
+        isError ?"xatolik_yuz_berdi".tr : "muvaffaqiyatli_yakunlandi".tr,
         style: TextStyle(color: isError ? Colors.red : Colors.green),
       ),
       messageText: Text(message),

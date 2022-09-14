@@ -22,11 +22,10 @@ class CreateAccountSpecialty extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "What's your specialty?",
-      bodySubtitle:
-          "You can change who sees your gender on your profile later.",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "kasbingiz?".tr,
+      bodySubtitle: "keyinchalik_profilizda_sozlashingiz_mumkin".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -48,7 +47,7 @@ class CreateAccountSpecialty extends StatelessWidget {
                     ),
                   ),
                 ),
-                labelText: "Specialty",
+                labelText: "kasbingiz".tr,
                 labelStyle: const TextStyle(
                   color: AppColors.SHADOW_BLUE,
                   fontSize: 16,
@@ -62,9 +61,13 @@ class CreateAccountSpecialty extends StatelessWidget {
           ),
           LoginButton(
             onPressed: () {
-              Get.toNamed(AppRoutes.CREATE_ACCOUNT_LIVE);
+              if (_controller.validateCreateAccountSpecialty()) {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_LIVE);
+              } else {
+                showSnackbar(_controller.specialtyError!);
+              }
             },
-            buttonText: "NEXT",
+            buttonText: "keyingisi".tr,
           ),
         ],
       ),
@@ -79,9 +82,9 @@ class CreateAccountSpecialty extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const Text(
-              "Select speciality",
-              style: TextStyle(
+            Text(
+              "kasb_tanlash".tr,
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
                 color: AppColors.BLACK,
@@ -171,9 +174,9 @@ class CreateAccountSpecialty extends StatelessWidget {
                                   Get.back();
                                   _controller.selectSpeciality();
                                 },
-                                child: const Text(
-                                  "Select",
-                                  style: TextStyle(
+                                child: Text(
+                                  "tanlash".tr,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.WHITE,
@@ -216,7 +219,7 @@ class CreateAccountSpecialty extends StatelessWidget {
             fontWeight: FontWeight.w300,
             color: AppColors.GRAY_X11,
           ),
-          hintText: "Search",
+          hintText: "qidirish".tr,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide.none,

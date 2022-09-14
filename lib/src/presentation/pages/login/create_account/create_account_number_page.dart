@@ -15,11 +15,11 @@ class CreateAccountNumberPage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "Enter your phone number",
+      title: "akkount_yaratish",
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "telefon_raqamni_kiriting".tr,
       bodySubtitle:
-          "Enter the mobile number where you can be\n reached. You can hide this from your\n profile later",
+          "akkauntni_faollashtirish_uchun_mobil_raqamni_kiriting".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -30,10 +30,11 @@ class CreateAccountNumberPage extends StatelessWidget {
               id: _controller.phoneNumberId,
               builder: (context) {
                 return TextField(
+                  keyboardType: TextInputType.phone,
                   controller: _controller.phoneNumberController,
                   decoration: InputDecoration(
                     errorText: _controller.phoneNumberError,
-                    labelText: "Phone Number",
+                    labelText: "telefon_raqam".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -52,10 +53,10 @@ class CreateAccountNumberPage extends StatelessWidget {
                 return LoginButton(
                   onPressed: () {
                     if (_controller.validatePhoneNumber()) {
-                      Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
+                      Get.toNamed(AppRoutes.CREATE_ACCOUNT_VERIFY);
                     }
                   },
-                  buttonText: "NEXT",
+                  buttonText: "keyingisi".tr,
                 );
               }),
         ],

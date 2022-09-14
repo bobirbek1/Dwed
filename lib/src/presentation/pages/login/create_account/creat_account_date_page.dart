@@ -5,7 +5,6 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/overlays/overlays.dart';
-import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_button.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
@@ -20,11 +19,12 @@ class CreateAccountDatePage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "When's your birthday?",
+      title: "dwedga_kirish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "tugilgan_kuningiz_qachon".tr,
       bodySubtitle:
-          "Choose your date of birth. You can always\n make this private later",
+          "yilni_tanlang_keyinchali_doim_yilingizni_korinmaydigan_qila_olasiz"
+              .tr,
       child: Column(
         children: [
           const SizedBox(
@@ -51,7 +51,7 @@ class CreateAccountDatePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      labelText: "DD/MM/YYY",
+                      labelText: "kk_oo_yyyy".tr,
                       labelStyle: const TextStyle(
                         color: AppColors.SHADOW_BLUE,
                         fontSize: 16,
@@ -70,9 +70,13 @@ class CreateAccountDatePage extends StatelessWidget {
               builder: (context) {
                 return LoginButton(
                   onPressed: () {
-                    Get.toNamed(AppRoutes.CREATE_ACCOUNT_GENDER);
+                    if (_controller.validateCreateAccountBirthday()) {
+                      Get.toNamed(AppRoutes.CREATE_ACCOUNT_GENDER);
+                    } else {
+                      showSnackbar(_controller.birthdayError!);
+                    }
                   },
-                  buttonText: "NEXT",
+                  buttonText: "keyingisi".tr,
                 );
               }),
         ],
@@ -87,9 +91,9 @@ class CreateAccountDatePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const Text(
-              "Select date",
-              style: TextStyle(
+            Text(
+              "sanani_tanlang".tr,
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
                 color: AppColors.BLACK,
@@ -100,6 +104,7 @@ class CreateAccountDatePage extends StatelessWidget {
             ),
             Expanded(
                 child: CupertinoDatePicker(
+              maximumYear: DateTime.now().year,
               onDateTimeChanged: (date) {
                 choosenDate = date;
               },
@@ -118,9 +123,9 @@ class CreateAccountDatePage extends StatelessWidget {
                   Get.back();
                   _controller.selectBirthDate(choosenDate);
                 },
-                child: const Text(
-                  "Select",
-                  style: TextStyle(
+                child: Text(
+                  "tanlash".tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: AppColors.WHITE,

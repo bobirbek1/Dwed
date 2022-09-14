@@ -17,11 +17,11 @@ class ResetPasswordNewPage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "RESET PASSWORD",
-      subtitle: "Connect with yor friends today!",
-      bodyTitle: "Choose a new password",
+      title: "maxfiy_sonni_tiklash".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "maxfiy_son_yarating",
       bodySubtitle:
-          "Choose a new password with at least 6\n characters. It should be something others\n couldn't guess",
+          "8_ta_belgidan_kam_bolmagan_maxfiy_son_yarating".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -32,10 +32,11 @@ class ResetPasswordNewPage extends StatelessWidget {
               id: _controller.resetPasswordId,
               builder: (context) {
                 return TextField(
+                  obscureText: true,
                   controller: _controller.resetpasswordController,
                   decoration: InputDecoration(
                     errorText: _controller.resetpasswordError,
-                    labelText: "New Password",
+                    labelText: "yangi_maxfiy_son".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -52,10 +53,11 @@ class ResetPasswordNewPage extends StatelessWidget {
               id: _controller.confirmPasswordController,
               builder: (context) {
                 return TextField(
+                  obscureText: true,
                   controller: _controller.confirmPasswordController,
                   decoration: InputDecoration(
                     errorText: _controller.confirmPasswordError,
-                    labelText: "Confirm New Password",
+                    labelText: "yangi_maxfiy_sonni_takrorlang".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -77,7 +79,7 @@ class ResetPasswordNewPage extends StatelessWidget {
                       Get.toNamed(AppRoutes.LOGIN);
                     }
                   },
-                  buttonText: "CONTINUE",
+                  buttonText: "tiklash".tr,
                 );
               }),
         ],

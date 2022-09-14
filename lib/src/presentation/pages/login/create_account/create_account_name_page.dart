@@ -16,10 +16,10 @@ class CreateAccountNamePage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "What's your name?",
-      bodySubtitle: "Enter the full name you use in real life",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "sizga_qanday_murojat_qilish_mumkin".tr,
+      bodySubtitle: "shaxsiy_sahifangizni_sozlash_uchun_bizga_ozingiz_haqingizda_gapirib_bering".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -30,7 +30,7 @@ class CreateAccountNamePage extends StatelessWidget {
               id: _controller.nameId,
               builder: (context) {
                 return textField(
-                  "Name",
+                  "ism".tr,
                   _controller.nameController,
                   _controller.nameError,
                 );
@@ -43,7 +43,7 @@ class CreateAccountNamePage extends StatelessWidget {
               id: _controller.nameId,
               builder: (context) {
                 return textField(
-                  "Surname",
+                  "familiya".tr,
                   _controller.surnameController,
                   _controller.surnameError,
                 );
@@ -56,7 +56,7 @@ class CreateAccountNamePage extends StatelessWidget {
               id: _controller.nameId,
               builder: (context) {
                 return textField(
-                  "Username",
+                  "sharif_shart_emas".tr,
                   _controller.usernameController,
                   _controller.userNameError,
                 );
@@ -74,7 +74,7 @@ class CreateAccountNamePage extends StatelessWidget {
                       Get.toNamed(AppRoutes.CREATE_ACCOUNT_DATE);
                     }
                   },
-                  buttonText: "NEXT",
+                  buttonText: "keyingisi".tr,
                 );
               }),
           const SizedBox(height: 40,),

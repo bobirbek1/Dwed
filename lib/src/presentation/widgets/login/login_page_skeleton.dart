@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
+import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
-class LoginPageSkeleton extends StatelessWidget {
+List<String> list = <String>["English", "Русский","O'zbek"];
+
+class LoginPageSkeleton extends StatefulWidget {
   final double headerHeight;
   final String? title;
   final String? subtitle;
@@ -25,11 +29,35 @@ class LoginPageSkeleton extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<LoginPageSkeleton> createState() => _LoginPageSkeletonState();
+}
+
+class _LoginPageSkeletonState extends State<LoginPageSkeleton> {
+  List locale = [
+    {'name': "English", 'locale': Locale('en', 'US')},
+    {'name': "Русский", 'locale': Locale('ru', 'RU')},
+    {'name': "O'zbek", 'locale': Locale('uz', 'UZ')},
+  ];
+
+  updateLanguage(Locale locale) {
+    Get.updateLocale(locale);
+    Get.log(locale.toString());
+  }
+
+  String dropdownValue="English";
+
+  @override
+  void initState() {
+   dropdownValue="ingliz".tr;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          SizeConfig.calculateBlockVertical(headerHeight),
+          SizeConfig.calculateBlockVertical(widget.headerHeight),
         ),
         child: Container(
           decoration: const BoxDecoration(
@@ -43,23 +71,72 @@ class LoginPageSkeleton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (canBack) InkWell(child: SvgPicture.asset(AppIcons.ARROW_LEFT),onTap: (){
-                    Get.back();
-                  },),
+                  if (widget.canBack)
+                    InkWell(
+                      child: SvgPicture.asset(AppIcons.ARROW_LEFT),
+                      onTap: () {
+                        Get.back();
+                      },
+                    ),
                   const Expanded(
                     child: SizedBox(),
                   ),
-                  const Text(
-                    "English",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: Colors.white.withOpacity(0.7),
-                  ),
+                  DropdownButton<String>(
+                    isDense: true,
+                    value: dropdownValue,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.WHITE,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    underline: const SizedBox(),
+                    dropdownColor: AppColors.WHITE,
+                    elevation: 16,
+                    // style: const TextStyle(color: AppColors.WHITE),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(
+                        () {
+                          dropdownValue=value!;
+                          Get.log("current language---->$value");
+                          if (value == locale[0]["name"]) {
+                            updateLanguage(const Locale('en', 'US'));
+                          } else if (value == locale[1]["name"]) {
+                            updateLanguage(const Locale('ru', 'RU'));
+                          } else {
+                            updateLanguage(const Locale('uz', 'UZ'));
+                          }
+                        },
+                      );
+                    },
+                    selectedItemBuilder: (BuildContext context) {
+                      //<-- SEE HERE
+                      return list.map((String value) {
+                        return Text(
+                          dropdownValue,
+                          style: const TextStyle(
+                            color: AppColors.WHITE,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      }).toList();
+                    },
+                    items: list.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style:  const TextStyle(
+                            color: AppColors.BLACK,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }).toList(),
+                  )
                 ],
               ),
               const SizedBox(
@@ -72,26 +149,26 @@ class LoginPageSkeleton extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              if (title != null || subtitle != null)
+              if (widget.title != null || widget.subtitle != null)
                 const SizedBox(
                   height: 24,
                 ),
-              if (title != null)
+              if (widget.title != null)
                 Text(
-                  title!,
+                  widget.title!,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-              if (subtitle != null && title != null)
+              if (widget.subtitle != null && widget.title != null)
                 const SizedBox(
                   height: 12,
                 ),
-              if (subtitle != null)
+              if (widget.subtitle != null)
                 Text(
-                  subtitle!,
+                  widget.subtitle!,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
                     fontSize: 16,
@@ -109,26 +186,27 @@ class LoginPageSkeleton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              if (bodyTitle != null)
+              if (widget.bodyTitle != null)
                 const SizedBox(
                   height: 32,
                 ),
-              if (bodyTitle != null)
+              if (widget.bodyTitle != null)
                 Text(
-                  bodyTitle!,
+                  widget.bodyTitle!,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              if (bodySubtitle != null)
+              if (widget.bodySubtitle != null)
                 const SizedBox(
                   height: 12,
                 ),
-              if (bodySubtitle != null)
+              if (widget.bodySubtitle != null)
                 Text(
-                  bodySubtitle!,
+                  widget.bodySubtitle!,
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
@@ -136,7 +214,7 @@ class LoginPageSkeleton extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              child,
+              widget.child,
             ],
           ),
         ),

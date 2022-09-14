@@ -23,11 +23,11 @@ class _CreateAccountVerifyPageState extends State<CreateAccountVerifyPage> {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "Confirm your phone number",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "telefon_raqamni_tasdiqlash".tr,
       bodySubtitle:
-      "Enter the 6-digit confirmation code that we sent you by SMS.",
+      "biz_sizga_SMS_orqali_yuborgan_6_xonali_tasdiqlash_kodini_kiriting".tr,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -41,24 +41,30 @@ class _CreateAccountVerifyPageState extends State<CreateAccountVerifyPage> {
             id: widget._controller.resetCodeVerifyId,
             builder: (context) {
               return LoginButton(onPressed: () {
-                if(smsCode.length==6){
-                  if(widget._controller.validateVerifyCode()){
-                    Get.toNamed(AppRoutes.RESET_PASSWORD_NEW);
-                  }
-                }
                 print(smsCode);
 
+                if(smsCode.length==6){
+                  // if(widget._controller.validateVerifyCode()){
+                    Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
+                  // }
+                  print("$smsCode"+"code");
+                  print("${smsCode.length}"+" code length");
+                }
+                print(smsCode);
+                print("${smsCode.length}"+" code length");
+
+
               },
-                buttonText: "CONFIRM",
+                buttonText: "tasdiqlash".tr,
               );
             }
           ),
           const SizedBox(
             height: 32,
           ),
-          const Text(
-            "You can resend confirmation code after\n01:20",
-            style: TextStyle(
+           Text(
+            "maxfiy_sonni_qayta_sorash_soniyadan_song".tr+"\n01:20",
+            style: const TextStyle(
               color: AppColors.GRAY_X11,
               fontSize: 16,
               fontWeight: FontWeight.w400,
@@ -86,11 +92,11 @@ class _CreateAccountVerifyPageState extends State<CreateAccountVerifyPage> {
           print(value);
           setState(() {
             _onCompleted = value;
-            smsCode.add(value);
+            smsCode=value;
           });
         },
       ),
     );
   }
-  List<String> smsCode=[];
+  String smsCode="";
 }

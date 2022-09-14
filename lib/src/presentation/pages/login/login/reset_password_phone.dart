@@ -16,11 +16,11 @@ class ResetPasswordPhonePage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "RESET PASSWORD",
-      subtitle: "Reset password in two quick steps",
-      bodyTitle: "Enter your phone number",
+      title: "maxfiy_sonni_tiklash".tr,
+      subtitle: "ikki_bosqichda_maxfiy_sonni_tiklash".tr,
+      bodyTitle: "telefon_raqamingizni_kiriting".tr,
       bodySubtitle:
-          "Enter your phone number and we'll send\n you the 6-digit confirmation code to get\n back into your account",
+          "telefon_raqamingizni_kiriting_va_akkauntizga_kirish_uchun_6_xonali_tasdiqlash_maxfiy_sonini_yuboramiz".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -31,10 +31,11 @@ class ResetPasswordPhonePage extends StatelessWidget {
               id: _controller.phoneNumberId,
               builder: (context) {
                 return TextField(
+                  keyboardType: TextInputType.phone,
                   controller: _controller.phoneNumberController,
                   decoration: InputDecoration(
                     errorText: _controller.phoneNumberError,
-                    labelText: "Phone Number",
+                    labelText: "telefon_raqam".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -52,7 +53,7 @@ class ResetPasswordPhonePage extends StatelessWidget {
                 Get.toNamed(AppRoutes.RESET_PASSWORD_VERIFY);
               }
             },
-            buttonText: "RESET",
+            buttonText: "tiklash".tr,
           ),
         ],
       ),

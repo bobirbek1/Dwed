@@ -31,9 +31,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   onTap: (){
                     Get.offAllNamed(AppRoutes.LOGIN);
                   },
-                  child: const Text(
-                    "Skip",
-                    style: TextStyle(
+                  child:  Text(
+                    "otkazish".tr,
+                    style: const TextStyle(
                       color: AppColors.BLACK,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
