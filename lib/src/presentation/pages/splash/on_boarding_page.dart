@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
@@ -20,18 +21,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Row(
-            children:  [
-              const Expanded(child: SizedBox()),
+      appBar: AppBar(
+        backgroundColor: AppColors.WHITE,
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 32.0, top: 64),
+                padding: const EdgeInsets.only(right: 24),
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
+
                     Get.offAllNamed(AppRoutes.LOGIN);
                   },
-                  child:  Text(
+                  child: Text(
                     "otkazish".tr,
                     style: const TextStyle(
                       color: AppColors.BLACK,
@@ -41,8 +43,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                 ),
               ),
-            ],
-          ),
+        ],
+      ),
+      backgroundColor: AppColors.WHITE,
+      body: Column(
+        children: <Widget>[
           Expanded(
             child: PageView.builder(
               itemCount: 4,

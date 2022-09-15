@@ -266,25 +266,16 @@ class CreateAccountSpecialty extends StatelessWidget {
   }
 
   Widget getRadio(String text, int index, int? value, onChanged) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Radio(
-          value: index,
-          groupValue: value,
-          onChanged: onChanged,
-          activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
-        ),
-      ],
+    return RadioListTile(
+      controlAffinity: ListTileControlAffinity.trailing,
+      title: Text(
+        text,
+        style: const TextStyle(fontSize: 16),
+      ),
+      value: index,
+      groupValue: value,
+      onChanged: onChanged,
+      activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
     );
   }
 }
