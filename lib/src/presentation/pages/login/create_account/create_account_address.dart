@@ -63,7 +63,7 @@ class CreateAccountAddress extends StatelessWidget {
           LoginButton(
             onPressed: () {
               if (_controller.validateCreateAccountLiveAddress()) {
-                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
               }else{
                 showSnackbar(_controller.liveAddressError!);
               }

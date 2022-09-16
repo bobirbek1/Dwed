@@ -4,6 +4,10 @@ class LocaleString extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "uz_UZ": {
+          "tarmoq_ulanishingizni_tekshiring":
+              "Tarmoq ulanishingizni tekshiring",
+          "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring":
+              "Internetga ulanish muvaffaqiyatsiz tugadi! Iltimos, yana bir bor urinib ko'ring",
           "muvaffaqiyatli_yakunlandi": "Muvaffaqiyatli yakunlandi",
           "xatolik_yuz_berdi": "Xatolik yuz berdi",
           "bugun_dostlaringiz_bilan_boglaning":
@@ -50,8 +54,8 @@ class LocaleString extends Translations {
               "Xayotdagi ism-sharifingiz kiriting",
           "ism": "Ism",
           "familiya": "Familiya",
-          "sharif_shart_emas": "Sharif (shart emas)",
-          "maydon_bosh_bolmasin": "Maydon bosh bo'lmasin",
+          "sharif_shart_emas": "username",
+          "maydon_bosh_bolmasin": "Maydon bo'sh bo'lmasin",
           "tugilgan_kuningiz_qachon": "Tug'ilgan kuningiz qachon?",
           "yilni_tanlang_keyinchali_doim_yilingizni_korinmaydigan_qila_olasiz":
               "Yilni tanlang. Keyinchali doim\nyilingizni ko'rinmaydigan qila olasiz",
@@ -93,6 +97,10 @@ class LocaleString extends Translations {
           "tiklash": "Tiklash",
         },
         "ru_RU": {
+          "tarmoq_ulanishingizni_tekshiring":
+              "Пожалуйста, проверьте подключение к сети",
+          "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring":
+              "Не удалось подключиться к Интернету! Пожалуйста, попробуйте еще раз",
           "muvaffaqiyatli_yakunlandi": "Успешно завершено",
           "xatolik_yuz_berdi": "Произошла ошибка",
           "bugun_dostlaringiz_bilan_boglaning": "Свяжитесь с друзьями сегодня!",
@@ -137,7 +145,7 @@ class LocaleString extends Translations {
               "Введите ваше настоящее ФИО в жизни",
           "ism": "Имя",
           "familiya": "Фамилия",
-          "sharif_shart_emas": "Отчество (необьязательно)",
+          "sharif_shart_emas": "username",
           "maydon_bosh_bolmasin": "Поле не должно быть пустым",
           "tugilgan_kuningiz_qachon": "Когда у вас день рождение?",
           "yilni_tanlang_keyinchali_doim_yilingizni_korinmaydigan_qila_olasiz":
@@ -180,6 +188,10 @@ class LocaleString extends Translations {
           "tiklash": "Восстановить"
         },
         "en_US": {
+          "tarmoq_ulanishingizni_tekshiring":
+              "Please check your network connection",
+          "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring":
+              "Internet connection is failed! Please try again",
           "xatolik_yuz_berdi": "An error occurred",
           "muvaffaqiyatli_yakunlandi": "Successfully completed",
           "bugun_dostlaringiz_bilan_boglaning":
@@ -224,7 +236,7 @@ class LocaleString extends Translations {
               "Enter your full name in real life",
           "ism": "Name",
           "familiya": "Surname",
-          "sharif_shart_emas": "Lastname (optional)",
+          "sharif_shart_emas": "username",
           "maydon_bosh_bolmasin": "Field should`t be empty",
           "tugilgan_kuningiz_qachon": "When`s your birthday?",
           "yilni_tanlang_keyinchali_doim_yilingizni_korinmaydigan_qila_olasiz":

@@ -109,9 +109,9 @@ class CreateAccountController extends GetxController {
       );
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          Get.log("Internet connection is failed! Please try again");
+          Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
         } else if (failure is ServerTimeOutFailure) {
-          Get.log("Please check your network connection!");
+          Get.log("tarmoq_ulanishingizni_tekshiring".tr);
         } else {
           showSnackbar(failure.message!);
         }
@@ -128,9 +128,9 @@ class CreateAccountController extends GetxController {
     final result = await getSector.call(NoParams());
     result.fold((failure) {
       if (failure is NetworkFailure) {
-        Get.log("Internet connection is failed! Please try again");
+        Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
       } else if (failure is ServerTimeOutFailure) {
-        Get.log("Please check your network connection!");
+        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {}
       updateSpecialityState(CreateAccountState.error);
     }, (res) {
@@ -144,9 +144,9 @@ class CreateAccountController extends GetxController {
     final result = await getSpecialty.call(SpecialtyParams(sectorName: slug));
     result.fold((failure) {
       if (failure is NetworkFailure) {
-        Get.log("Internet connection is failed! Please try again");
+        Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
       } else if (failure is ServerTimeOutFailure) {
-        Get.log("Please check your network connection!");
+        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {}
       updateSpecialityState(CreateAccountState.error);
     }, (res) {
@@ -162,9 +162,9 @@ class CreateAccountController extends GetxController {
     Get.log("result is $result");
     result.fold((failure) {
       if (failure is NetworkFailure) {
-        Get.log("Internet connection is failed! Please try again");
+        Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
       } else if (failure is ServerTimeOutFailure) {
-        Get.log("Please check your network connection!");
+        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {}
       updateRegionState(CreateAccountState.error);
     }, (res) {
@@ -178,9 +178,9 @@ class CreateAccountController extends GetxController {
     final result = await getRegion.call(RegionParams(countryId: id));
     result.fold((failure) {
       if (failure is NetworkFailure) {
-        Get.log("Internet connection is failed! Please try again");
+        Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
       } else if (failure is ServerTimeOutFailure) {
-        Get.log("Please check your network connection!");
+        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {}
       updateRegionState(CreateAccountState.error);
     }, (res) {
@@ -202,6 +202,12 @@ class CreateAccountController extends GetxController {
       isValid = false;
     } else {
       userNameError = null;
+    }
+    if (surnameController.text.isEmpty) {
+      surnameError = "maydon_bosh_bolmasin".tr;
+      isValid = false;
+    } else {
+      surnameError = null;
     }
     update([nameId]);
     return isValid;

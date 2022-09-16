@@ -17,10 +17,10 @@ class Login extends Usecase<TokenModel, LoginParams> {
     return repo.reset(params.newPassword, params.confirmPassword,);
   }
   Future<Either<Failure, bool>> sendCall(PhoneSendReset params) {
-    return repo.sendPhone(params.phoneNumber,);
+    return repo.sendSms(params.phoneNumber,);
   }
   Future<Either<Failure, bool>> smsCode(VerifySmsCode params) {
-    return repo.sendPhone(params.smsCode,);
+    return repo.sendSms(params.smsCode,);
   }
 }
 

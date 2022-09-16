@@ -45,7 +45,7 @@ class _CreateAccountVerifyPageState extends State<CreateAccountVerifyPage> {
 
                 if(smsCode.length==6){
                   // if(widget._controller.validateVerifyCode()){
-                    Get.toNamed(AppRoutes.CREATE_ACCOUNT_PASSWORD);
+                    Get.toNamed(AppRoutes.CREATE_ACCOUNT_NAME);
                   // }
                   print("$smsCode"+"code");
                   print("${smsCode.length}"+" code length");

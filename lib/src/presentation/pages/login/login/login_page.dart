@@ -8,14 +8,20 @@ import 'package:flutter_template/src/presentation/widgets/login/login_button.dar
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _controller = Get.find<LoginController>();
+  bool _isObscure = true;
+
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     SizeConfig().init(context);
     return LoginPageSkeleton(
@@ -53,9 +59,17 @@ class LoginPage extends StatelessWidget {
               id: _controller.loginId,
               builder: (context) {
                 return TextField(
-                  obscureText: true,
+                  obscureText: _isObscure,
                   controller: _controller.passwordController,
                   decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          icon: Icon(
+                              _isObscure ? Icons.visibility : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          }),
                     errorText: _controller.passwordError,
                     labelText: "mahfiy_son".tr,
                     labelStyle: const TextStyle(
@@ -179,7 +193,7 @@ class LoginPage extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {
-                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NAME);
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
               },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.BLACK),

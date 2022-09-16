@@ -55,9 +55,9 @@ class LoginController extends GetxController {
       );
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          showSnackbar("Internet connection is failed! Please try again");
+          showSnackbar("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
         } else if (failure is ServerTimeOutFailure) {
-          showSnackbar("Please check your network connection!");
+          showSnackbar("tarmoq_ulanishingizni_tekshiring".tr);
         } else {
           userNameError = "login_yoki_mahfiy_son_notogri".tr;
           passwordError = "login_yoki_mahfiy_son_notogri!".tr;
@@ -82,9 +82,9 @@ class LoginController extends GetxController {
       ));
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          Get.log("Internet connection is failed! Please try again");
+          Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
         } else if (failure is ServerTimeOutFailure) {
-          Get.log("Please check your network connection!");
+          Get.log("tarmoq_ulanishingizni_tekshiring".tr);
         } else {
           resetpasswordError = "login_yoki_mahfiy_son_notogri".tr;
           confirmPasswordError = "login_yoki_mahfiy_son_notogri".tr;
@@ -105,9 +105,9 @@ class LoginController extends GetxController {
       ));
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          Get.log("Internet connection is failed! Please try again");
+          Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
         } else if (failure is ServerTimeOutFailure) {
-          Get.log("Please check your network connection!");
+          Get.log("tarmoq_ulanishingizni_tekshiring".tr);
         } else {
           phoneNumberError = "login_yoki_mahfiy_son_notogri".tr;
         }
@@ -127,9 +127,9 @@ class LoginController extends GetxController {
       ));
       result.fold((failure) {
         if (failure is NetworkFailure) {
-          Get.log("Internet connection is failed! Please try again");
+          Get.log("internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring".tr);
         } else if (failure is ServerTimeOutFailure) {
-          Get.log("Please check your network connection!");
+          Get.log("tarmoq_ulanishingizni_tekshiring".tr);
         } else {
           smsCodeError = "login_yoki_mahfiy_son_notogri".tr;
         }
