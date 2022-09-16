@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
@@ -14,12 +15,14 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
     SizeConfig().init(context);
     return LoginPageSkeleton(
       canBack: false,
       headerHeight: 254,
-      bodyTitle: "WELCOME BACK!\u{1F44B}",
-      bodySubtitle: "Hello again, you’ve been missed!",
+      bodyTitle: "dwedga_kirish".tr,
+      bodySubtitle: "akkauntga_kirish_uchun_avtorizatsiya_qiling".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -33,7 +36,7 @@ class LoginPage extends StatelessWidget {
                   controller: _controller.userNameController,
                   decoration: InputDecoration(
                     errorText: _controller.userNameError,
-                    labelText: "Login or phone number",
+                    labelText: "login_yoki_telefon_raqam".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -50,10 +53,11 @@ class LoginPage extends StatelessWidget {
               id: _controller.loginId,
               builder: (context) {
                 return TextField(
+                  obscureText: true,
                   controller: _controller.passwordController,
                   decoration: InputDecoration(
                     errorText: _controller.passwordError,
-                    labelText: "Password",
+                    labelText: "mahfiy_son".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -102,7 +106,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "Remember me",
+                    "meni_eslab_qolish".tr,
                     style: TextStyle(
                       color: AppColors.BLACK.withOpacity(0.6),
                       fontSize: 12,
@@ -113,8 +117,8 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Get.toNamed(AppRoutes.RESET_PASSWORD_PHONE);
                   },
-                  child: const Text(
-                    "Forgot password!",
+                  child: Text(
+                    "mahfiy_sonni_unutdim".tr,
                     style: TextStyle(fontSize: 12),
                   ),
                 ),
@@ -135,7 +139,7 @@ class LoginPage extends StatelessWidget {
                       ? const CircularProgressIndicator.adaptive()
                       : null,
                   buttonText: _controller.loginState != LoginState.loading
-                      ? "LOG IN"
+                      ? "kirish".tr
                       : null,
                 );
               }),
@@ -153,7 +157,7 @@ class LoginPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "OR",
+                  "yoki".tr,
                   style: TextStyle(
                     color: AppColors.BLACK.withOpacity(0.4),
                     fontSize: 12,
@@ -189,9 +193,9 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text(
-                "CREATE NEW DWED ACCOUNT",
-                style: TextStyle(
+              child:  Text(
+                "yangi_akkunt_yaratish".tr,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),

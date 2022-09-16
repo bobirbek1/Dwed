@@ -24,11 +24,11 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "What's your gender?",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "sizning_jinsingiz".tr,
       bodySubtitle:
-          "You can change who sees your gender on\n your profile later",
+          "sizning_jinsingizni_kim_korishini_profilingizda_sozlashingiz_mumkin".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -36,7 +36,6 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
           ),
           getRadio(list[0], 0),
           getRadio(list[1], 1),
-          getRadio(list[2], 2),
           const SizedBox(
             height: 32,
           ),
@@ -44,7 +43,7 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
             onPressed: () {
               Get.toNamed(AppRoutes.CREATE_ACCOUNT_SPECIALITY);
             },
-            buttonText: "NEXT",
+            buttonText: "keyingisi".tr,
           ),
         ],
       ),
@@ -52,9 +51,8 @@ class _CreateAccountGenderPageState extends State<CreateAccountGenderPage> {
   }
 
   List<String> list = [
-    "Male",
-    "Female",
-    "Prefer not to say",
+    "erkak".tr,
+    "ayol".tr,
   ];
 
   Widget getRadio(String text, int index) {

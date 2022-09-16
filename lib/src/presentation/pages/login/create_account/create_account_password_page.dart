@@ -15,11 +15,10 @@ class CreateAccountPasswordPage extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "Choose a password",
-      bodySubtitle:
-          "Create a password with at least 6\n characters. It should be something others\n couldn't guess.",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "maxfiy_son_yarating".tr,
+      bodySubtitle: "8_ta_belgidan_kam_bolmagan_maxfiy_son_yarating".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -30,10 +29,11 @@ class CreateAccountPasswordPage extends StatelessWidget {
               id: _controller.passwordId,
               builder: (context) {
                 return TextField(
+                  obscureText: true,
                   controller: _controller.passwordController,
                   decoration: InputDecoration(
                     errorText: _controller.passwordError,
-                    labelText: "New Password",
+                    labelText: "yangi_maxfiy_son".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -50,10 +50,11 @@ class CreateAccountPasswordPage extends StatelessWidget {
               id: _controller.passwordId,
               builder: (context) {
                 return TextField(
+                  obscureText: true,
                   controller: _controller.confirmPasswordController,
                   decoration: InputDecoration(
                     errorText: _controller.confirmPasswordError,
-                    labelText: "Confirm New Password",
+                    labelText: "yangi_maxfiy_sonni_takrorlang".tr,
                     labelStyle: const TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: 16,
@@ -81,7 +82,7 @@ class CreateAccountPasswordPage extends StatelessWidget {
                       : null,
                   buttonText: _controller.createAccountState !=
                           CreateAccountState.loading
-                      ? "NEXT"
+                      ? "keyingisi".tr
                       : null,
                 );
               }),
@@ -90,11 +91,13 @@ class CreateAccountPasswordPage extends StatelessWidget {
           ),
           RichText(
             textAlign: TextAlign.center,
-            text: const TextSpan(
+            text:  TextSpan(
               children: [
                 TextSpan(
-                  text: "By tapping Sign Up, you agree to our ",
-                  style: TextStyle(
+                  text:
+                      "royxatdan_otish_tugmasini_bosish_orqali_siz_bizning_shartlarimizga_malumotlar_siyosati_va_cookie_fayllari_siyosatiga_rozilik_bildirasiz"
+                          .tr,
+                  style: const TextStyle(
                     color: AppColors.GRAY_X11,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,

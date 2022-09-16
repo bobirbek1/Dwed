@@ -59,8 +59,8 @@ class LoginController extends GetxController {
         } else if (failure is ServerTimeOutFailure) {
           showSnackbar("Please check your network connection!");
         } else {
-          userNameError = "username or password is not correct!";
-          passwordError = "username or password is not correct!";
+          userNameError = "login_yoki_mahfiy_son_notogri".tr;
+          passwordError = "login_yoki_mahfiy_son_notogri!".tr;
           if (failure.message != null) {
             showSnackbar(failure.message!);
           }
@@ -86,8 +86,8 @@ class LoginController extends GetxController {
         } else if (failure is ServerTimeOutFailure) {
           Get.log("Please check your network connection!");
         } else {
-          resetpasswordError = "username or password is not correct!";
-          confirmPasswordError = "username or password is not correct!";
+          resetpasswordError = "login_yoki_mahfiy_son_notogri".tr;
+          confirmPasswordError = "login_yoki_mahfiy_son_notogri".tr;
         }
         updateResetPasswordState(LoginState.error);
       }, (res) {
@@ -109,7 +109,7 @@ class LoginController extends GetxController {
         } else if (failure is ServerTimeOutFailure) {
           Get.log("Please check your network connection!");
         } else {
-          phoneNumberError = "username or password is not correct!";
+          phoneNumberError = "login_yoki_mahfiy_son_notogri".tr;
         }
         updateSendPhoneState(LoginState.error);
       }, (res) {
@@ -131,7 +131,7 @@ class LoginController extends GetxController {
         } else if (failure is ServerTimeOutFailure) {
           Get.log("Please check your network connection!");
         } else {
-          smsCodeError = "username or password is not correct!";
+          smsCodeError = "login_yoki_mahfiy_son_notogri".tr;
         }
         updateSmsCodeState(LoginState.error);
       }, (res) {
@@ -143,7 +143,7 @@ class LoginController extends GetxController {
   bool validateSmsCode() {
     var isValid = true;
     if (smsCodeResetController.text.isEmpty) {
-      smsCodeError = "Password shouldn't be empty";
+      smsCodeError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       smsCodeError = null;
@@ -156,7 +156,7 @@ class LoginController extends GetxController {
   bool validateSendPhone() {
     var isValid = true;
     if (phoneNumberController.text.isEmpty) {
-      phoneNumberError = "Password shouldn't be empty";
+      phoneNumberError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       phoneNumberError = null;
@@ -169,19 +169,19 @@ class LoginController extends GetxController {
   bool validatePassword() {
     var isValid = true;
     if (resetpasswordController.text.isEmpty) {
-      resetpasswordError = "Password shouldn't be empty";
+      resetpasswordError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       resetpasswordError = null;
     }
     if (confirmPasswordController.text.isEmpty) {
-      confirmPasswordError = "Confirm password shouldn't be empty";
+      confirmPasswordError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       confirmPasswordError = null;
     }
     if (passwordController.text != confirmPasswordController.text) {
-      confirmPasswordError = "Password doesn't match";
+      confirmPasswordError = "maxfiy_sonlar_bir_xil_emas".tr;
       isValid = false;
     } else {
       confirmPasswordError = null;
@@ -193,13 +193,13 @@ class LoginController extends GetxController {
   bool validateLogin() {
     var isValid = true;
     if (userNameController.text.isEmpty) {
-      userNameError = "Username shouldn't be empty";
+      userNameError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       userNameError = null;
     }
     if (passwordController.text.isEmpty) {
-      passwordError = "Password shouldn't be empty";
+      passwordError = "maydon_bosh_bolmasin".tr;
       isValid = false;
     } else {
       passwordError = null;

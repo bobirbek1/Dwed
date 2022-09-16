@@ -1,7 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_pages.dart';
 import 'package:flutter_template/app/app_routes.dart';
+import 'package:flutter_template/src/domain/usecase/login.dart';
+import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
+import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+import 'core/utils/locale_string.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -9,11 +17,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Flutter architect templete",
+      debugShowCheckedModeBanner: false,
+      translations: LocaleString(),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
+      title: "Flutter architect template",
       theme: ThemeData(
-        primaryColor: Colors.green.shade800,
-        accentColor: Colors.green.shade600,
+        primarySwatch: Colors.blue,
       ),
+      themeMode: ThemeMode.system,
       initialRoute: AppRoutes.SPLASH,
       getPages: AppPages.getPages,
     );

@@ -21,11 +21,11 @@ class CreateAccountAddress extends StatelessWidget {
     return LoginPageSkeleton(
       canBack: true,
       headerHeight: 286,
-      title: "CREATE ACCOUNT",
-      subtitle: "Connect with your friends today!",
-      bodyTitle: "Where do you live?",
+      title: "akkount_yaratish".tr,
+      subtitle: "bugun_dostlaringiz_bilan_boglaning".tr,
+      bodyTitle: "manzilingiz".tr,
       bodySubtitle:
-          "Enter your current residence. You can always change it later.",
+          "Hududni_belgilang_mintaqangiz_uchun_aktual_malumotlar_olish".tr,
       child: Column(
         children: [
           const SizedBox(
@@ -37,6 +37,7 @@ class CreateAccountAddress extends StatelessWidget {
               enabled: false,
               controller: _controller.regionController,
               decoration: InputDecoration(
+                errorText: _controller.liveAddressError,
                 suffixIcon: RotatedBox(
                   quarterTurns: 135,
                   child: Padding(
@@ -47,7 +48,7 @@ class CreateAccountAddress extends StatelessWidget {
                     ),
                   ),
                 ),
-                labelText: "City/Region",
+                labelText: "shahar_tuman".tr,
                 labelStyle: const TextStyle(
                   color: AppColors.SHADOW_BLUE,
                   fontSize: 16,
@@ -61,9 +62,13 @@ class CreateAccountAddress extends StatelessWidget {
           ),
           LoginButton(
             onPressed: () {
-              Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
+              if (_controller.validateCreateAccountLiveAddress()) {
+                Get.toNamed(AppRoutes.CREATE_ACCOUNT_NUMBER);
+              }else{
+                showSnackbar(_controller.liveAddressError!);
+              }
             },
-            buttonText: "NEXT",
+            buttonText: "keyingisi".tr,
           ),
         ],
       ),
@@ -78,9 +83,9 @@ class CreateAccountAddress extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const Text(
-              "Select region",
-              style: TextStyle(
+             Text(
+              "tumanni_tanlash".tr,
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
                 color: AppColors.BLACK,
@@ -169,9 +174,9 @@ class CreateAccountAddress extends StatelessWidget {
                                   Get.back();
                                   _controller.selectRegion();
                                 },
-                                child: const Text(
-                                  "Select",
-                                  style: TextStyle(
+                                child:  Text(
+                                  "tanlash".tr,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.WHITE,
@@ -216,7 +221,7 @@ class CreateAccountAddress extends StatelessWidget {
             fontWeight: FontWeight.w300,
             color: AppColors.GRAY_X11,
           ),
-          hintText: "Search",
+          hintText: "qidirish".tr,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide.none,
@@ -263,25 +268,16 @@ class CreateAccountAddress extends StatelessWidget {
   }
 
   Widget getRadio(String text, int index, int? value, onChanged) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Radio(
-          value: index,
-          groupValue: value,
-          onChanged: onChanged,
-          activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
-        ),
-      ],
+    return RadioListTile(
+      controlAffinity: ListTileControlAffinity.trailing,
+      title: Text(
+        text,
+        style: const TextStyle(fontSize: 16),
+      ),
+      value: index,
+      groupValue: value,
+      onChanged: onChanged,
+      activeColor: AppColors.MAXSIMUM_BLUE_GREEN,
     );
   }
 }

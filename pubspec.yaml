@@ -47,7 +47,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_holo_date_picker: ^1.0.6
   intl: ^0.17.0
-  
+
 
 dev_dependencies:
   flutter_test:
@@ -102,5 +102,6 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
