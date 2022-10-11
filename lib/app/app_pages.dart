@@ -1,3 +1,4 @@
+import 'package:flutter_template/bottom_bar_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/creat_account_date_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_gender_page.dart';
@@ -11,6 +12,14 @@ import 'package:flutter_template/src/presentation/pages/login/login/reset_passwo
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_details_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_details_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_details_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_details_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
 import 'package:get/route_manager.dart';
@@ -43,7 +52,8 @@ class AppPages {
         name: AppRoutes.CREATE_ACCOUNT_NUMBER,
         page: () => CreateAccountNumberPage()),
     GetPage(
-        name: AppRoutes.CREATE_ACCOUNT_VERIFY, page: () => CreateAccountVerifyPage()),
+        name: AppRoutes.CREATE_ACCOUNT_VERIFY,
+        page: () => CreateAccountVerifyPage()),
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_PASSWORD,
         page: () => CreateAccountPasswordPage()),
@@ -55,6 +65,26 @@ class AppPages {
         page: () => ResetPasswordVerifyPage()),
     GetPage(
         name: AppRoutes.RESET_PASSWORD_NEW, page: () => ResetPasswordNewPage()),
-    GetPage(name: AppRoutes.HOME, page: () => HomePage()) ,   
+    GetPage(name: AppRoutes.HOME, page: () => HomePage()),
+    GetPage(name: AppRoutes.OFFERS_SUB_PAGE, page: () => OffersSubPage()),
+
+    GetPage(
+        name: AppRoutes.ORGANIZATIONS_SUB_PAGE,
+        page: () => OrganizationsSubPage()),
+    GetPage(name: AppRoutes.STREAMS_SUB_PAGE, page: () => StreamsSubPage()),
+    GetPage(name: AppRoutes.PEOPLE_SUB_PAGE, page: () => PeopleSubPage()),
+    GetPage(
+        name: AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+        page: () => OffersSubDetailsPage()),
+        GetPage(
+        name: AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
+        page: () => OrganizationsSubDetailsPage()),
+                GetPage(
+        name: AppRoutes.STREAMS_SUB_DETAILS_PAGE,
+        page: () => StreamsSubDetailsPage()),
+                GetPage(
+        name: AppRoutes.PEOPLES_SUB_DETAILS_PAGE,
+        page: () => PeoplesSubDetailsPage()),
+    GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => BottomBarView()),
   ];
 }

@@ -15,4 +15,14 @@ class AppRoutes {
   static const RESET_PASSWORD_VERIFY = "/reset_password_verify";
   static const RESET_PASSWORD_NEW = "/reset_password_new";
   static const HOME = "/home";
+  static const OFFERS_SUB_PAGE = "/offers_sub_page";
+  static const OFFERS_SUB_DETAILS_PAGE = "/offers_sub__details_page";
+  static const ORGANIZATIONS_SUB_PAGE = "/organizations_sub_page";
+  static const ORGANIZATIONS_SUB_DETAILS_PAGE = "/organizations_sub_details_page";
+  static const STREAMS_SUB_PAGE = "/streams_sub_page";
+  static const STREAMS_SUB_DETAILS_PAGE = "/streams_sub_details_page";
+  static const PEOPLE_SUB_PAGE = "/people_sub_page";
+  static const PEOPLES_SUB_DETAILS_PAGE = "/peoples_sub_details_page";
+  
+  static const BOTTOM_BAR_VIEW = "/bottom_bar_view";
 }

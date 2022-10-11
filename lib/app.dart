@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_pages.dart';
 import 'package:flutter_template/app/app_routes.dart';
+import 'package:flutter_template/bottom_bar_page.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_page.dart';
+//ignore:unused_import 
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -26,8 +29,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.SPLASH,
+      initialRoute: AppRoutes.BOTTOM_BAR_VIEW,
       getPages: AppPages.getPages,
+      // home: const BottomBarView(),
     );
   }
 }

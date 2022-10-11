@@ -11,5 +11,6 @@ class AppColors {
   static const VIOLET_BLUE = Color(0xFF706FD3);
   static const GRAY_X11 = Color(0xFFBABABA);
   static const ANTI_FLASH_WHITE = Color(0xFFF2F2F2);
+  static const BACKGROUND = Color(0xFFE5E5E5);
 
 }
