@@ -19,6 +19,7 @@ class AppRoutes {
   static const OFFERS_SUB_DETAILS_PAGE = "/offers_sub__details_page";
   static const ORGANIZATIONS_SUB_PAGE = "/organizations_sub_page";
   static const ORGANIZATIONS_SUB_DETAILS_PAGE = "/organizations_sub_details_page";
+  static const USER_POST_PAGE = "/user_post_page";
   static const STREAMS_SUB_PAGE = "/streams_sub_page";
   static const STREAMS_SUB_DETAILS_PAGE = "/streams_sub_details_page";
   static const PEOPLE_SUB_PAGE = "/people_sub_page";

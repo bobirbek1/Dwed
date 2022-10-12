@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
@@ -170,153 +171,167 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
                       width: SizeConfig.calculateBlockHorizontal(56),
                       height: SizeConfig.calculateBlockVertical(56),
                     ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              orgSubDetailsTitles[index],
-                              style: TextStyle(
-                                fontSize: SizeConfig.calculateTextSize(16),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.calculateBlockHorizontal(4),
-                            ),
-                            SvgPicture.asset(
-                              AppIcons.LEGAL,
-                              width: SizeConfig.calculateBlockHorizontal(16),
-                              height: SizeConfig.calculateBlockVertical(16),
-                            ),
-                            const Expanded(
-                              child: SizedBox(),
-                            ),
-                            Container(
-                              width: SizeConfig.calculateBlockHorizontal(70),
-                              height: SizeConfig.calculateBlockVertical(30),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: AppColors.BUTTON_BLUE,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Follow",
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.calculateTextSize(12),
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.WHITE,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: SizeConfig.calculateBlockVertical(4),
-                        ),
-                        Text(
-                          orgSubDetailsSubtitles[index],
-                          style: TextStyle(
-                            fontSize: SizeConfig.calculateTextSize(14),
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.SHADOW_BLUE,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: SizeConfig.calculateBlockHorizontal(8.0),
-                          ),
-                          child: Row(
+                    title: InkWell(
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.USER_POST_PAGE,
+                          arguments: orgSubDetailsTitles[index],
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              SvgPicture.asset(
-                                AppIcons.MAGISTR,
-                                width:
-                                    SizeConfig.calculateBlockHorizontal(13.94),
-                                height:
-                                    SizeConfig.calculateBlockVertical(11.63),
+                              Text(
+                                orgSubDetailsTitles[index],
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(16),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left:
-                                      SizeConfig.calculateBlockHorizontal(4.67),
-                                  right: SizeConfig.calculateBlockHorizontal(
-                                      12.67),
-                                ),
-                                child: Text(
-                                  "55",
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.calculateTextSize(10),
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.ROYAL_ORANGE,
-                                  ),
-                                ),
+                              SizedBox(
+                                width: SizeConfig.calculateBlockHorizontal(4),
                               ),
                               SvgPicture.asset(
-                                AppIcons.ORDEN,
-                                width:
-                                    SizeConfig.calculateBlockHorizontal(6.67),
-                                height:
-                                    SizeConfig.calculateBlockVertical(12.98),
+                                AppIcons.LEGAL,
+                                width: SizeConfig.calculateBlockHorizontal(16),
+                                height: SizeConfig.calculateBlockVertical(16),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left:
-                                      SizeConfig.calculateBlockHorizontal(8.67),
-                                  right:
-                                      SizeConfig.calculateBlockHorizontal(8.51),
-                                ),
-                                child: Text(
-                                  "12",
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.calculateTextSize(10),
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.VIOLET_BLUE,
-                                  ),
-                                ),
+                              const Expanded(
+                                child: SizedBox(),
                               ),
-                              SvgPicture.asset(
-                                AppIcons.SHAKE_HAND,
-                                width:
-                                    SizeConfig.calculateBlockHorizontal(14.92),
-                                height: SizeConfig.calculateBlockVertical(9.74),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left:
-                                      SizeConfig.calculateBlockHorizontal(4.57),
+                              Container(
+                                width: SizeConfig.calculateBlockHorizontal(70),
+                                height: SizeConfig.calculateBlockVertical(30),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: AppColors.BUTTON_BLUE,
                                 ),
-                                child: Text(
-                                  "45",
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.calculateTextSize(10),
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.ROYAL_ORANGE,
+                                child: Center(
+                                  child: Text(
+                                    "Follow",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.calculateTextSize(12),
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.WHITE,
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Text(
-                          orgSubDetailsDescriptions[index],
-                          style: TextStyle(
-                              fontSize: SizeConfig.calculateTextSize(12),
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.BLACK),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: SizeConfig.calculateBlockVertical(12),
-                            bottom: SizeConfig.calculateBlockVertical(8),
+                          SizedBox(
+                            height: SizeConfig.calculateBlockVertical(4),
                           ),
-                          child: Divider(
-                            height: SizeConfig.calculateBlockVertical(1),
-                            color: AppColors.BLACK.withOpacity(0.1),
+                          Text(
+                            orgSubDetailsSubtitles[index],
+                            style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(14),
+                              fontWeight: FontWeight.w300,
+                              color: AppColors.SHADOW_BLUE,
+                            ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical:
+                                  SizeConfig.calculateBlockHorizontal(8.0),
+                            ),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.MAGISTR,
+                                  width: SizeConfig.calculateBlockHorizontal(
+                                      13.94),
+                                  height:
+                                      SizeConfig.calculateBlockVertical(11.63),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: SizeConfig.calculateBlockHorizontal(
+                                        4.67),
+                                    right: SizeConfig.calculateBlockHorizontal(
+                                        12.67),
+                                  ),
+                                  child: Text(
+                                    "55",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.calculateTextSize(10),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.ROYAL_ORANGE,
+                                    ),
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  AppIcons.ORDEN,
+                                  width:
+                                      SizeConfig.calculateBlockHorizontal(6.67),
+                                  height:
+                                      SizeConfig.calculateBlockVertical(12.98),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: SizeConfig.calculateBlockHorizontal(
+                                        8.67),
+                                    right: SizeConfig.calculateBlockHorizontal(
+                                        8.51),
+                                  ),
+                                  child: Text(
+                                    "12",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.calculateTextSize(10),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.VIOLET_BLUE,
+                                    ),
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  AppIcons.SHAKE_HAND,
+                                  width: SizeConfig.calculateBlockHorizontal(
+                                      14.92),
+                                  height:
+                                      SizeConfig.calculateBlockVertical(9.74),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: SizeConfig.calculateBlockHorizontal(
+                                        4.57),
+                                  ),
+                                  child: Text(
+                                    "45",
+                                    style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.calculateTextSize(10),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.ROYAL_ORANGE,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            orgSubDetailsDescriptions[index],
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(12),
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.BLACK),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: SizeConfig.calculateBlockVertical(12),
+                              bottom: SizeConfig.calculateBlockVertical(8),
+                            ),
+                            child: Divider(
+                              height: SizeConfig.calculateBlockVertical(1),
+                              color: AppColors.BLACK.withOpacity(0.1),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),

@@ -37,6 +37,8 @@ class AppImages{
   static const String MATH = "assets/images/math.png";
   static const String MATH_KIDS = "assets/images/math_kids.png";
   static const String PLAYGROUND = "assets/images/playground.png";
+  static const String USER_POST_DETAILS = "assets/images/user_post_details.png";
+  static const String USER_POST_PROFIL = "assets/images/user_post_profil.png";
 
 
 }

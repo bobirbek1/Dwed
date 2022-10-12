@@ -16,6 +16,7 @@ import 'package:flutter_template/src/presentation/pages/search/search_offers/off
 import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_organizations/user_post_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_details_page.dart';
@@ -76,15 +77,16 @@ class AppPages {
     GetPage(
         name: AppRoutes.OFFERS_SUB_DETAILS_PAGE,
         page: () => OffersSubDetailsPage()),
-        GetPage(
+    GetPage(
         name: AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
         page: () => OrganizationsSubDetailsPage()),
-                GetPage(
+    GetPage(
         name: AppRoutes.STREAMS_SUB_DETAILS_PAGE,
         page: () => StreamsSubDetailsPage()),
-                GetPage(
+    GetPage(
         name: AppRoutes.PEOPLES_SUB_DETAILS_PAGE,
         page: () => PeoplesSubDetailsPage()),
-    GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => BottomBarView()),
+    GetPage(name: AppRoutes.USER_POST_PAGE, page: () =>  UserPostPage()),
+    GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => const BottomBarView()),
   ];
 }

@@ -233,7 +233,7 @@ class StreamsSubDetailsPage extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset(
-                          AppImages.MATH,
+                          streamsSubDetailsImages[index],
                           width: SizeConfig.calculateBlockHorizontal(48),
                           height: SizeConfig.calculateBlockVertical(48),
                         ),
