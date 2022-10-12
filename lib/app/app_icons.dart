@@ -17,7 +17,5 @@ class AppIcons {
   static const String MAGISTR = "assets/icons/magistr.svg";
   static const String ORDEN = "assets/icons/orden.svg";
   static const String SHAKE_HAND = "assets/icons/shake_hand.svg";
-  
-  
-
+  static const String BRO = "assets/icons/bro.svg";
 }
