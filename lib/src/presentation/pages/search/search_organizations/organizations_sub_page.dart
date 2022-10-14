@@ -164,13 +164,16 @@ class OrganizationsSubPage extends StatelessWidget {
   List<String> phonePageItemsIcons = [
     AppImages.ORG_AMBULANCE_,
     AppImages.ORG_AUTO,
+    // AppImages.ANHOR,
   ];
   List<String> phonePageItemsTitles = [
     "Davlat tibbiyot markazi",
     "Medical Clinic Neo"
+    // "Turizm"
   ];
   List<String> phonePageItemsSubtitles = [
     "34 organizations",
     "34 organizations",
+    // "34 organizations",
   ];
 }
