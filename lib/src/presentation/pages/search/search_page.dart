@@ -6,6 +6,7 @@ import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/pages/search/recent_searches_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_typing.dart';
 import 'package:get/get.dart';
 
 class SearchPage extends StatefulWidget {
@@ -57,6 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                       onTap: () {
                         // Get.back();
                         setState(() {
+                          controller.clear();
                           typing ? (typing = false) : (typing = true);
                         });
                       },
@@ -82,6 +84,11 @@ class _SearchPageState extends State<SearchPage> {
             : TextField(
                 controller: controller,
                 cursorHeight: 24,
+                onChanged: (val) {
+                  setState(() {
+                    controller.text;
+                  });
+                },
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: "Search",
@@ -111,7 +118,9 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             )
-          : RecentSearchPage(),
+          : controller.text.isEmpty
+              ? RecentSearchPage()
+              : SearchTyping(),
     );
   }
 
@@ -124,25 +133,34 @@ class _SearchPageState extends State<SearchPage> {
       leadingWidth: leadingWidth,
       title: title,
       actions: [
-        InkWell(
-          onTap: () {
-            setState(() {
-              typing ? (typing = false) : (typing = true);
-            });
-          },
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: SizeConfig.calculateBlockHorizontal(19),
-            ),
-            child: typing
-                ? SvgPicture.asset(AppIcons.SEARCH_NORMAL)
-                : controller.text.isEmpty
-                    ? const SizedBox()
-                    : SvgPicture.asset(
-                        AppIcons.CLOSE_SEARCHFIELD,
+        typing
+            ? InkWell(
+                onTap: () {
+                  setState(() {
+                    typing ? (typing = false) : (typing = true);
+                  });
+                },
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      right: SizeConfig.calculateBlockHorizontal(19),
+                    ),
+                    child: SvgPicture.asset(AppIcons.SEARCH_NORMAL)),
+              )
+            : controller.text.isEmpty
+                ? const SizedBox()
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        controller.clear();
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: SizeConfig.calculateBlockHorizontal(19),
                       ),
-          ),
-        ),
+                      child: SvgPicture.asset(AppIcons.CLOSE_SEARCHFIELD),
+                    ),
+                  ),
       ],
     );
   }
