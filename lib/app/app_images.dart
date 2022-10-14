@@ -39,6 +39,9 @@ class AppImages{
   static const String PLAYGROUND = "assets/images/playground.png";
   static const String DACHA = "assets/images/dacha.png";
   static const String ANHOR = "assets/images/anhor.png";
+  static const String UY = "assets/images/uy.png";
+  static const String BORDER = "assets/images/Border.png";
+  static const String ANHOR_4 = "assets/images/anhor_4.png";
 
 
 }

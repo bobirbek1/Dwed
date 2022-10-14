@@ -348,170 +348,175 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         top: SizeConfig.calculateBlockVertical(16),
         right:SizeConfig.calculateBlockHorizontal(16),
       ),
-      child: Row(
-        children: [
-          Image.asset(
-            AppImages.DACHA,
-            width: SizeConfig.calculateBlockHorizontal(117),
-            height: SizeConfig.calculateBlockVertical(158),
-          ),
-          SizedBox(
-            width: SizeConfig.calculateBlockHorizontal(12),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '''13 kishilik "Yovvoyi G'arb" uyi\n(dam olish kunlari)''',
-                style: TextStyle(
-                    fontSize: SizeConfig.calculateTextSize(14),
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(9),
-              ),
-              Row(
-                children: [
-                  Image.asset(
-                    AppImages.ANHOR,
-                    width: SizeConfig.calculateBlockHorizontal(16),
-                    height: SizeConfig.calculateBlockVertical(16),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(8),
-                  ),
-                  Text(
-                    "Anhor Relax Zone",
-                    style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(12),
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(9),
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.MAGISTR,
-                    width: SizeConfig.calculateBlockHorizontal(13.94),
-                    height: SizeConfig.calculateBlockVertical(11.63),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: SizeConfig.calculateBlockHorizontal(4.67),
-                      right: SizeConfig.calculateBlockHorizontal(12.67),
-                    ),
-                    child: Text(
-                      "55",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(10),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.ROYAL_ORANGE,
-                      ),
-                    ),
-                  ),
-                  SvgPicture.asset(
-                    AppIcons.ORDEN,
-                    width: SizeConfig.calculateBlockHorizontal(6.67),
-                    height: SizeConfig.calculateBlockVertical(12.98),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: SizeConfig.calculateBlockHorizontal(8.67),
-                      right: SizeConfig.calculateBlockHorizontal(8.51),
-                    ),
-                    child: Text(
-                      "12",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(10),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.VIOLET_BLUE,
-                      ),
-                    ),
-                  ),
-                  SvgPicture.asset(
-                    AppIcons.SHAKE_HAND,
-                    width: SizeConfig.calculateBlockHorizontal(14.92),
-                    height: SizeConfig.calculateBlockVertical(9.74),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: SizeConfig.calculateBlockHorizontal(4.57),
-                    ),
-                    child: Text(
-                      "45",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(10),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.ROYAL_ORANGE,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.LOCATION,
-                    width: SizeConfig.calculateBlockHorizontal(16),
-                    height: SizeConfig.calculateBlockVertical(16),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(4),
-                  ),
-                  Text(
-                    "Toshkentdan 18 km",
-                    style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(12),
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              Text(
-                "Oilaviy kvartira",
-                style: TextStyle(
-                    fontSize: SizeConfig.calculateTextSize(12),
-                    fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              Row(
-                children: [
-                  Text(
-                    "7 120 000 UZS",
-                    style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(8),
-                  ),
-                  Text(
-                    "12 599 000 UZS",
-                    style: TextStyle(
+      child: InkWell(
+        onTap: (){
+          Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
+        },
+        child: Row(
+          children: [
+            Image.asset(
+              AppImages.DACHA,
+              width: SizeConfig.calculateBlockHorizontal(117),
+              height: SizeConfig.calculateBlockVertical(158),
+            ),
+            SizedBox(
+              width: SizeConfig.calculateBlockHorizontal(12),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '''13 kishilik "Yovvoyi G'arb" uyi\n(dam olish kunlari)''',
+                  style: TextStyle(
                       fontSize: SizeConfig.calculateTextSize(14),
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.SUNSET_ORANGE,
-                      decoration: TextDecoration.lineThrough,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(9),
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      AppImages.ANHOR,
+                      width: SizeConfig.calculateBlockHorizontal(16),
+                      height: SizeConfig.calculateBlockVertical(16),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(20),
-          ),
-        ],
+                    SizedBox(
+                      width: SizeConfig.calculateBlockHorizontal(8),
+                    ),
+                    Text(
+                      "Anhor Relax Zone",
+                      style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(12),
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(9),
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.MAGISTR,
+                      width: SizeConfig.calculateBlockHorizontal(13.94),
+                      height: SizeConfig.calculateBlockVertical(11.63),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.calculateBlockHorizontal(4.67),
+                        right: SizeConfig.calculateBlockHorizontal(12.67),
+                      ),
+                      child: Text(
+                        "55",
+                        style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(10),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.ROYAL_ORANGE,
+                        ),
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      AppIcons.ORDEN,
+                      width: SizeConfig.calculateBlockHorizontal(6.67),
+                      height: SizeConfig.calculateBlockVertical(12.98),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.calculateBlockHorizontal(8.67),
+                        right: SizeConfig.calculateBlockHorizontal(8.51),
+                      ),
+                      child: Text(
+                        "12",
+                        style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(10),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.VIOLET_BLUE,
+                        ),
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      AppIcons.SHAKE_HAND,
+                      width: SizeConfig.calculateBlockHorizontal(14.92),
+                      height: SizeConfig.calculateBlockVertical(9.74),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.calculateBlockHorizontal(4.57),
+                      ),
+                      child: Text(
+                        "45",
+                        style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(10),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.ROYAL_ORANGE,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(8),
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.LOCATION,
+                      width: SizeConfig.calculateBlockHorizontal(16),
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+                    SizedBox(
+                      width: SizeConfig.calculateBlockHorizontal(4),
+                    ),
+                    Text(
+                      "Toshkentdan 18 km",
+                      style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(12),
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(8),
+                ),
+                Text(
+                  "Oilaviy kvartira",
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(12),
+                      fontWeight: FontWeight.w400),
+                ),
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(8),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "7 120 000 UZS",
+                      style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: SizeConfig.calculateBlockHorizontal(8),
+                    ),
+                    Text(
+                      "12 599 000 UZS",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(14),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.SUNSET_ORANGE,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: SizeConfig.calculateBlockVertical(20),
+            ),
+          ],
+        ),
       ),
     );
   }

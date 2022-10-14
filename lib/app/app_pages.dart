@@ -20,6 +20,7 @@ import 'package:flutter_template/src/presentation/pages/search/search_people/peo
 import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/ver_hor_item_details.dart';
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
 import 'package:get/route_manager.dart';
@@ -85,6 +86,9 @@ class AppPages {
                 GetPage(
         name: AppRoutes.PEOPLES_SUB_DETAILS_PAGE,
         page: () => PeoplesSubDetailsPage()),
+          GetPage(
+        name: AppRoutes.ITEM_DETAILS_PAGE,
+        page: () => const ItemDetailsPage()),
     GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => BottomBarView()),
   ];
 }

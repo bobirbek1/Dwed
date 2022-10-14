@@ -22,6 +22,10 @@ class AppIcons {
   static const String ITEMS_HOR = "assets/icons/items_hor.svg";
   static const String ITEMS_VER = "assets/icons/items_ver.svg";
   static const String LOCATION = "assets/icons/location.svg";
+  static const String BAG = "assets/icons/bag-2.svg";
+  static const String MESSENGER = "assets/icons/messenger.svg";
+  static const String CALL_CALLING = "assets/icons/call-calling.svg";
+  
   
   
 
