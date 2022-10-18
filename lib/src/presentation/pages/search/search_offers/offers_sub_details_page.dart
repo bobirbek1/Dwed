@@ -3,13 +3,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
-import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
-class OffersSubDetailsPage extends StatelessWidget {
+class OffersSubDetailsPage extends StatefulWidget {
   OffersSubDetailsPage({Key? key}) : super(key: key);
+
+  @override
+  State<OffersSubDetailsPage> createState() => _OffersSubDetailsPageState();
+}
+
+class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   final title = Get.arguments;
+  bool isVertical = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,61 +81,64 @@ class OffersSubDetailsPage extends StatelessWidget {
   getSortFilter() {
     return Column(
       children: [
-        Row(
-          children: [
-            InkWell(
-              // There'll be a bottomsheet
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: SizeConfig.calculateBlockHorizontal(17),
-                  left: SizeConfig.calculateBlockHorizontal(16),
-                  right: SizeConfig.calculateBlockHorizontal(81),
-                  bottom: SizeConfig.calculateBlockHorizontal(17),
-                ),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.SORT,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
-                    ),
-                    Text(
-                      "SORT BY",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.BLACK,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.calculateBlockHorizontal(16),
+            vertical: SizeConfig.calculateBlockVertical(12),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                // There'll be a bottomsheet
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: SizeConfig.calculateBlockVertical(5),
+                    right: SizeConfig.calculateBlockVertical(12),
+                    bottom: SizeConfig.calculateBlockVertical(5),
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.SORT,
+                        width: SizeConfig.calculateBlockHorizontal(16),
+                        height: SizeConfig.calculateBlockVertical(16),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: SizeConfig.calculateBlockHorizontal(8),
+                      ),
+                      Text(
+                        "SORT BY",
+                        style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.BLACK,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(20),
-            ),
-            InkWell(
-              // There'll be a bottomsheet
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: SizeConfig.calculateBlockVertical(17),
-                  right: SizeConfig.calculateBlockHorizontal(100),
-                  bottom: SizeConfig.calculateBlockVertical(17),
-                ),
+              const Expanded(
+                child: SizedBox(),
+              ),
+              InkWell(
+                // There'll be a bottomsheet
+                onTap: () {},
                 child: Row(
                   children: [
-                    SvgPicture.asset(
-                      AppIcons.FILTER,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: SizeConfig.calculateBlockVertical(5),
+                        right: SizeConfig.calculateBlockVertical(12),
+                        bottom: SizeConfig.calculateBlockVertical(5),
+                      ),
+                      child: SvgPicture.asset(
+                        AppIcons.FILTER,
+                        width: SizeConfig.calculateBlockHorizontal(16),
+                        height: SizeConfig.calculateBlockVertical(16),
+                      ),
                     ),
                     Text(
                       "FILTER",
@@ -142,8 +151,33 @@ class OffersSubDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+              const Expanded(
+                child: SizedBox(),
+              ),
+              InkWell(
+                  onTap: () {
+                    setState(
+                      () {
+                        isVertical ? (isVertical = false) : (isVertical = true);
+                      },
+                    );
+                  },
+                  child: isVertical
+                      ? SvgPicture.asset(
+                          AppIcons.ITEMS_HOR,
+                          width: SizeConfig.calculateBlockHorizontal(16),
+                          height: SizeConfig.calculateBlockVertical(16),
+                        )
+                      : SvgPicture.asset(
+                          AppIcons.ITEMS_VER,
+                          width: SizeConfig.calculateBlockHorizontal(16),
+                          height: SizeConfig.calculateBlockVertical(16),
+                        )),
+              SizedBox(
+                width: SizeConfig.calculateBlockHorizontal(8),
+              ),
+            ],
+          ),
         ),
         Divider(
           height: SizeConfig.calculateBlockVertical(1),
@@ -158,28 +192,34 @@ class OffersSubDetailsPage extends StatelessWidget {
       children: [
         getSortFilter(),
         Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
-                SizeConfig.calculateBlockVertical(267),
-            children: [
-              getGridItem(
-                "12 599 000 UZS",
-                getPrice(),
-              ),
-              getGridItem(),
-              getGridItem(),
-              getGridItem(
-                "12 599 000 UZS",
-                getPrice(),
-              ),
-              getGridItem(),
-              getGridItem(
-                "12 599 000 UZS",
-                getPrice(),
-              ),
-            ],
-          ),
+          child: isVertical
+              ? GridView.count(
+                  crossAxisCount: 2,
+                  childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
+                      SizeConfig.calculateBlockVertical(267),
+                  children: [
+                    getGridItem(
+                      "12 599 000 UZS",
+                      getPrice(),
+                    ),
+                    getGridItem(),
+                    getGridItem(),
+                    getGridItem(
+                      "12 599 000 UZS",
+                      getPrice(),
+                    ),
+                    getGridItem(),
+                    getGridItem(
+                      "12 599 000 UZS",
+                      getPrice(),
+                    ),
+                  ],
+                )
+              : ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    return getHorListItem();
+                  }),
         ),
       ],
     );
@@ -296,6 +336,181 @@ class OffersSubDetailsPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  getHorListItem() {
+    return Padding(
+      padding: EdgeInsets.only(
+        left:SizeConfig.calculateBlockHorizontal(16),
+        top: SizeConfig.calculateBlockVertical(16),
+        right:SizeConfig.calculateBlockHorizontal(16),
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            AppImages.DACHA,
+            width: SizeConfig.calculateBlockHorizontal(117),
+            height: SizeConfig.calculateBlockVertical(158),
+          ),
+          SizedBox(
+            width: SizeConfig.calculateBlockHorizontal(12),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '''13 kishilik "Yovvoyi G'arb" uyi\n(dam olish kunlari)''',
+                style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(14),
+                    fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(9),
+              ),
+              Row(
+                children: [
+                  Image.asset(
+                    AppImages.ANHOR,
+                    width: SizeConfig.calculateBlockHorizontal(16),
+                    height: SizeConfig.calculateBlockVertical(16),
+                  ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(8),
+                  ),
+                  Text(
+                    "Anhor Relax Zone",
+                    style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(12),
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(9),
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.MAGISTR,
+                    width: SizeConfig.calculateBlockHorizontal(13.94),
+                    height: SizeConfig.calculateBlockVertical(11.63),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: SizeConfig.calculateBlockHorizontal(4.67),
+                      right: SizeConfig.calculateBlockHorizontal(12.67),
+                    ),
+                    child: Text(
+                      "55",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(10),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.ROYAL_ORANGE,
+                      ),
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppIcons.ORDEN,
+                    width: SizeConfig.calculateBlockHorizontal(6.67),
+                    height: SizeConfig.calculateBlockVertical(12.98),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: SizeConfig.calculateBlockHorizontal(8.67),
+                      right: SizeConfig.calculateBlockHorizontal(8.51),
+                    ),
+                    child: Text(
+                      "12",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(10),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.VIOLET_BLUE,
+                      ),
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppIcons.SHAKE_HAND,
+                    width: SizeConfig.calculateBlockHorizontal(14.92),
+                    height: SizeConfig.calculateBlockVertical(9.74),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: SizeConfig.calculateBlockHorizontal(4.57),
+                    ),
+                    child: Text(
+                      "45",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(10),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.ROYAL_ORANGE,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(8),
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.LOCATION,
+                    width: SizeConfig.calculateBlockHorizontal(16),
+                    height: SizeConfig.calculateBlockVertical(16),
+                  ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(4),
+                  ),
+                  Text(
+                    "Toshkentdan 18 km",
+                    style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(12),
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(8),
+              ),
+              Text(
+                "Oilaviy kvartira",
+                style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(12),
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(8),
+              ),
+              Row(
+                children: [
+                  Text(
+                    "7 120 000 UZS",
+                    style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(14),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(8),
+                  ),
+                  Text(
+                    "12 599 000 UZS",
+                    style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(14),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.SUNSET_ORANGE,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: SizeConfig.calculateBlockVertical(20),
+          ),
+        ],
       ),
     );
   }

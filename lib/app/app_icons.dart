@@ -19,5 +19,8 @@ class AppIcons {
   static const String SHAKE_HAND = "assets/icons/shake_hand.svg";
   static const String CLOSE_SEARCHFIELD = "assets/icons/close_searchfield.svg";
   static const String TIME_CLOCK = "assets/icons/time_clock.svg";
+  static const String ITEMS_HOR = "assets/icons/items_hor.svg";
+  static const String ITEMS_VER = "assets/icons/items_ver.svg";
+  static const String LOCATION = "assets/icons/location.svg";
   static const String BRO = "assets/icons/bro.svg";
 }

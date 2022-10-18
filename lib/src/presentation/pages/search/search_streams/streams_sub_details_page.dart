@@ -74,61 +74,64 @@ class StreamsSubDetailsPage extends StatelessWidget {
   getSortFilter() {
     return Column(
       children: [
-        Row(
-          children: [
-            InkWell(
-              // There'll be a bottomsheet
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: SizeConfig.calculateBlockHorizontal(17),
-                  left: SizeConfig.calculateBlockHorizontal(16),
-                  right: SizeConfig.calculateBlockHorizontal(81),
-                  bottom: SizeConfig.calculateBlockHorizontal(17),
-                ),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.SORT,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
-                    ),
-                    Text(
-                      "SORT BY",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.BLACK,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.calculateBlockHorizontal(16),
+            vertical: SizeConfig.calculateBlockVertical(12),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                // There'll be a bottomsheet
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: SizeConfig.calculateBlockVertical(5),
+                    right: SizeConfig.calculateBlockVertical(12),
+                    bottom: SizeConfig.calculateBlockVertical(5),
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.SORT,
+                        width: SizeConfig.calculateBlockHorizontal(16),
+                        height: SizeConfig.calculateBlockVertical(16),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: SizeConfig.calculateBlockHorizontal(8),
+                      ),
+                      Text(
+                        "SORT BY",
+                        style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.BLACK,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(20),
-            ),
-            InkWell(
-              // There'll be a bottomsheet
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: SizeConfig.calculateBlockVertical(17),
-                  right: SizeConfig.calculateBlockHorizontal(100),
-                  bottom: SizeConfig.calculateBlockVertical(17),
-                ),
+              const Expanded(
+                child: SizedBox(),
+              ),
+              InkWell(
+                // There'll be a bottomsheet
+                onTap: () {},
                 child: Row(
                   children: [
-                    SvgPicture.asset(
-                      AppIcons.FILTER,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: SizeConfig.calculateBlockVertical(5),
+                        right: SizeConfig.calculateBlockVertical(12),
+                        bottom: SizeConfig.calculateBlockVertical(5),
+                      ),
+                      child: SvgPicture.asset(
+                        AppIcons.FILTER,
+                        width: SizeConfig.calculateBlockHorizontal(16),
+                        height: SizeConfig.calculateBlockVertical(16),
+                      ),
                     ),
                     Text(
                       "FILTER",
@@ -141,8 +144,22 @@ class StreamsSubDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+              const Expanded(
+                child: SizedBox(),
+              ),
+              InkWell(
+                onTap: () {},
+                child: SvgPicture.asset(
+                  AppIcons.ITEMS_HOR,
+                  width: SizeConfig.calculateBlockHorizontal(16),
+                  height: SizeConfig.calculateBlockVertical(16),
+                ),
+              ),
+              SizedBox(
+                width: SizeConfig.calculateBlockHorizontal(8),
+              ),
+            ],
+          ),
         ),
         Divider(
           height: SizeConfig.calculateBlockVertical(1),
