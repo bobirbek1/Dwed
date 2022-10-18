@@ -31,18 +31,18 @@ class HomePage extends StatelessWidget {
                 height: SizeConfig.calculateBlockVertical(310),
               ),
             ),
-            const Text(
+             Text(
               "No Internet Connection",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: SizeConfig.calculateTextSize(24),
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(
+             Text(
               "Please check your intenet\nconnection and try again",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: SizeConfig.calculateTextSize(16),
                 fontWeight: FontWeight.w400,
                 color: AppColors.SHADOW_BLUE,
               ),
