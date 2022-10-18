@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/add_cards_page.dart';
 import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/list_item.dart';
 
 import '../../../../app/app_icons.dart';
+import '../information/cards_widget.dart';
 
 class MethodFirst extends StatelessWidget {
   @override
@@ -31,6 +33,7 @@ class MethodFirst extends StatelessWidget {
     );
   }
 
+
   getBankItemList() {
     return [
       BankItem(title: '', discount: '1% cashback', picPath: 'assets/images/anorbank_logo.png'),
@@ -47,13 +50,20 @@ class MethodFirst extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
 
-          ListItem(item: list[index]),
+          ListItem(item: list[index], function: showModalBottomSheet,),
         ],
       );
     },
     itemCount: list.length,
     );
   }
+
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (bCtx){
+      return AddCardsWidget();
+    });
+  }
+
 
 
 
@@ -81,6 +91,7 @@ class MethodFirst extends StatelessWidget {
         )
     );
   }
+
 
 
   AppBar getAppBar(Widget leading, String title) {

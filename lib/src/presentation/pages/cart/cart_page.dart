@@ -22,23 +22,19 @@ class CartPage extends StatelessWidget {
           'Cart'),
       body: Column(
         children: [
-
           buildContainer(getAddsRow(AddsItem(
               picUrl:
                   'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
               webUrl: 'Olcha.uz',
               title: 'Internet shop',
               icon: Icon(Icons.add)))),
-
           getSpecialistText(),
-
           getSpecialist(SpecialistItem(
               picUrl:
                   'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
               name: 'Eshdavlat Umidjon',
               position: 'Salesman',
               icon: Icon(Icons.add))),
-
           getOffersText(),
           buildListView(getList()),
           buildBottomButton()
@@ -158,108 +154,75 @@ class CartPage extends StatelessWidget {
         Row(
           children: [
             SizedBox(
-              height: 100,
-              width: 100,
               child: Image.asset('assets/images/phone.png'),
+              width: SizeConfig.calculateBlockHorizontal(100),
+              height: SizeConfig.calculateBlockVertical(100),
             ),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(17),
-            ),
+
+            //SizedBox(width: SizeConfig.calculateBlockHorizontal(17),),
+
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 4),
-                  child: Text(
-                    item.title,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
+
+                Text(
+                  item.title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w400, fontSize: 14),
                 ),
+
                 Text(
                   item.price,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(12),
-                ),
                 Row(
                   children: [
                     Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width: SizeConfig.calculateBlockHorizontal(24),
                           height: SizeConfig.calculateBlockVertical(24),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.ANTI_FLASH_WHITE, width: 2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: SvgPicture.asset(
-                            '/assets/icons/icon_minus.svg',
-                            color: Colors.black12,
-                          ),
+                          child: OutlinedButton(
+                              onPressed: () {},
+                              child: Image.asset('assets/images/plus.png')),
                         ),
+
                         SizedBox(
                           width: SizeConfig.calculateBlockHorizontal(16),
                         ),
-                        const Text(
-                          '10',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
+                        const Text('10'),
                         SizedBox(
                           width: SizeConfig.calculateBlockHorizontal(16),
                         ),
-                        Container(
+                        SizedBox(
                           width: SizeConfig.calculateBlockHorizontal(24),
                           height: SizeConfig.calculateBlockVertical(24),
-                          // padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColors.ANTI_FLASH_WHITE, width: 2),
-                            borderRadius: BorderRadius.circular(8),
+                          child: OutlinedButton(
+                              onPressed: () {},
+                              child: Image.asset('assets/images/minus.png'),
                           ),
-                          child: SvgPicture.asset('assets/icons/icon_add.svg'),
                         ),
+
                       ],
                     ),
 
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(Icons.delete_outline),
-                      ],
-                    ),
+
+                    Image.asset('assets/images/trash.png')
                   ],
                 ),
               ],
             ),
           ],
         ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0, top: 8),
-          child: Text(
+        if (!bool)
+          const Text(
             'max order limit',
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w400,
                 color: Colors.redAccent),
-          ),
-        ),
-        bool
-            ? const Padding(
-                padding: EdgeInsets.only(left: 16.0, right: 16),
-                child: Divider(
-                  color: Colors.black12,
-                  thickness: 0.5,
-                ),
-              )
-            : const SizedBox(),
+          )
       ],
     );
   }
