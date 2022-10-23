@@ -18,8 +18,6 @@ class CheckoutOrdered extends StatelessWidget {
                 SizedBox(height : SizeConfig.calculateBlockVertical(220),),
 
                 buildCenterWidget(),
-
-
               ],
             )),
 

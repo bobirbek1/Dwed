@@ -1,3 +1,5 @@
+
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_template/app/app_constants.dart';
@@ -15,6 +17,13 @@ import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
+import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/local_datasource.dart';
+import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/remote_datasource.dart';
+import 'package:flutter_template/src/presentation/pages/cart/data/datasources/impl/local_datasource.dart';
+import 'package:flutter_template/src/presentation/pages/cart/data/datasources/impl/remote_datasource.dart';
+import 'package:flutter_template/src/presentation/pages/cart/data/repositories/cart_repositoryImpl.dart';
+import 'package:flutter_template/src/presentation/pages/cart/domain/repositories/cart_repository.dart';
+import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get_card_products_impl.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +60,14 @@ Future<void> init() async {
     () => LoginRemoteDatasourceImpl(client: Get.find()),
     fenix: true,
   );
+  Get.lazyPut<CardLocalDataSource>(
+          () => CardLocalDataSourceImpl(),
+    fenix: true,
+  );
+  Get.lazyPut<CardRemoteDataSource>(
+      () => CardRemoteDataSourceImpl(client: Get.find()),
+    fenix: true,
+  );
 
   // repository
   Get.lazyPut<LoginRepo>(
@@ -61,6 +78,13 @@ Future<void> init() async {
           ),
       fenix: true);
 
+  Get.lazyPut<CartRepository> (
+      () => CardRepositoryImpl(
+          cardRemoteDataSource: Get.find(),
+          cardLocalDataSource: Get.find(),
+          networkInfo: Get.find()),
+    fenix: true);
+
   // usecase
   Get.lazyPut(() => Login(repo: Get.find()), fenix: true);
   Get.lazyPut(() => CreateAccount(repo: Get.find()), fenix: true);
@@ -68,6 +92,7 @@ Future<void> init() async {
   Get.lazyPut(() => GetSpecialty(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetRegion(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCountry(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetCardProductsImpl(cartRepository: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);

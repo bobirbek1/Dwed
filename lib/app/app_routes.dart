@@ -25,6 +25,7 @@ class AppRoutes {
   static const PEOPLE_SUB_PAGE = "/people_sub_page";
   static const PEOPLES_SUB_DETAILS_PAGE = "/peoples_sub_details_page";
   static const ITEM_DETAILS_PAGE = "/item_details_page";
+
   
   static const BOTTOM_BAR_VIEW = "/bottom_bar_view";
 }
