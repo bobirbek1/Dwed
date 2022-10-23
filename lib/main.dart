@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_template/src/presentation/pages/checkout/presentation/pages/checkout_page.dart';
 
 import 'app.dart';
 import 'injection_container.dart' as di;

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
-import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/app/app_icons.dart';
-import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
 List<String> list = <String>["English", "Русский","O'zbek"];
