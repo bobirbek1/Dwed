@@ -23,7 +23,10 @@ import 'package:flutter_template/src/presentation/pages/cart/data/datasources/im
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/impl/remote_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/repositories/cart_repositoryImpl.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/repositories/cart_repository.dart';
+import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/delete_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get_card_products_impl.dart';
+import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/getitems_usecase.dart';
+import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,6 +96,8 @@ Future<void> init() async {
   Get.lazyPut(() => GetRegion(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCountry(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCardProductsImpl(cartRepository: Get.find()), fenix: true);
+  Get.lazyPut(() => DeleteItemUseCase(cartRepository: Get.find()), fenix: true);
+  Get.lazyPut(() => GetItemsUseCase(cartRepository: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
@@ -100,4 +105,8 @@ Future<void> init() async {
       () =>
           CreateAccountController(createAccount: Get.find(), getSector: Get.find(),getSpecialty: Get.find(),getRegion: Get.find(),getCountry: Get.find(),),
       fenix: true);
+  Get.lazyPut(
+          () => CardController(getCardProducts: Get.find(), getItemsUseCase:  Get.find(), deleteItemUseCase:  Get.find()),
+      fenix:  true);
+
 }

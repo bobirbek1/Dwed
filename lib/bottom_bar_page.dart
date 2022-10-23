@@ -4,6 +4,7 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/pages/basket/basket_page.dart';
+import 'package:flutter_template/src/presentation/pages/cart/presentation/pages/cart_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
 import 'package:flutter_template/src/presentation/pages/news/news_page.dart';
 import 'package:flutter_template/src/presentation/pages/profile/profile_page.dart';
@@ -23,7 +24,7 @@ class _BottomBarViewState extends State<BottomBarView> {
     HomePage(),
     SearchPage(),
     NewsPage(),
-    BasketPage(),
+    CartPage(),
     ProfilPage(),
   ];
 

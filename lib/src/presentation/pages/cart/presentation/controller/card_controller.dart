@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
@@ -25,6 +26,7 @@ class CardController extends GetxController {
   int totalCost = 0;
   Map<int, int> orders = {};
   List<SpecialistItemModel> cardProducts = [];
+  Map<int ,List< SpecialistItemModel>> cardProductsMap = <int , List< SpecialistItemModel>>{};
   List<OrdersCardModel> orderList = [];
 
 
@@ -34,13 +36,13 @@ class CardController extends GetxController {
     getCardItems();
   }
 
-  deleteOrder (int id) async {
-    final res = await deleteItemUseCase.call(DeleteCartProductParams(id: id));
+  changeAmount (int id, int amount) async {
+    final res = await deleteItemUseCase.call(DeleteCartProductParams(id: id, amount: amount));
     res.fold((failure) => {
 
     }, (response) => {
       if(response){
-        orders.remove(id),
+        orders[id] = amount,
         calculateCost()
       } else {
 
@@ -48,44 +50,32 @@ class CardController extends GetxController {
     });
   }
 
+  deleteFromList(int id, int offeringId) {
+    cardProductsMap.remove(id);
+    calculateCost();
+  }
+
   getTotal(int id) {
     return orders[id] ?? 0;
   }
 
-  addOrder(int id, int count) {
-    if(orders.containsKey(id)) {
-      orders[id] = orders[id]! + 1;
-    }else {
-      orders[id] = 1;
-      calculateCost();
-    }
-    return getTotal(id);
-  }
-
-  removeOrder(int id, int count) {
-    if(orders.containsKey(id)) {
-      if(orders[id]! > 1) {
-        orders[id] = orders[id]! - 1;
-      }else {
-        orders.remove(id);
-        calculateCost();
-      }
-    }
-    return getTotal(id);
-  }
-
   getItems (String org_slug_name, int responsible) async {
-    final res = await getItemsUseCase.call(
-      GetItemsUseCaseParams(org_slug_name: org_slug_name, responsible: responsible)
-    );
-    res.fold((failure){
-      if(failure is NetworkFailure) {
-        return [];
-      }
-    }, (response) {
-      cardProducts = response;
-      return response;
-    });
+    if(cardProductsMap.containsKey(responsible)) {
+      return cardProductsMap[responsible];
+    }else {
+
+      final res = await getItemsUseCase.call(
+          GetItemsUseCaseParams(org_slug_name: org_slug_name, responsible: responsible)
+      );
+      res.fold((failure){
+        if(failure is NetworkFailure) {
+          return [];
+        }
+      }, (response) {
+        cardProductsMap[responsible] = response;
+        return response;
+      });
+    }
   }
 
   void getCardItems() async {
@@ -104,7 +94,7 @@ class CardController extends GetxController {
     totalCost = 0;
     for(var product in cardProducts) {
       if(orders.containsKey(product.responsible!.id)) {
-        totalCost += product.totalCost!;
+        totalCost += product.totalCost! * orders[product.responsible!.id]!;
       }
     }
     update([checkoutId]);

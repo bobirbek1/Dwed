@@ -53,10 +53,10 @@ class CardRepositoryImpl extends CartRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> deleteItem(int id) async {
+  Future<Either<Failure, bool>> changeAmount(int id, int amount) async {
     if(await networkInfo.isConnected) {
       try {
-        final res = await cardRemoteDataSource.deleteItems(id);
+        final res = await cardRemoteDataSource.changeAmount(id, amount);
         if(res) {
 
         }

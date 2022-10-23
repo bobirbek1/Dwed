@@ -30,13 +30,11 @@ class CartPage extends StatelessWidget {
       body: Column(
         children: [
           GetBuilder(
-            init: _controller,
-            id: _controller.mainListId,
-            builder: (context) {
-              return buildListView(getList());
-            }
-          ),
-
+              init: _controller,
+              id: _controller.mainListId,
+              builder: (context) {
+                return buildListView(getList());
+              }),
           buildBottomButton(_controller.totalCost)
         ],
       ),
@@ -103,7 +101,7 @@ class CartPage extends StatelessWidget {
                                 height:
                                     SizeConfig.calculateBlockVertical(13.33),
                                 child:
-                                    SvgPicture.asset('assets/icons.legal.svg'),
+                                    SvgPicture.asset('assets/icons/legal.svg'),
                               )
                             : const SizedBox(),
                       ],
@@ -116,12 +114,16 @@ class CartPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Expanded(
-                    child: buildItems(_controller.getItems(slugName, item.id!)))
               ],
             ),
+            buildItems(
+              _controller.getItems(
+                slugName,
+                item.id!,
+              ),
+            ),
           ],
-        ));
+        ),);
   }
 
   List<OrdersCardModel> getList() {
@@ -129,14 +131,12 @@ class CartPage extends StatelessWidget {
   }
 
   Widget buildListView(List<OrdersCardModel> list) {
-    return Expanded(
-        child: ListView.builder(
+    return  ListView.builder(
       itemBuilder: (ctx, index) {
-        return buildListItem(
-            list[index], index == list.length - 1 ? false : true);
+        return buildListItem(list[index], index == list.length - 1 ? false : true);
       },
       itemCount: list.length,
-    ));
+    );
   }
 
   Widget buildListItem(OrdersCardModel item, bool bool) {
@@ -172,24 +172,52 @@ class CartPage extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                Row(
-                  children: [
-                    CounterWidget(
-                      count: _controller.getTotal(
-                        e[index].responsible!.id!,
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      CounterWidget(
+                        count: _controller.getTotal(
+                          e[index].responsible!.id!,
+                        ),
+                        add: (int amount) {
+                          _controller.changeAmount(
+                              e[index].responsible!.id!, amount);
+                        },
+                        remove: () => {
+                          _controller.changeAmount(
+                              e[index].responsible!.id!,
+                              _controller.getTotal(e[index].responsible!.id!) >
+                                      0
+                                  ? _controller
+                                      .getTotal(e[index].responsible!.id!)
+                                  : 0)
+                        },
+                        delete: () => {
+                          _controller.changeAmount(
+                              e[index].responsible!.id!,
+                              _controller.getTotal(e[index].responsible!.id!) <
+                                      e[index].offering!.maxQty
+                                  ? _controller
+                                          .getTotal(e[index].responsible!.id!) +
+                                      1
+                                  : _controller
+                                      .getTotal(e[index].responsible!.id!))
+                        },
                       ),
-                      add: () {
-                        _controller.removeOrder(e[index].responsible!.id!, 1);
-                      },
-                      remove: () =>
-                          {_controller.addOrder(e[index].responsible!.id!, 1)},
-                      delete: () =>
-                          _controller.deleteOrder(e[index].responsible!.id!),
-                    ),
-                    Image.asset('assets/images/trash.png')
-                  ],
+                      const Expanded(child: SizedBox()),
+                      InkWell(
+                          onTap: () {
+                            _controller.deleteFromList(
+                                e[index].responsible!.id!,
+                                e[index].offering!.id!);
+                          },
+                          child: Image.asset('assets/images/trash.png'))
+                    ],
+                  ),
                 ),
-                if (e[index].offering!.maxQty == _controller.getTotal(e[index].responsible!.id!))
+                if (e[index].offering!.maxQty ==
+                    _controller.getTotal(e[index].responsible!.id!))
                   const Text(
                     'max order limit ',
                     style: TextStyle(

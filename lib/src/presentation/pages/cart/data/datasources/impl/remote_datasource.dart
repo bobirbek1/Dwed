@@ -59,9 +59,9 @@ class CardRemoteDataSourceImpl extends CardRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteItems(int id)  async {
+  Future<bool> changeAmount(int id, int amount)  async {
     try {
-      final res = await client.delete(' ');
+      final res = await client.put(' ');
       if(res != null) {
         return true;
       }
