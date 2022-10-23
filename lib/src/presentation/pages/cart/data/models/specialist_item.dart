@@ -55,8 +55,8 @@ class Offering {
   int? id;
   String? name;
   int? cost;
-  dynamic? discount;
-  dynamic? qty;
+  dynamic discount;
+  dynamic qty;
   int? maxQty;
   int? minQty;
   int? measurement;
@@ -106,7 +106,7 @@ class Responsible {
   Job? job;
   OperatingMode? operatingMode;
   bool? isCatHead;
-  dynamic? position;
+  dynamic position;
 
   Responsible(
       {id,
@@ -292,7 +292,7 @@ class Breaks {
   Breaks({to, from});
 
   Breaks.fromJson(Map<String, dynamic> json) {
-    to = json['to'];
+    to = json['to'].toDouble();
     from = json['from'];
   }
 

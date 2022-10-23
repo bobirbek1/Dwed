@@ -9,6 +9,7 @@ import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get
 import 'package:get/get.dart';
 
 class CardController extends GetxController {
+  // usecases
   final GetCardProductsImpl getCardProducts;
   final GetItemsUseCase getItemsUseCase;
   final DeleteItemUseCase deleteItemUseCase;
@@ -19,16 +20,24 @@ class CardController extends GetxController {
     required this.deleteItemUseCase,
   });
 
+  // get builder's ids
   final checkoutId = 'Checkout_id';
-  final mainListId = 'main_list_id';
+  final cardsId = 'cards_id';
+  final offersId = 'offers_id';
 
+  // states
+  var cardsState = CardState.initial;
+  var offersState = CardState.initial;
 
+  // total product cost
   int totalCost = 0;
+
+  // data
   Map<int, int> orders = {};
   List<SpecialistItemModel> cardProducts = [];
-  Map<int ,List< SpecialistItemModel>> cardProductsMap = <int , List< SpecialistItemModel>>{};
+  Map<int, List<SpecialistItemModel>> cardProductsMap =
+      <int, List<SpecialistItemModel>>{};
   List<OrdersCardModel> orderList = [];
-
 
   @override
   void onInit() {
@@ -36,18 +45,14 @@ class CardController extends GetxController {
     getCardItems();
   }
 
-  changeAmount (int id, int amount) async {
-    final res = await deleteItemUseCase.call(DeleteCartProductParams(id: id, amount: amount));
-    res.fold((failure) => {
-
-    }, (response) => {
-      if(response){
-        orders[id] = amount,
-        calculateCost()
-      } else {
-
-      }
-    });
+  changeAmount(int id, int amount) async {
+    final res = await deleteItemUseCase
+        .call(DeleteCartProductParams(id: id, amount: amount));
+    res.fold(
+        (failure) => {},
+        (response) => {
+              if (response) {orders[id] = amount, calculateCost()} else {}
+            });
   }
 
   deleteFromList(int id, int offeringId) {
@@ -59,44 +64,66 @@ class CardController extends GetxController {
     return orders[id] ?? 0;
   }
 
-  getItems (String org_slug_name, int responsible) async {
-    if(cardProductsMap.containsKey(responsible)) {
+  getItems(String orgSlugName, int responsible) async {
+    updateOffersState(CardState.loading);
+    if (cardProductsMap.containsKey(responsible)) {
+      updateOffersState(CardState.loaded);
       return cardProductsMap[responsible];
-    }else {
-
-      final res = await getItemsUseCase.call(
-          GetItemsUseCaseParams(org_slug_name: org_slug_name, responsible: responsible)
-      );
-      res.fold((failure){
-        if(failure is NetworkFailure) {
-          return [];
-        }
+    } else {
+      final res = await getItemsUseCase.call(GetItemsUseCaseParams(
+          org_slug_name: orgSlugName, responsible: responsible));
+      res.fold((failure) {
+        Get.log("failure: $failure");
+        if (failure is NetworkFailure) {}
+        updateOffersState(CardState.error);
       }, (response) {
         cardProductsMap[responsible] = response;
-        return response;
+        response;
+        updateOffersState(CardState.loaded);
       });
     }
   }
 
   void getCardItems() async {
+    updateCardsState(CardState.loading);
     final res = await getCardProducts.call(NoParams());
     res.fold((failure) {
-      if(failure is NetworkFailure) {
-
-      }
-    }, (response)  {
+      Get.log("failure: $failure");
+      if (failure is NetworkFailure) {}
+      updateCardsState(CardState.error);
+    }, (response) {
       orderList = response;
-      update([mainListId]);
+      for (var element in orderList) {
+        if (element.seller?.specialists != null) {
+          for (var specialist in element.seller!.specialists!) {
+            getItems(element.seller?.slugName ?? "jd_poliklinika",
+                specialist.id ?? 0);
+          }
+        }
+      }
+      updateCardsState(CardState.loaded);
     });
   }
 
-  void calculateCost () {
+  void calculateCost() {
     totalCost = 0;
-    for(var product in cardProducts) {
-      if(orders.containsKey(product.responsible!.id)) {
+    for (var product in cardProducts) {
+      if (orders.containsKey(product.responsible!.id)) {
         totalCost += product.totalCost! * orders[product.responsible!.id]!;
       }
     }
     update([checkoutId]);
   }
+
+  void updateCardsState(CardState state) {
+    cardsState = state;
+    update([cardsId]);
+  }
+
+  void updateOffersState(CardState state) {
+    offersState = state;
+    update([offersId]);
+  }
 }
+
+enum CardState { initial, loading, error, loaded }

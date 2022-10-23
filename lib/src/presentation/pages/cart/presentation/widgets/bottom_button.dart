@@ -1,16 +1,17 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 class BottomButtonWidget extends StatefulWidget {
   int total;
 
   BottomButtonWidget({
+    Key? key,
     required this.total,
-  });
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,14 +20,17 @@ class BottomButtonWidget extends StatefulWidget {
 }
 
 class BottomButtonWidgetState extends State<BottomButtonWidget> {
-
   final cardController = Get.find<CardController>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        margin: const EdgeInsets.all(16),
+        margin: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: SizeConfig.calculateBlockVertical(88),
+        ),
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -39,21 +43,21 @@ class BottomButtonWidgetState extends State<BottomButtonWidget> {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
+                children: [
                   const Text(
                     'Price',
                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
                   ),
                   GetBuilder(
-                    init: cardController,
-                    id: cardController.checkoutId,
-                    builder: (context) {
-                      return  Text(
-                        '40 000 uzs',
-                         style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                      );
-                    }
-                  )
+                      init: cardController,
+                      id: cardController.checkoutId,
+                      builder: (context) {
+                        return Text(
+                          '${widget.total} uzs',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 18),
+                        );
+                      })
                 ],
               ),
             ),

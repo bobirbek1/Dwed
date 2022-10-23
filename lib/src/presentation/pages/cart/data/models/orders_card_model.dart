@@ -217,14 +217,14 @@ class Rating {
 class Professional {
   int? level;
   int? remainingScore;
-  int? score;
+  double? score;
 
   Professional({this.level, this.remainingScore, this.score});
 
   Professional.fromJson(Map<String, dynamic> json) {
     level = json['level'];
     remainingScore = json['remaining_score'];
-    score = json['score'];
+    score = json['score'].toDouble();
   }
 
   Map<String, dynamic> toJson() {
@@ -422,7 +422,7 @@ class Breaks {
   Breaks({this.to, this.from});
 
   Breaks.fromJson(Map<String, dynamic> json) {
-    to = json['to'];
+    to = json['to'].toDouble();
     from = json['from'];
   }
 

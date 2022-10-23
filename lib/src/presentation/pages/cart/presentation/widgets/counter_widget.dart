@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 
@@ -8,12 +10,12 @@ class CounterWidget extends StatefulWidget {
   final Function remove;
   final Function delete;
 
-  CounterWidget({
+  CounterWidget({Key? key, 
     required this.count,
     required this.add,
     required this.remove,
     required this.delete
-  });
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
