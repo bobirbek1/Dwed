@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
@@ -162,6 +163,7 @@ class ItemDetailsPage extends StatelessWidget {
                     height: SizeConfig.calculateBlockVertical(24),
                   ),
                   getOutlinedButton(
+                    (){},
                     "Savatga qo'shish",
                     AppColors.WHITE,
                     AppColors.BUTTON_BLUE,
@@ -184,6 +186,7 @@ class ItemDetailsPage extends StatelessWidget {
                     height: SizeConfig.calculateBlockVertical(12),
                   ),
                   getOutlinedButton(
+                        (){},
                     "Bo'lib to'lash",
                     AppColors.ROYAL_ORANGE,
                     AppColors.WHITE,
@@ -194,6 +197,7 @@ class ItemDetailsPage extends StatelessWidget {
                     height: SizeConfig.calculateBlockVertical(12),
                   ),
                   getOutlinedButton(
+                        (){ Get.toNamed(AppRoutes.CARTPAGE);},
                     "Hoziroq rasmiylashtirish",
                     AppColors.BUTTON_BLUE,
                     AppColors.WHITE,
@@ -312,23 +316,23 @@ class ItemDetailsPage extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: AppColors.BLACK,
                         ),
-Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.CALL_CALLING,
-                          width: SizeConfig.calculateBlockHorizontal(24),
-                          height: SizeConfig.calculateBlockVertical(24),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.CALL_CALLING,
+                              width: SizeConfig.calculateBlockHorizontal(24),
+                              height: SizeConfig.calculateBlockVertical(24),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(16),
+                            ),
+                            SvgPicture.asset(
+                              AppIcons.MESSENGER,
+                              width: SizeConfig.calculateBlockHorizontal(24),
+                              height: SizeConfig.calculateBlockVertical(24),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(16),
-                        ),
-                        SvgPicture.asset(
-                          AppIcons.MESSENGER,
-                          width: SizeConfig.calculateBlockHorizontal(24),
-                          height: SizeConfig.calculateBlockVertical(24),
-                        )
-                      ],
-                    ),
                       ],
                     ),
                     subtitle: Row(
@@ -398,7 +402,6 @@ Row(
                         ),
                       ],
                     ),
-                  
                   ),
                 ],
               ),
@@ -409,14 +412,14 @@ Row(
     );
   }
 
-  getOutlinedButton(
+  getOutlinedButton(dynamic onPressed,
       String text, Color color, Color borderColor, Color textColor,
       [Widget? icon]) {
     return SizedBox(
       width: double.infinity,
       height: SizeConfig.calculateBlockVertical(56),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           backgroundColor: color,
           side: BorderSide(

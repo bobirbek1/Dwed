@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:get/get.dart';
 
-import '../../../../app/app_colors.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -14,7 +14,9 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       appBar: getAppBar(
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+              },
               icon: SvgPicture.asset(
                 AppIcons.ARROW_LEFT,
                 color: Colors.black,
@@ -257,7 +259,10 @@ class CartPage extends StatelessWidget {
             ),
             SizedBox(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(AppRoutes.CHECKOUTPAGE);
+
+                },
                 child: const Text('Checkout'),
               ),
               width: double.infinity,
@@ -319,7 +324,8 @@ class CartPage extends StatelessWidget {
                   ],
                 ))),
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+          },
           style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Colors.blue),
               shape: RoundedRectangleBorder(
