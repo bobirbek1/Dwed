@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/information/cards_widget.dart';
-
-import '../../../../app/app_icons.dart';
+import 'package:get/get.dart';
 
 class InformationPage extends StatelessWidget {
   @override
@@ -11,41 +11,46 @@ class InformationPage extends StatelessWidget {
     SizeConfig().init(context);
 
     return Scaffold(
-      appBar: getAppBar(IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            AppIcons.ARROW_LEFT,
-            color: Colors.black,
-          )), 'Information check'),
-
-      body: Padding(padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Expanded(child: Column(
-                  children: [
-                    buildStatuses(getList()),
-                    
-                    buildListView(getSmartPhoneList()),
-                  ],
+        appBar: getAppBar(
+            IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: SvgPicture.asset(
+                  AppIcons.ARROW_LEFT,
+                  color: Colors.black,
                 )),
-
-                buildBottomButton()
-              ],
-            ),
-          )
-    );
+            'Information check'),
+        body: Padding(
+          padding: EdgeInsets.all(SizeConfig.calculateTextSize(16)),
+          child: Column(
+            children: [
+              Expanded(
+                  child: Column(
+                children: [
+                  buildStatuses(getList()),
+                  buildListView(getSmartPhoneList()),
+                ],
+              )),
+              buildBottomButton()
+            ],
+          ),
+        ));
   }
 
-  
   List<SmartPhoneItem> getSmartPhoneList() {
-    return[
-      SmartPhoneItem(path: 'assets/images/phone.png', description: 'Smartphone iPhone 12 Pro 128GB Graphite', price: '1 x 11 124 000 UZS'),
+    return [
+      SmartPhoneItem(
+          path: 'assets/images/phone.png',
+          description: 'Smartphone iPhone 12 Pro 128GB Graphite',
+          price: '1 x 11 124 000 UZS'),
     ];
   }
 
   Widget buildListView(List<SmartPhoneItem> list) {
-    return Expanded(child: ListView.builder(
-        itemBuilder: (ctx, index) => buildListItem(list[index]),
+    return Expanded(
+        child: ListView.builder(
+      itemBuilder: (ctx, index) => buildListItem(list[index]),
       itemCount: list.length,
     ));
   }
@@ -53,21 +58,33 @@ class InformationPage extends StatelessWidget {
   Widget buildListItem(SmartPhoneItem item) {
     return Column(
       children: [
-        const SizedBox(height: 8,),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(8),
+        ),
         Row(
           children: [
             Image.asset(item.path),
-
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.description, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
-                Text(item.price, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                Text(
+                  item.description,
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(14),
+                      fontWeight: FontWeight.w400),
+                ),
+                Text(
+                  item.price,
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             )
           ],
         ),
-
         const Divider(
           color: Colors.black12,
           thickness: 0.5,
@@ -75,11 +92,14 @@ class InformationPage extends StatelessWidget {
       ],
     );
   }
-  
+
   List<StatusItem> getList() {
     return [
       StatusItem(title: 'Order status:', description: 'Pending'),
-      StatusItem(title: 'Organizations:', description: 'OT’Y AO O’zbekiston Temir yo’llari oilaviy shifoxonasi'),
+      StatusItem(
+          title: 'Organizations:',
+          description:
+              'OT’Y AO O’zbekiston Temir yo’llari oilaviy shifoxonasi'),
       StatusItem(title: 'Specialist:', description: 'Alimukhammedova'),
       StatusItem(title: 'Payment method:', description: 'Payme'),
       StatusItem(title: 'Price:', description: '900 000 UZS'),
@@ -90,21 +110,32 @@ class InformationPage extends StatelessWidget {
 
   Widget buildStatuses(List<StatusItem> list) {
     return Column(
-      children: [
-        ...list.map((e) => buildStatusItem(e)).toList()
-      ],
+      children: [...list.map((e) => buildStatusItem(e)).toList()],
     );
   }
 
   Widget buildStatusItem(StatusItem item) {
     return Column(
       children: [
-        SizedBox(height: SizeConfig.calculateBlockVertical(16),),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
         Row(
           children: [
-            Text(item.title, style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12),),
-            Expanded(child: SizedBox()),
-            Expanded(child: Text(item.description, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12, ),textAlign: TextAlign.right,))
+            Text(
+              item.title,
+              style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+            ),
+            const Expanded(child: SizedBox()),
+            Expanded(
+                child: Text(
+              item.description,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: SizeConfig.calculateTextSize(12),
+              ),
+              textAlign: TextAlign.right,
+            ))
           ],
         ),
       ],
@@ -115,28 +146,24 @@ class InformationPage extends StatelessWidget {
     return Container(
         width: double.infinity,
         height: 56,
-        decoration: const BoxDecoration(boxShadow: [
-          BoxShadow(
-              color: Colors.white,
-              blurRadius: 10,
-              offset: Offset(4, 8) ),
-        ],
-
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.white, blurRadius: 10, offset: Offset(4, 8)),
+          ],
         ),
-        child : SizedBox(
+        child: SizedBox(
           child: ElevatedButton(
             onPressed: () {
-
+              Get.offAllNamed(AppRoutes.BOTTOM_BAR_VIEW);
             },
-            child: const Text('Select'),
-
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
+            child: const Text('Cancel order'),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
           ),
           width: double.infinity,
-        )
-    );
+        ));
   }
-
 
   AppBar getAppBar(Widget leading, String title) {
     return AppBar(
@@ -151,10 +178,9 @@ class InformationPage extends StatelessWidget {
       ),
     );
   }
-  
 }
 
-class StatusItem{
+class StatusItem {
   final String title;
   final String description;
 
@@ -164,12 +190,12 @@ class StatusItem{
   });
 }
 
-class SmartPhoneItem{
+class SmartPhoneItem {
   final String path;
   final String description;
   final String price;
 
-  SmartPhoneItem ({
+  SmartPhoneItem({
     required this.path,
     required this.description,
     required this.price,

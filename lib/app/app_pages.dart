@@ -1,5 +1,10 @@
 import 'package:flutter_template/bottom_bar_page.dart';
+import 'package:flutter_template/src/presentation/pages/cart/presentation/pages/cart_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout/presentation/pages/checkout_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_ordered/checkout_ordered_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/checkout_payment_method_1_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
+import 'package:flutter_template/src/presentation/pages/information/information_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/creat_account_date_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_gender_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/create_account_address.dart';
@@ -92,5 +97,10 @@ class AppPages {
         name: AppRoutes.ITEM_DETAILS_PAGE,
         page: () => const ItemDetailsPage()),
     GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => const BottomBarView()),
+    GetPage(name: AppRoutes.CARTPAGE, page: () =>  CartPage()),
+    GetPage(name: AppRoutes.CHECKOUTPAGE, page: () =>  CheckoutPage()),
+    GetPage(name: AppRoutes.PAYMENTMETHOD, page: () =>  MethodFirst()),
+    GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () =>  CheckoutOrdered()),
+    GetPage(name: AppRoutes.INFORMATIONPAGE, page: () =>  InformationPage()),
   ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:get/get.dart';
 
 class CheckoutOrdered extends StatelessWidget {
   @override
@@ -12,15 +13,15 @@ class CheckoutOrdered extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-
-            Expanded(child: Column(
+            Expanded(
+                child: Column(
               children: [
-                SizedBox(height : SizeConfig.calculateBlockVertical(220),),
-
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(220),
+                ),
                 buildCenterWidget(),
               ],
             )),
-
             buildBottomButton()
           ],
         ),
@@ -30,12 +31,16 @@ class CheckoutOrdered extends StatelessWidget {
 
   Widget buildCenterWidget() {
     return Column(
-      children:  [
-
+      children: [
         Image.asset('assets/images/done_icon.png'),
-        const Text('Successfully ordered' , style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),),
-        const Text('Thank you for choosing our application', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-
+        const Text(
+          'Successfully ordered',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+        ),
+        const Text(
+          'Thank you for choosing our application',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        ),
       ],
     );
   }
@@ -46,21 +51,22 @@ class CheckoutOrdered extends StatelessWidget {
         SizedBox(
           child: OutlinedButton(
             onPressed: () {
-
+              Get.back();
             },
-            style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.blueAccent)),
+            style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.blueAccent)),
             child: const Text('View check details'),
           ),
           height: SizeConfig.calculateBlockVertical(56),
           width: double.infinity,
         ),
-
-        SizedBox(height: SizeConfig.calculateBlockVertical(16),),
-
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
         SizedBox(
           child: ElevatedButton(
             onPressed: () {
-
+              Get.toNamed(AppRoutes.INFORMATIONPAGE);
             },
             child: const Text('Continue ordering ->'),
           ),
@@ -70,5 +76,4 @@ class CheckoutOrdered extends StatelessWidget {
       ],
     );
   }
-
 }
