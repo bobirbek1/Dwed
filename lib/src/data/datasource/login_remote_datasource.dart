@@ -2,15 +2,22 @@ import 'package:dio/dio.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
 import 'package:flutter_template/src/data/model/country_model.dart';
 import 'package:flutter_template/src/data/model/create_account_token_model.dart';
+import 'package:flutter_template/src/data/model/offers_details_model.dart';
+import 'package:flutter_template/src/data/model/offers_model.dart';
+import 'package:flutter_template/src/data/model/organisation_model.dart';
 import 'package:flutter_template/src/data/model/region_model.dart';
 import 'package:flutter_template/src/data/model/sector_model.dart';
 import 'package:flutter_template/src/data/model/specialty_model.dart';
 import 'package:flutter_template/src/data/model/token_model.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 abstract class LoginRemoteDatasource {
   Future<TokenModel> login(String username, String password);
+
   Future<bool> reset(String newPassword, String confirmPassword);
+
   Future<bool> sendPhone(String sendPhone);
+
   Future<bool> smsCode(String smsCode);
 
   Future<CreateAccountModel> createAccount(
@@ -20,16 +27,27 @@ abstract class LoginRemoteDatasource {
     String phone,
     String password,
   );
+
   // Future<CreateAccountModel> specialty(String specilaty);
   Future<RegionModel> region(int countryId);
+
+  Future<List<OrganisationModel>> organisation();
+  Future<List<OffersModel>> offers();
+  Future<List<OffersModel>> offersChild(int id);
+  Future<List<OffersDetailsModel>> offersDetails(int id);
+
   Future<CountryModel> country();
+
   Future<SectorModel> sector();
+
   Future<SpecialityModel> specialty(String sectorName);
 
-  Future<bool> updateAccount(String? birthday,
+  Future<bool> updateAccount(
+    String? birthday,
     String gender,
     int? liveAddress,
-    int? specialty,);
+    int? specialty,
+  );
 }
 
 class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
@@ -215,4 +233,105 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
       rethrow;
     }
   }
+
+  @override
+  Future<List<OrganisationModel>> organisation() async {
+    try {
+      final result = await client.get(
+        "v1.0/api/orgs/?limit=100",
+      );
+      final data = result.data;
+      Get.log("Organisation remotedata result$data");
+      if (data != null) {
+        return data["results"].map<OrganisationModel>((e) {
+          Get.log("Organisation map => $e}");
+          Get.log("Organisation map from =>${OrganisationModel.fromJson(e)}");
+          return OrganisationModel.fromJson(e);
+        }).toList();
+      }
+      throw ServerUnknownException();
+    } catch (e) {
+      Get.log(e.toString(),isError: true);
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<OffersModel>> offers()  async {
+    try {
+      final result = await client.get(
+        "v1.0/api/cats/offers_cats/get_subs/0/",
+      );
+      final data = result.data;
+      Get.log("Offers remotedata result$data");
+      if (data != null) {
+        return data["results"].map<OffersModel>((e) {
+          Get.log("Offers map => $e}");
+          Get.log("Offers map from =>${OffersModel.fromJson(e)}");
+          return OffersModel.fromJson(e);
+        }).toList();
+      }
+      throw ServerUnknownException();
+    } catch (e) {
+      Get.log(e.toString(),isError: true);
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<OffersModel>> offersChild(int id) async {
+    try {
+      final result = await client.get(
+        "v1.0/api/cats/offers_cats/get_subs/$id/",
+      );
+      final data = result.data;
+      if (data != null) {
+        Get.log("OffersChild remotedata result${data["results"].toString()}");
+        return data["results"].map<OffersModel>((e) {
+          Get.log("OffersChild map => $e}");
+          Get.log("OffersChild map from =>${OffersModel.fromJson(e)}");
+          return OffersModel.fromJson(e);
+        }).toList();
+      }
+      throw ServerUnknownException();
+    } catch (e) {
+      Get.log(e.toString(),isError: true);
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<OffersDetailsModel>> offersDetails(int id)async {
+    try {
+      final result = await client.get(
+        "v1.0/api/offerings/?limit=200&offer_cat=$id",
+      );
+      final data = result.data;
+      if (data != null) {
+        Get.log("OffersDetails remotedata result${data["results"].toString()}");
+        return data["results"].map<OffersDetailsModel>((e) {
+          Get.log("OffersDetails map => $e}");
+          Get.log("OffersDetails map from =>${OffersDetailsModel.fromJson(e)}");
+          return OffersDetailsModel.fromJson(e);
+        }).toList();
+      }
+      throw ServerUnknownException();
+    } catch (e) {
+      Get.log(e.toString(),isError: true);
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
 }

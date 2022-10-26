@@ -5,10 +5,12 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 
 class OffersSubDetailsPage extends StatefulWidget {
   OffersSubDetailsPage({Key? key}) : super(key: key);
+  final _controller = Get.find<OffersController>();
 
   @override
   State<OffersSubDetailsPage> createState() => _OffersSubDetailsPageState();
@@ -17,6 +19,7 @@ class OffersSubDetailsPage extends StatefulWidget {
 class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   final title = Get.arguments;
   bool isVertical = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,44 +192,53 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   }
 
   getItems() {
-    return Column(
-      children: [
-        getSortFilter(),
-        Expanded(
-          child: isVertical
-              ? GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
-                      SizeConfig.calculateBlockVertical(267),
-                  children: [
-                    getGridItem(
-                      "12 599 000 UZS",
-                      getPrice(),
-                    ),
-                    getGridItem(),
-                    getGridItem(),
-                    getGridItem(
-                      "12 599 000 UZS",
-                      getPrice(),
-                    ),
-                    getGridItem(),
-                    getGridItem(
-                      "12 599 000 UZS",
-                      getPrice(),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return getHorListItem();
-                  }),
-        ),
-      ],
-    );
+    return GetBuilder(
+        id: widget._controller.offersDetailsId,
+        init: widget._controller,
+        builder: (context) {
+          Get.log("OfferDetails data ${widget._controller.offersDetailsList}");
+          return Column(
+            children: [
+              getSortFilter(),
+              Expanded(
+                child: isVertical
+                    ? GridView.builder(
+                  itemCount: widget._controller.offersDetailsList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio:
+                              SizeConfig.calculateBlockHorizontal(167) /
+                                  SizeConfig.calculateBlockVertical(267),
+                        ),
+                        itemBuilder: (context, index) {
+                          final data =
+                              widget._controller.offersDetailsList[index];
+                          return GestureDetector(
+                              onTap: () {},
+                              child: getGridItem(
+                                  data.name != null
+                                      ? widget._controller
+                                          .offersDetailsList[index].name!
+                                      : "----",
+                                  data.cost != null
+                                      ? widget._controller
+                                          .offersDetailsList[index].cost!
+                                      : 0,
+                                  data.image));
+                        })
+                    : ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (BuildContext context, int index) {
+                          return getHorListItem();
+                        }),
+              ),
+            ],
+          );
+        });
   }
 
-  getGridItem([String? text, Widget? prices]) {
+  getGridItem(String title, int price,
+      [String? image, String? text, Widget? prices]) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(4.5),
@@ -242,10 +254,17 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
               ),
               Stack(
                 children: [
-                  Image.asset(
-                    AppImages.IPHONE_13,
+                  Container(
                     width: SizeConfig.calculateBlockHorizontal(167),
                     height: SizeConfig.calculateBlockVertical(180),
+                    child: Expanded(
+                      child: image == null
+                          ? Image.asset(
+                              AppImages.IPHONE_13,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.network(image),
+                    ),
                   ),
                   prices ?? const SizedBox(),
                 ],
@@ -259,7 +278,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Smartphone iPhone 12 Pro\n128GB Graphite",
+                title,
                 style: TextStyle(
                   fontSize: SizeConfig.calculateTextSize(12),
                   fontWeight: FontWeight.w400,
@@ -269,7 +288,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                 height: SizeConfig.calculateBlockVertical(8),
               ),
               Text(
-                "11 124 000 UZS",
+                "${price.toString()} uzs",
                 style: TextStyle(
                   fontSize: SizeConfig.calculateTextSize(14),
                   fontWeight: FontWeight.w600,
@@ -344,12 +363,12 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   getHorListItem() {
     return Padding(
       padding: EdgeInsets.only(
-        left:SizeConfig.calculateBlockHorizontal(16),
+        left: SizeConfig.calculateBlockHorizontal(16),
         top: SizeConfig.calculateBlockVertical(16),
-        right:SizeConfig.calculateBlockHorizontal(16),
+        right: SizeConfig.calculateBlockHorizontal(16),
       ),
       child: InkWell(
-        onTap: (){
+        onTap: () {
           Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
         },
         child: Row(

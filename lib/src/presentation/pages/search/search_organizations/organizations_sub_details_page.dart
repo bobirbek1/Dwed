@@ -5,11 +5,14 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 
 class OrganizationsSubDetailsPage extends StatelessWidget {
   OrganizationsSubDetailsPage({Key? key}) : super(key: key);
   final title = Get.arguments;
+  final _controller = Get.find<OffersController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +76,7 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
   }
 
   getSortFilter() {
-   return Column(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
@@ -182,17 +185,26 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
             child: ListView.builder(
                 itemCount: orgSubDetailsImages.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final data = _controller.offersChildList[index];
+                  Get.log("Get offers child page data => $data");
                   return ListTile(
-                    leading: Image.asset(
-                      orgSubDetailsImages[index],
-                      width: SizeConfig.calculateBlockHorizontal(56),
-                      height: SizeConfig.calculateBlockVertical(56),
-                    ),
+                    leading: data.image != null
+                        ? SvgPicture.string(
+                            data.image!,
+                            fit: BoxFit.contain,
+                            width: SizeConfig.calculateBlockHorizontal(56),
+                            height: SizeConfig.calculateBlockVertical(56),
+                          )
+                        : Image.asset(
+                            AppImages.PLAYGROUND,
+                            width: SizeConfig.calculateBlockHorizontal(56),
+                            height: SizeConfig.calculateBlockVertical(56),
+                          ),
                     title: InkWell(
                       onTap: () {
                         Get.toNamed(
                           AppRoutes.USER_POST_PAGE,
-                          arguments: orgSubDetailsTitles[index],
+                          arguments: data.name!,
                         );
                       },
                       child: Column(
@@ -201,7 +213,7 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                orgSubDetailsTitles[index],
+                                data.name != null ? data.name! : "----",
                                 style: TextStyle(
                                   fontSize: SizeConfig.calculateTextSize(16),
                                   fontWeight: FontWeight.w500,

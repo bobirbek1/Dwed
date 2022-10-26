@@ -5,6 +5,8 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:flutter_template/src/presentation/pages/search/recent_searches_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_typing.dart';
 import 'package:get/get.dart';
@@ -14,11 +16,14 @@ class SearchPage extends StatefulWidget {
 
   @override
   State<SearchPage> createState() => _SearchPageState();
+  final _controllerOrganisation = Get.find<OrganisationController>();
+  final _controllerOffers = Get.find<OffersController>();
 }
 
 class _SearchPageState extends State<SearchPage> {
   bool typing = true;
   final TextEditingController controller = TextEditingController();
+
   @override
   void dispose() {
     controller.dispose();
@@ -213,12 +218,27 @@ class _SearchPageState extends State<SearchPage> {
 
   getOffersPage() {
     return ListView.builder(
-        itemCount: offerPageItemsIcons.length,
+        itemCount: widget._controllerOffers.offersList.length,
         itemBuilder: (BuildContext context, int index) {
+          final data = widget._controllerOffers.offersList[index];
+          Get.log("OffersPage list=> ${data.id}");
+
           return InkWell(
             onTap: () {
-              Get.toNamed(AppRoutes.OFFERS_SUB_PAGE,
-                  arguments: offerPageItemsTitles[index]);
+              if (!widget._controllerOffers.hasSubs!) {
+                Get.toNamed(
+                  AppRoutes.OFFERS_SUB_PAGE,
+                  arguments: data.name,
+                );
+                widget._controllerOffers.selectOffersModel = data;
+                widget._controllerOffers.getOffersChildList();
+              } else {
+                Get.toNamed(AppRoutes.OFFERS_SUB_DETAILS_PAGE,arguments: data.name);
+                widget._controllerOffers.selectOffersModel = data;
+                widget._controllerOffers.getOffersDetailsList();
+              }
+
+
             },
             child: Column(
               children: [
@@ -226,10 +246,15 @@ class _SearchPageState extends State<SearchPage> {
                   leading: SizedBox(
                     width: SizeConfig.calculateBlockHorizontal(56),
                     height: SizeConfig.calculateBlockVertical(56),
-                    child: Image.asset(offerPageItemsIcons[index]),
+                    child: data.image != null
+                        ? SvgPicture.string(
+                            data.image!,
+                            fit: BoxFit.contain,
+                          )
+                        : Image.asset(AppImages.PLAYGROUND),
                   ),
                   title: Text(
-                    offerPageItemsTitles[index],
+                    data.name != null ? data.name! : "----",
                     style: TextStyle(
                       color: AppColors.BLACK,
                       fontSize: SizeConfig.calculateTextSize(16),
@@ -237,7 +262,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   subtitle: Text(
-                    offerPageItemsSubtitles[index],
+                    data.id != null ? "${data.id!} products" : "----",
                     style: TextStyle(
                       color: AppColors.SHADOW_BLUE,
                       fontSize: SizeConfig.calculateTextSize(12),
@@ -290,13 +315,22 @@ class _SearchPageState extends State<SearchPage> {
 
   getOrganizationsPage() {
     return ListView.builder(
-        itemCount: organizationPageItemsIcons.length,
+        itemCount: widget._controllerOrganisation.organisationList.length,
         itemBuilder: (BuildContext context, int index) {
+          final data = widget._controllerOrganisation.organisationList[index];
+          Get.log("Organisation index=>$index");
+          Get.log(
+              "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
+          Get.log("Organisation List => $data}");
+          Get.log("Organisation item logo ${data.category!.image!}");
+          // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
+          // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
+
           return InkWell(
             onTap: () {
               Get.toNamed(
                 AppRoutes.ORGANIZATIONS_SUB_PAGE,
-                arguments: organizationPageItemsTitles[index],
+                arguments: data.name!,
               );
             },
             child: Column(
@@ -305,10 +339,12 @@ class _SearchPageState extends State<SearchPage> {
                   leading: SizedBox(
                     width: SizeConfig.calculateBlockHorizontal(56),
                     height: SizeConfig.calculateBlockVertical(56),
-                    child: Image.asset(organizationPageItemsIcons[index]),
+                    child: data.logo != null
+                        ? Image.network(data.category!.image!)
+                        : Image.asset(AppImages.PLAYGROUND),
                   ),
                   title: Text(
-                    organizationPageItemsTitles[index],
+                    data.name != null ? data.name! : "----",
                     style: TextStyle(
                       color: AppColors.BLACK,
                       fontSize: SizeConfig.calculateTextSize(16),
@@ -316,7 +352,9 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   subtitle: Text(
-                    organizationPageItemsSubtitles[index],
+                    data.subs!.me != null
+                        ? "${data.subs!.me!} Organizations"
+                        : "0 Organizations",
                     style: TextStyle(
                       color: AppColors.GRAY_X11,
                       fontSize: SizeConfig.calculateTextSize(12),

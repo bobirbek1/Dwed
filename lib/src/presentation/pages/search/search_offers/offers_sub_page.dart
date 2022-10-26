@@ -5,11 +5,13 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 
 class OffersSubPage extends StatelessWidget {
   OffersSubPage({Key? key}) : super(key: key);
   final argument = Get.arguments;
+  final _controllerOffers = Get.find<OffersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -113,52 +115,74 @@ class OffersSubPage extends StatelessWidget {
     return Column(
       children: [
         getOutlinedButton(),
-        Expanded(
-          child: ListView.builder(
-            
-              itemCount: phonePageItemsIcons.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                      arguments: phonePageItemsTitles[index],
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(56),
-                          height: SizeConfig.calculateBlockVertical(56),
-                          child: Image.asset(phonePageItemsIcons[index]),
+        GetBuilder(
+            init: _controllerOffers,
+            id: _controllerOffers.offersChildId,
+            builder: (context) {
+              return Expanded(
+                child: ListView.builder(
+                    itemCount: _controllerOffers.offersChildList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final data = _controllerOffers.offersChildList[index];
+                      Get.log("Offers Sub page data => ${data.name}}");
+                      return InkWell(
+                        onTap: () {
+                          if (!_controllerOffers.hasSubsChild!) {
+                            Get.toNamed(AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+                                arguments: data.name);
+                            _controllerOffers.selectOffersModel = data;
+                            _controllerOffers.getOffersDetailsList();
+                          } else {
+                            Get.toNamed(
+                              AppRoutes.OFFERS_SUB_PAGE,
+                              arguments: data.name,
+                            );
+                            _controllerOffers.selectOffersModel = data;
+                            _controllerOffers.getOffersChildList();
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: SizedBox(
+                                width: SizeConfig.calculateBlockHorizontal(56),
+                                height: SizeConfig.calculateBlockVertical(56),
+                                child: data.image != null
+                                    ? SvgPicture.string(
+                                        data.image!,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : Image.asset(AppImages.PLAYGROUND),
+                              ),
+                              title: Text(
+                                data.name != null ? data.name! : "----",
+                                style: TextStyle(
+                                  color: AppColors.BLACK,
+                                  fontSize: SizeConfig.calculateTextSize(16),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                data.id != null
+                                    ? "${data.id!} products"
+                                    : "----",
+                                style: TextStyle(
+                                  color: AppColors.SHADOW_BLUE,
+                                  fontSize: SizeConfig.calculateTextSize(12),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              indent: SizeConfig.calculateBlockHorizontal(88),
+                              height: SizeConfig.calculateBlockVertical(8),
+                            ),
+                          ],
                         ),
-                        title: Text(
-                          phonePageItemsTitles[index],
-                          style: TextStyle(
-                            color: AppColors.BLACK,
-                            fontSize: SizeConfig.calculateTextSize(16),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        subtitle: Text(
-                          phonePageItemsSubtitles[index],
-                          style: TextStyle(
-                            color: AppColors.SHADOW_BLUE,
-                            fontSize: SizeConfig.calculateTextSize(12),
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        indent: SizeConfig.calculateBlockHorizontal(88),
-                        height: SizeConfig.calculateBlockVertical(8),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        ),
+                      );
+                    }),
+              );
+            }),
       ],
     );
   }
