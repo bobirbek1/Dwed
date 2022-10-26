@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/add_cards_page.dart';
-import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/checkout_payment_method_1_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/presentation/widgets/add_cards_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/presentation/pages/checkout_payment_method_1_page.dart';
 
-import '../information/cards_widget.dart';
+import '../../../information/cards_widget.dart';
 
 class ListItem extends StatefulWidget {
   final BankItem item;
@@ -48,16 +50,20 @@ class ListItemState extends State<ListItem> {
                 },
                 child: Row(
                   children: [
-                    Image.asset(item.picPath),
+                    SizedBox(child: Image.asset(item.picPath), height: 24,),
 
                     const SizedBox(width: 12,),
 
-                    Expanded(
-                      child: Text(item.title, style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w400),),
+                    const Expanded(
+                      child: SizedBox()
                     ),
 
-                    _clicked? Image.asset('assets/images/tick-circle.png') : Text(item.discount, style: const TextStyle(
+                    Text(item.title, style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w400),),
+
+                    const SizedBox(width: 16,),
+
+                    _clicked? SvgPicture.asset(AppIcons.ICON_OFFICIAL) : Text(item.discount, style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w400),),
 
                     const SizedBox(width: 16,)
@@ -76,7 +82,7 @@ class ListItemState extends State<ListItem> {
                   children: [
                     SizedBox(width: SizeConfig.calculateBlockHorizontal(8)),
 
-                    Image.asset('assets/images/uzcart_logo.png'),
+                    SvgPicture.asset(AppIcons.ICON_UZCART),
 
                     SizedBox(width: SizeConfig.calculateBlockHorizontal(12.37)),
 

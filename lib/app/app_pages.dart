@@ -2,7 +2,7 @@ import 'package:flutter_template/bottom_bar_page.dart';
 import 'package:flutter_template/src/presentation/pages/cart/presentation/pages/cart_page.dart';
 import 'package:flutter_template/src/presentation/pages/checkout/presentation/pages/checkout_page.dart';
 import 'package:flutter_template/src/presentation/pages/checkout_ordered/checkout_ordered_page.dart';
-import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/checkout_payment_method_1_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/presentation/pages/checkout_payment_method_1_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
 import 'package:flutter_template/src/presentation/pages/information/information_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/create_account/creat_account_date_page.dart';

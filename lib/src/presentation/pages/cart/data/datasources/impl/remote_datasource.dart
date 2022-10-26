@@ -60,10 +60,12 @@ class CardRemoteDataSourceImpl extends CardRemoteDataSource {
   }
 
   @override
-  Future<bool> changeAmount(int id, int amount) async {
+  Future<bool> changeAmount(int offerId, int amount) async {
     try {
-      final res = await client.put(' ');
-      if (res != null) {
+      FormData formData = FormData.fromMap({'qty' : amount});
+      final res = await client.put('/v1.0/api/orders/cart/$offerId/', data: formData);
+      final response = res.data;
+      if (response != null) {
         return true;
       }
       throw ServerUnknownException();
@@ -71,6 +73,24 @@ class CardRemoteDataSourceImpl extends CardRemoteDataSource {
       if (e is DioError) {
         rethrow;
       } else {
+        throw ServerUnknownException();
+      }
+    }
+  }
+
+  @override
+  Future<bool> delete(int offerID, int amount) async {
+    try {
+      final res = await client.delete('/v1.0/api/orders/cart/$offerID/');
+      final response = res.data;
+      if(response != null) {
+        return true;
+      }
+      throw ServerUnknownException();
+    }catch (e) {
+      if(e is DioError) {
+        rethrow;
+      }else {
         throw ServerUnknownException();
       }
     }

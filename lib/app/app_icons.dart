@@ -25,6 +25,14 @@ class AppIcons {
   static const String BAG = "assets/icons/bag-2.svg";
   static const String MESSENGER = "assets/icons/messenger.svg";
   static const String CALL_CALLING = "assets/icons/call-calling.svg";
-  
+  static const String ARROW_RIGHT = "assets/icons/icon_arrow_right.svg";
+  static const String ICON_ANOR_BANK = "assets/icons/icon_anor_bank.svg";
+  static const String ICON_PAY_ME = "assets/icons/icon_payme.svg";
+  static const String ICON_NAQD_PUL = "assets/icons/icon_naqd_pul.svg";
+  static const String ICON_TERMINAL = "assets/icons/icon_terminal.svg";
+  static const String ICON_MUDDATLI = "assets/icons/icon_muddatli.svg";
+  static const String ICON_OFFICIAL = "assets/icons/tick_official.svg";
+  static const String ICON_UZCART = "assets/icons/icon_uzcart.svg";
+
   static const String BRO = "assets/icons/bro.svg";
 }

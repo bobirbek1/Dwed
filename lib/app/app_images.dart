@@ -45,5 +45,11 @@ class AppImages{
   static const String BORDER = "assets/images/Border.png";
   static const String ANHOR_4 = "assets/images/anhor_4.png";
 
+  static const String ICON_ANOR_BANK = "assets/images/icon_anorbank.png";
+  static const String ICON_MUDDATLI = "assets/images/icon_muddatli.png";
+  static const String ICON_NAQD_PUL = "assets/images/icon_naqdpul.png";
+  static const String ICON_PAY_ME = "assets/images/icon_payme.png";
+  static const String ICON_TERMINAL = "assets/images/icon_terminalnew.png";
+
 
 }

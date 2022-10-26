@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/add_cards_page.dart';
-import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/list_item.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/presentation/widgets/add_cards_page.dart';
+import 'package:flutter_template/src/presentation/pages/checkout_payment_method_1/presentation/widgets/list_item.dart';
 import 'package:get/get.dart';
 
 class MethodFirst extends StatelessWidget {
@@ -39,21 +40,21 @@ class MethodFirst extends StatelessWidget {
       BankItem(
           title: '',
           discount: '1% cashback',
-          picPath: 'assets/images/anorbank_logo.png'),
+          picPath: AppImages.ICON_ANOR_BANK),
       BankItem(
-          title: '', discount: '', picPath: 'assets/images/payme_logo.png'),
+          title: '', discount: '', picPath: AppImages.ICON_PAY_ME),
       BankItem(
           title: 'Naqd Pul',
           discount: '',
-          picPath: 'assets/images/naqdpul_logo.png'),
+          picPath: AppImages.ICON_NAQD_PUL),
       BankItem(
           title: 'Terminal',
           discount: '',
-          picPath: 'assets/images/terminal_logo.png'),
+          picPath: AppImages.ICON_TERMINAL),
       BankItem(
           title: 'Muddatli To\'lov',
           discount: '',
-          picPath: 'assets/images/muddatlitolov_logo.png'),
+          picPath: AppImages.ICON_MUDDATLI),
     ];
   }
 

@@ -9,4 +9,6 @@ abstract class CardRemoteDataSource {
   Future<List<SpecialistItemModel>> getItems(String org_slug_name, int responsible);
 
   Future<bool> changeAmount(int id, int amount);
+
+  Future<bool> delete(int offerID, int amount);
 }

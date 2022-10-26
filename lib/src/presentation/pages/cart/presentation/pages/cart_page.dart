@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
 import 'package:flutter_template/src/presentation/pages/cart/presentation/widgets/bottom_button.dart';
@@ -35,8 +37,16 @@ class CartPage extends StatelessWidget {
                 "state: ${_controller.cardsState}, data: ${_controller.orderList}");
             return Column(
               children: [
-                buildListView(data),
-                BottomButtonWidget(total: _controller.totalCost)
+                GetBuilder(
+                  id: _controller.cardsId,
+                  init: _controller,
+                  builder: (context) {
+                    return buildListView(data);
+                  }
+                ),
+
+               getBottomButton(_controller.totalCost)
+
               ],
             );
           }),
@@ -45,24 +55,48 @@ class CartPage extends StatelessWidget {
 
   Widget buildListView(List<OrdersCardModel> list) {
     return Expanded(
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return buildListItem(
-              list[index], index == list.length - 1 ? false : true);
-        },
-        itemCount: list.length,
+      child: _controller.cardsState == CardState.loading ?
+          const Center(
+            child: CircularProgressIndicator(
+              value: null,
+              strokeWidth: 5.0,
+            ),
+          ) :
+      SingleChildScrollView(
+        child: Column(children: [
+          ...List.generate(
+            list.length,
+            (index) => buildListItem(
+                list[index], index == list.length - 1 ? false : true),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+        ]),
       ),
+      // ListView.builder(
+      //   itemBuilder: (ctx, index) {
+      //     return
+      //   },
+      //   itemCount: list.length,
+      // ),
     );
   }
 
   Widget buildListItem(OrdersCardModel item, bool bool) {
+    final itemLength = item.seller?.specialists?.length != null
+        ? item.seller!.specialists!.length * 2 - 1
+        : 0;
     return Column(
       children: [
         buildContainer(getAddsRow(item.seller!)),
-        ...item.seller!.specialists!.map(
-          (e) => getSpecialist(
-            e,
-          ),
+        ...List.generate(
+          itemLength,
+          (index) => index.isEven
+              ? getSpecialist(
+                  item.seller!.specialists![index ~/ 2],
+                )
+              : const SizedBox(height: 16),
         ),
       ],
     );
@@ -162,7 +196,7 @@ class CartPage extends StatelessWidget {
                 width: SizeConfig.calculateBlockHorizontal(16),
               ),
               Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -183,6 +217,9 @@ class CartPage extends StatelessWidget {
                           : const SizedBox(),
                     ],
                   ),
+                  const SizedBox(
+                    height: 4,
+                  ),
                   Text(
                     specialist.job!.name!,
                     textAlign: TextAlign.left,
@@ -193,7 +230,13 @@ class CartPage extends StatelessWidget {
               ),
             ],
           ),
-          buildOffers(specialist.id ?? 0),
+          const SizedBox(
+            height: 24,
+          ),
+          getOffersText(),
+          buildOffers(
+            specialist.id ?? 0,
+          ),
         ],
       ),
     );
@@ -202,7 +245,7 @@ class CartPage extends StatelessWidget {
   Widget getOffersText() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(left: 16.0, bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: const Text(
         'Offers',
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -221,78 +264,140 @@ class CartPage extends StatelessWidget {
   Widget buildOffers(int id) {
     return GetBuilder(
         init: _controller,
-        id: _controller.cardsId,
+        id: _controller.offersId,
         builder: (context) {
           final data = _controller.cardProductsMap[id];
-          return Column(
-            children: List.generate(data?.length ?? 0, (index) {
-              final data = _controller.cardProductsMap[id]?[index];
-              return Row(
-                children: [
-                  SizedBox(
-                    child: Image.network(data!.offering!.image!),
-                    width: SizeConfig.calculateBlockHorizontal(100),
-                    height: SizeConfig.calculateBlockVertical(100),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data.responsible?.user?.fullName ?? "- - - -",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 14),
-                        ),
-                        Text(
-                          (data.offering?.cost ?? 0).toString() + " UZS",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        CounterWidget(
-                          count: _controller.getTotal(
-                            data.responsible!.id!,
-                          ),
-                          add: (int amount) {
-                            _controller.changeAmount(
-                                data.responsible!.id!, amount);
-                          },
-                          remove: () => {
-                            _controller.changeAmount(
-                                data.responsible!.id!,
-                                _controller.getTotal(data.responsible!.id!) > 0
-                                    ? _controller
-                                        .getTotal(data.responsible!.id!)
-                                    : 0)
-                          },
-                          delete: () => {
-                            _controller.changeAmount(
-                                data.responsible!.id!,
-                                _controller.getTotal(data.responsible!.id!) <
-                                        data.offering!.maxQty
-                                    ? _controller
-                                            .getTotal(data.responsible!.id!) +
-                                        1
-                                    : _controller
-                                        .getTotal(data.responsible!.id!))
-                          },
-                        ),
-                        if (data.offering!.maxQty ==
-                            _controller.getTotal(data.responsible!.id!))
-                          const Text(
-                            'max order limit ',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.redAccent),
-                          )
-                      ],
+          return _controller.offersState == CardState.loading ?
+          buildContainer(const SizedBox(
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      value: null,
+                      strokeWidth: 5.0,
                     ),
                   ),
-                ],
-              );
-            }),
-          );
+          )
+              : Column(
+                  children: List.generate(
+                      data?.length != null ? data!.length + data.length - 1 : 0,
+                      (index) {
+                    final data = _controller.cardProductsMap[id]?[index ~/ 2];
+                    return index.isEven
+                        ? SizedBox(
+                            height: SizeConfig.calculateBlockVertical(100),
+                            child: Row(
+                              children: [
+                                Image.network(
+                                  data!.offering!.image!,
+                                  width:
+                                      SizeConfig.calculateBlockHorizontal(100),
+                                  height:
+                                      SizeConfig.calculateBlockVertical(100),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.responsible?.user?.fullName ??
+                                            "- - - -",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14),
+                                      ),
+                                      Text(
+                                        (data.offering?.cost ?? 0).toString() +
+                                            " UZS",
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      buildCounterWidget(
+                                          id, data.offering!.id!),
+                                      if ((data.offering?.maxQty ?? 0) <=
+                                          _controller.getTotal(
+                                              data.responsible?.id ?? 0,
+                                              data.offering!.id!))
+                                        const Text(
+                                          'max order limit ',
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.redAccent),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const Divider(
+                            color: AppColors.GREY,
+                            thickness: 1,
+                            height: 32,
+                          );
+                  }),
+                );
         });
+  }
+
+  buildCounterWidget(int id, int offerId) {
+    return Row(
+      children: [
+        SizedBox(
+          width: SizeConfig.calculateBlockHorizontal(24),
+          height: SizeConfig.calculateBlockVertical(24),
+          child: OutlinedButton(
+            onPressed: () {
+              _controller.decreaseAmount(id, offerId);
+            },
+            style: OutlinedButton.styleFrom(padding: EdgeInsets.zero),
+            child: const Text(
+              "-",
+              style: TextStyle(fontSize: 16, color: AppColors.BLACK),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: SizeConfig.calculateBlockHorizontal(16),
+        ),
+        GetBuilder(
+            id: _controller.counterInOffersId,
+            init: _controller,
+            builder: (context) {
+              return Text(_controller.getTotal(id, offerId).toString());
+            }),
+        SizedBox(
+          width: SizeConfig.calculateBlockHorizontal(16),
+        ),
+        SizedBox(
+          width: SizeConfig.calculateBlockHorizontal(24),
+          height: SizeConfig.calculateBlockVertical(24),
+          child: OutlinedButton(
+            onPressed: () {
+              _controller.increaseAmount(id, offerId);
+            },
+            style: OutlinedButton.styleFrom(padding: EdgeInsets.zero),
+            child: const Text(
+              "+",
+              style: TextStyle(fontSize: 16, color: AppColors.BLACK),
+            ),
+          ),
+        ),
+        const Expanded(child: SizedBox()),
+        InkWell(
+          child: SvgPicture.asset('assets/icons/trash.svg'),
+          onTap: () {
+            _controller.deleteFromList(id, offerId);
+          },
+        )
+      ],
+    );
   }
 
   Widget buildContainer(Widget widget) {
@@ -320,6 +425,68 @@ class CartPage extends StatelessWidget {
         style: const TextStyle(
             fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
       ),
+    );
+  }
+
+  Widget getBottomButton(int totalCost) {
+    totalCost = _controller.totalCost;
+    return PhysicalModel(
+      color: Colors.white,
+      elevation: 20,
+      child: Container(
+          width: double.infinity,
+          margin: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: SizeConfig.calculateBlockVertical(88),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: GetBuilder(
+                  init: _controller,
+                  id: _controller.bottomTotalState,
+                  builder: (context) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Price',
+                          style:
+                              TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                        ),
+                        _controller.bottomTotalState == CardState.loading
+                            ? const Text(
+                                'loading...',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    color: Colors.blueAccent),
+                              )
+                            : Text(
+                                '${_controller.totalCost} UZS',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              )
+                      ],
+                    );
+                  }
+                ),
+              ),
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.CHECKOUTPAGE);
+                  },
+                  child: const Text('Checkout'),
+                ),
+                width: double.infinity,
+                height: 56,
+              ),
+            ],
+          )),
     );
   }
 }

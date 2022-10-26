@@ -1,7 +1,8 @@
-
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 
 class CounterWidget extends StatefulWidget {
@@ -10,12 +11,13 @@ class CounterWidget extends StatefulWidget {
   final Function remove;
   final Function delete;
 
-  CounterWidget({Key? key, 
-    required this.count,
-    required this.add,
-    required this.remove,
-    required this.delete
-  }) : super(key: key);
+  CounterWidget(
+      {Key? key,
+      required this.count,
+      required this.add,
+      required this.remove,
+      required this.delete})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +26,6 @@ class CounterWidget extends StatefulWidget {
 }
 
 class CounterWidgetState extends State<CounterWidget> {
-
   @override
   Widget build(BuildContext context) {
     int total = widget.count;
@@ -35,19 +36,22 @@ class CounterWidgetState extends State<CounterWidget> {
           width: SizeConfig.calculateBlockHorizontal(24),
           height: SizeConfig.calculateBlockVertical(24),
           child: OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  total = widget.add();
-                });
-              },
-              child: Image.asset('assets/images/plus.png')),
+            onPressed: () {
+              setState(() {
+                total = widget.add();
+              });
+            },
+            style: OutlinedButton.styleFrom(padding: EdgeInsets.zero),
+            child: const Text(
+              "-",
+              style: TextStyle(fontSize: 16, color: AppColors.BLACK),
+            ),
+          ),
         ),
         SizedBox(
           width: SizeConfig.calculateBlockHorizontal(16),
         ),
-
         Text(total.toString()),
-
         SizedBox(
           width: SizeConfig.calculateBlockHorizontal(16),
         ),
@@ -60,18 +64,24 @@ class CounterWidgetState extends State<CounterWidget> {
                 total = widget.remove();
               });
             },
-            child: Image.asset('assets/images/minus.png'),
+            style: OutlinedButton.styleFrom(padding: EdgeInsets.zero),
+            child: const Text(
+              "+",
+              style: TextStyle(fontSize: 16, color: AppColors.BLACK),
+            ),
           ),
         ),
-
         const Expanded(child: SizedBox()),
-
-        InkWell(child: Image.asset('assets/images/trash.png'),onTap: (){
-          widget.delete();
-          setState(() { total = 0; });
-          },)
+        InkWell(
+          child: Image.asset('assets/images/trash.png'),
+          onTap: () {
+            widget.delete();
+            setState(() {
+              total = 0;
+            });
+          },
+        )
       ],
     );
   }
-
 }

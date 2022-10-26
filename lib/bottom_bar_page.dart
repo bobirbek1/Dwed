@@ -125,7 +125,7 @@ class _BottomBarViewState extends State<BottomBarView> {
         color: AppColors.WHITE,
         // borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(
+         if (_currentTabIndex != 3) BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 6,
             blurRadius: 2,

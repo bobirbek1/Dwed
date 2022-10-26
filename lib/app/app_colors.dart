@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const WHITE = Color(0xFFFFFFFF);
   static const BLACK = Color(0xFF262626);
+  static const GREY = Color(0xFF464646);
   static const ROYAL_ORANGE = Color(0xFFFD9644);
   static const BUTTON_BLUE = Color(0xFF1DA1F2);
   static const SUNSET_ORANGE = Color(0xFFFF5A5F);
@@ -13,5 +14,6 @@ class AppColors {
   static const ANTI_FLASH_WHITE = Color(0xFFF2F2F2);
   static const BACKGROUND = Color(0xFFE5E5E5);
   static const DIVIDER = Color(0xFFE5E9EC);
+
 
 }
