@@ -84,13 +84,18 @@ class OrganizationsSubPage extends StatelessWidget {
           height: SizeConfig.calculateBlockVertical(45),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(11.0),
-              child: Text(
-                "Show all organizations",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(14),
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.BUTTON_BLUE,
+               padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.calculateBlockHorizontal(11),
+                vertical: SizeConfig.calculateBlockVertical(11),
+              ),
+              child: FittedBox(
+                child: Text(
+                  "Show all organizations",
+                  style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(14),
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.BUTTON_BLUE,
+                  ),
                 ),
               ),
             ),

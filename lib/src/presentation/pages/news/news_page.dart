@@ -7,7 +7,15 @@ class NewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("News page",style: TextStyle(fontSize: 48,color: AppColors.BLACK,),),),
+      body: Center(
+        child: Text(
+          "News page",
+          style: TextStyle(
+            fontSize: 48,
+            color: AppColors.BLACK,
+          ),
+        ),
+      ),
     );
   }
 }

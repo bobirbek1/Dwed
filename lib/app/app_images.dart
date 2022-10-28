@@ -1,4 +1,6 @@
-class AppImages{
+// ignore_for_file: constant_identifier_names
+
+class AppImages {
   static const String OFFER_PAINT = "assets/images/offer_paint.png";
   static const String OFFER_TIME = "assets/images/offer_time.png";
   static const String STREAM_IPHONE = "assets/images/stream_iphone.png";
@@ -11,8 +13,10 @@ class AppImages{
   static const String ORG_GOVERNMENT = "assets/images/org_government.png";
   static const String ORG_IT = "assets/images/org_it.png";
   static const String PHONES_TABLETS = "assets/images/phones_tablets.png";
-  static const String PHONES_SMARTWATCHES = "assets/images/phones_smartwatches.png";
-  static const String PHONES_ACCESSORIES = "assets/images/phones_accessories.png";
+  static const String PHONES_SMARTWATCHES =
+      "assets/images/phones_smartwatches.png";
+  static const String PHONES_ACCESSORIES =
+      "assets/images/phones_accessories.png";
   static const String PHONES_BUTTONED = "assets/images/phones_buttoned.png";
   static const String PHONES_PHONES = "assets/images/phones_phones.png";
   static const String STREAMS_MATH = "assets/images/streams_math.png";
@@ -44,6 +48,8 @@ class AppImages{
   static const String UY = "assets/images/uy.png";
   static const String BORDER = "assets/images/Border.png";
   static const String ANHOR_4 = "assets/images/anhor_4.png";
-
-
+  static const String DACHA_1 = "assets/images/dacha_1.png";
+  static const String DACHA_2 = "assets/images/dacha_2.png";
+  static const String DACHA_3 = "assets/images/dacha_3.png";
+  static const String DACHA_4 = "assets/images/dacha_4.png";
 }

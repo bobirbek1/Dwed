@@ -9,10 +9,11 @@ class ListItem extends StatefulWidget {
   final BankItem item;
   final Function function;
 
-  ListItem({required this.item, required this.function});
+  const ListItem({required this.item, required this.function});
 
   @override
   State<StatefulWidget> createState() {
+    // ignore: no_logic_in_create_state
     return ListItemState(item: item, function: function);
   }
 

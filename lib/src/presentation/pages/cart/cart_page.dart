@@ -300,7 +300,7 @@ class CartPage extends StatelessWidget {
                         Text(
                           addsItem.webUrl,
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                              fontSize: 16, fontWeight: FontWeight.w500,),
                         ), //),
                         addsItem.icon
                       ],
@@ -313,17 +313,17 @@ class CartPage extends StatelessWidget {
                           addsItem.title,
                           style: const TextStyle(
                               fontWeight: FontWeight.w300, fontSize: 14),
-                        ) //),
+                        ), //),
                       ],
                     )
                   ],
-                ))),
+                ),),),
         OutlinedButton(
           onPressed: () {},
           style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Colors.blue),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16))),
+                  borderRadius: BorderRadius.circular(16),),),
           child: const Text('View'),
         ),
       ],
@@ -335,7 +335,7 @@ class CartPage extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey)),
+          border: Border.all(color: Colors.grey),),
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.all(16),
       child: widget,
@@ -353,7 +353,7 @@ class CartPage extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+            fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black,),
       ),
     );
   }

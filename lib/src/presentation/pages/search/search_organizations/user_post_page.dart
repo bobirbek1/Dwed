@@ -4,6 +4,7 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+
 import 'package:get/get.dart';
 
 class UserPostPage extends StatelessWidget {
@@ -93,62 +94,68 @@ class UserPostPage extends StatelessWidget {
                     const Expanded(
                       child: SizedBox(),
                     ),
-                    Row(
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100.0),
-                            ),
-                            side: const BorderSide(
-                              width: 1,
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: SizedBox(),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100.0),
+                        ),
+                        side: const BorderSide(
+                          width: 1,
+                          color: AppColors.BUTTON_BLUE,
+                        ),
+                      ),
+                      child: SizedBox(
+                        width: SizeConfig.calculateBlockHorizontal(84),
+                        height: SizeConfig.calculateBlockVertical(30),
+                        child: Center(
+                          child: Text(
+                            "Message",
+                            style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w500,
                               color: AppColors.BUTTON_BLUE,
                             ),
                           ),
-                          child: SizedBox(
-                            width: SizeConfig.calculateBlockHorizontal(84),
-                            height: SizeConfig.calculateBlockVertical(30),
-                            child: Center(
-                              child: Text(
-                                "Message",
-                                style: TextStyle(
-                                  fontSize: SizeConfig.calculateTextSize(12),
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.BUTTON_BLUE,
-                                ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConfig.calculateBlockHorizontal(8),
+                        right: SizeConfig.calculateBlockHorizontal(16),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        ),
+                        child: SizedBox(
+                          width: SizeConfig.calculateBlockHorizontal(70),
+                          height: SizeConfig.calculateBlockVertical(30),
+                          child: Center(
+                            child: Text(
+                              "Follow",
+                              style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(12),
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: SizeConfig.calculateBlockHorizontal(8),
-                            right: SizeConfig.calculateBlockHorizontal(16),
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                            ),
-                            child: SizedBox(
-                              width: SizeConfig.calculateBlockHorizontal(70),
-                              height: SizeConfig.calculateBlockVertical(30),
-                              child: Center(
-                                child: Text(
-                                  "Follow",
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.calculateTextSize(12),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -169,7 +176,7 @@ class UserPostPage extends StatelessWidget {
                 children: [
                   getBodyText(
                     text: "MEDION",
-                    fontSize: 18,
+                    fontSize: SizeConfig.calculateTextSize(18),
                     textColor: AppColors.BLACK,
                     fontWeight: FontWeight.w600,
                   ),
@@ -188,7 +195,7 @@ class UserPostPage extends StatelessWidget {
               ),
               getBodyText(
                 text: "Project Owner at Akfa Group",
-                fontSize: 16,
+                fontSize: SizeConfig.calculateTextSize(16),
                 fontWeight: FontWeight.w400,
                 textColor: AppColors.BLACK,
               ),
@@ -197,7 +204,7 @@ class UserPostPage extends StatelessWidget {
               ),
               getBodyText(
                 text: "Tashkent, Uzbekistan",
-                fontSize: 12,
+                fontSize: SizeConfig.calculateTextSize(12),
                 fontWeight: FontWeight.w400,
                 textColor: AppColors.BUTTON_BLUE,
               ),
@@ -207,7 +214,7 @@ class UserPostPage extends StatelessWidget {
               getBodyText(
                 text:
                     "Let’s have fun while creating awesome products #memes #inspiration #2022 #Design",
-                fontSize: 14,
+                fontSize: SizeConfig.calculateTextSize(14),
                 fontWeight: FontWeight.w400,
                 textColor: AppColors.BLACK,
               ),
@@ -217,24 +224,20 @@ class UserPostPage extends StatelessWidget {
         SizedBox(
           height: SizeConfig.calculateBlockVertical(16),
         ),
-        Divider(
-          thickness: SizeConfig.calculateBlockVertical(8),
-          color: AppColors.DIVIDER,
+        Expanded(
+          child: DefaultTabController(
+            length: 3,
+            initialIndex: 1,
+            child: Column(
+              children: [
+                getTabBar(),
+                Expanded(
+                  child: getTabViews(),
+                ),
+              ],
+            ),
+          ),
         ),
-        // DefaultTabController(
-        //   length: 3,
-        //   child: Column(
-        //     children: [
-        //       SizedBox(
-        //         height: SizeConfig.calculateBlockVertical(48),
-        //       ),
-        //       getTabBar(),
-        //       Expanded(
-        //         child: getTabViews(),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -255,61 +258,202 @@ class UserPostPage extends StatelessWidget {
     );
   }
 
-  // getTabBar() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         bottom: BorderSide(color: AppColors.BLACK, width: 0.1),
-  //       ),
-  //     ),
-  //     child: TabBar(
-  //       labelStyle: TextStyle(
-  //         fontSize: SizeConfig.calculateTextSize(16),
-  //         fontWeight: FontWeight.w400,
-  //       ),
-  //       unselectedLabelStyle: TextStyle(
-  //         fontSize: SizeConfig.calculateTextSize(16),
-  //         fontWeight: FontWeight.w400,
-  //       ),
-  //       labelColor: AppColors.BUTTON_BLUE,
-  //       unselectedLabelColor: AppColors.SHADOW_BLUE,
-  //       isScrollable: true,
-  //       indicatorSize: TabBarIndicatorSize.label,
-  //       tabs: [
-  //         getTab("Posts"),
-  //         getTab("Shop"),
-  //         getTab("About"),
-  //       ],
-  //     ),
-  //   );
-  // }
+  getTabBar() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.BLACK, width: 0.1),
+        ),
+      ),
+      child: TabBar(
+        // indicator: UnderlineTabIndicator(
+        //   borderSide: BorderSide(width: 5.0),
+        //   insets: EdgeInsets.symmetric(horizontal:96.0)
+        // ),
 
-  // getTab(String text) {
-  //   return Tab(
-  //     text: text,
-  //   );
-  // }
+        labelStyle: TextStyle(
+          fontSize: SizeConfig.calculateTextSize(16),
+          fontWeight: FontWeight.w400,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontSize: SizeConfig.calculateTextSize(16),
+          fontWeight: FontWeight.w400,
+        ),
+        labelColor: AppColors.BUTTON_BLUE,
+        unselectedLabelColor: AppColors.SHADOW_BLUE,
+        isScrollable: false,
+        indicatorSize: TabBarIndicatorSize.tab,
+        tabs: [
+          getTab("Posts"),
+          getTab("Shop"),
+          getTab("About"),
+        ],
+      ),
+    );
+  }
 
-  // getTabViews() {
-  //   return TabBarView(
-  //     children: [
-  //       getPostsPage(),
-  //       getShopPage(),
-  //       getAboutPage(),
-  //     ],
-  //   );
-  // }
+  getTab(String text) {
+    return Tab(
+      text: text,
+    );
+  }
 
-  // getPostsPage() {
-  //   return Text("1",style: TextStyle(fontSize: 100),);
-  // }
+  getTabViews() {
+    return TabBarView(
+      children: [
+        getPostsPage(),
+        getShopPage(),
+        getAboutPage(),
+      ],
+    );
+  }
 
-  // getShopPage() {
-  //   return Text("2");
-  // }
+  getPostsPage() {
+    return const SizedBox();
+  }
 
-  // getAboutPage() {
-  //   return Text("3");
-  // }
+  getShopPage() {
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
+          SizeConfig.calculateBlockVertical(267),
+      children: [
+        getGridItem(
+          "12 599 000 UZS",
+          getPrice(),
+        ),
+        getGridItem(),
+        getGridItem(),
+        getGridItem(
+          "12 599 000 UZS",
+          getPrice(),
+        ),
+        getGridItem(),
+        getGridItem(
+          "12 599 000 UZS",
+          getPrice(),
+        ),
+      ],
+    );
+  }
+
+  getGridItem([String? text, Widget? prices]) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: SizeConfig.calculateBlockHorizontal(4.5),
+        top: SizeConfig.calculateBlockVertical(16),
+        right: SizeConfig.calculateBlockHorizontal(4.5),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: SizeConfig.calculateBlockHorizontal(16),
+              ),
+              Stack(
+                children: [
+                  Image.asset(
+                    AppImages.IPHONE_13,
+                    width: SizeConfig.calculateBlockHorizontal(167),
+                    height: SizeConfig.calculateBlockVertical(180),
+                  ),
+                  prices ?? const SizedBox(),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: SizeConfig.calculateBlockVertical(12),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Smartphone iPhone 12 Pro\n128GB Graphite",
+                style: TextStyle(
+                  fontSize: SizeConfig.calculateTextSize(12),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: SizeConfig.calculateBlockVertical(8),
+              ),
+              Text(
+                "11 124 000 UZS",
+                style: TextStyle(
+                  fontSize: SizeConfig.calculateTextSize(14),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                text ?? "",
+                style: TextStyle(
+                  fontSize: SizeConfig.calculateTextSize(12),
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.SUNSET_ORANGE,
+                  decoration: TextDecoration.lineThrough,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  getPrice() {
+    return Positioned(
+      left: SizeConfig.calculateBlockHorizontal(8),
+      top: SizeConfig.calculateBlockVertical(8),
+      child: Row(
+        children: [
+          getPriceContainer(
+            "15%",
+            AppColors.SUNSET_ORANGE,
+          ),
+          getPriceContainer(
+            "20%",
+            AppColors.ROYAL_ORANGE,
+          ),
+          getPriceContainer(
+            "5%",
+            AppColors.ROYAL_ORANGE,
+          ),
+        ],
+      ),
+    );
+  }
+
+  getPriceContainer(String text, Color color) {
+    return Padding(
+      padding: EdgeInsets.all(
+        SizeConfig.calculateBlockHorizontal(2),
+      ),
+      child: Container(
+        width: SizeConfig.calculateBlockHorizontal(37),
+        height: SizeConfig.calculateBlockVertical(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: color,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: SizeConfig.calculateTextSize(10),
+              fontWeight: FontWeight.w400,
+              color: AppColors.WHITE,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  getAboutPage() {
+    return const SizedBox();
+  }
 }
