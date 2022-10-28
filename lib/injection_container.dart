@@ -21,6 +21,7 @@ import 'package:flutter_template/src/presentation/controller/Search/organisation
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,7 +83,16 @@ Future<void> init() async {
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
   Get.lazyPut(
-      () => OffersController(getOffers: Get.find(), getOffersChild: Get.find(),getOffersDetails: Get.find()),
+      () => OffersController(
+          getOffers: Get.find(),
+          getOffersChild: Get.find(),
+          getOffersDetails: Get.find()),
+      fenix: true);
+  Get.lazyPut(
+      () => OffersSubController(
+          getOffers: Get.find(),
+          getOffersChild: Get.find(),
+          getOffersDetails: Get.find()),
       fenix: true);
   Get.lazyPut(() => OrganisationController(getOrganisation: Get.find()),
       fenix: true);

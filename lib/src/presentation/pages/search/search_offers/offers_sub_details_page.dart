@@ -203,7 +203,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
               Expanded(
                 child: isVertical
                     ? GridView.builder(
-                  itemCount: widget._controller.offersDetailsList.length,
+                        itemCount: widget._controller.offersDetailsList.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio:
@@ -227,10 +227,14 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                                   data.image));
                         })
                     : ListView.builder(
-                        itemCount: 5,
+                        itemCount: widget._controller.offersDetailsList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return getHorListItem();
-                        }),
+                          final data1 =
+                              widget._controller.offersDetailsList[index];
+                          return getHorListItem(
+                              data1.image, data1.name, data1.cost);
+                        },
+                      ),
               ),
             ],
           );
@@ -360,7 +364,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
     );
   }
 
-  getHorListItem() {
+  getHorListItem(String? image, String? name, int? cost) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(16),
@@ -373,11 +377,18 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         },
         child: Row(
           children: [
-            Image.asset(
-              AppImages.DACHA,
-              width: SizeConfig.calculateBlockHorizontal(117),
-              height: SizeConfig.calculateBlockVertical(158),
-            ),
+            image == null
+                ? Image.asset(
+                    AppImages.IPHONE_13,
+                    fit: BoxFit.contain,
+                    width: SizeConfig.calculateBlockHorizontal(117),
+                    height: SizeConfig.calculateBlockVertical(158),
+                  )
+                : Image.network(
+                    image,
+                    width: SizeConfig.calculateBlockHorizontal(117),
+                    height: SizeConfig.calculateBlockVertical(158),
+                  ),
             SizedBox(
               width: SizeConfig.calculateBlockHorizontal(12),
             ),
@@ -385,7 +396,10 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '''13 kishilik "Yovvoyi G'arb" uyi\n(dam olish kunlari)''',
+                  name == null ? "----" : name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                   style: TextStyle(
                       fontSize: SizeConfig.calculateTextSize(14),
                       fontWeight: FontWeight.w500),
@@ -510,7 +524,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                 Row(
                   children: [
                     Text(
-                      "7 120 000 UZS",
+                      cost != 0 ? cost.toString() : "0",
                       style: TextStyle(
                           fontSize: SizeConfig.calculateTextSize(14),
                           fontWeight: FontWeight.w600),

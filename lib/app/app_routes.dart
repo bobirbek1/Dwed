@@ -16,6 +16,7 @@ class AppRoutes {
   static const RESET_PASSWORD_NEW = "/reset_password_new";
   static const HOME = "/home";
   static const OFFERS_SUB_PAGE = "/offers_sub_page";
+  static const OFFERS_SUB_SUB_PAGE = "/offers_sub_sub_page";
   static const OFFERS_SUB_DETAILS_PAGE = "/offers_sub__details_page";
   static const ORGANIZATIONS_SUB_PAGE = "/organizations_sub_page";
   static const ORGANIZATIONS_SUB_DETAILS_PAGE = "/organizations_sub_details_page";

@@ -217,67 +217,74 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getOffersPage() {
-    return ListView.builder(
-        itemCount: widget._controllerOffers.offersList.length,
-        itemBuilder: (BuildContext context, int index) {
-          final data = widget._controllerOffers.offersList[index];
-          Get.log("OffersPage list=> ${data.id}");
+    return GetBuilder(
+      init: widget._controllerOffers,
+      id: widget._controllerOffers.offersId,
+      builder: (context) {
+        return ListView.builder(
+            itemCount: widget._controllerOffers.offersList.length,
+            itemBuilder: (BuildContext context, int index) {
+              final data = widget._controllerOffers.offersList[index];
+              Get.log("OffersPage list=> ${data.id}");
 
-          return InkWell(
-            onTap: () {
-              if (!widget._controllerOffers.hasSubs!) {
-                Get.toNamed(
-                  AppRoutes.OFFERS_SUB_PAGE,
-                  arguments: data.name,
-                );
-                widget._controllerOffers.selectOffersModel = data;
-                widget._controllerOffers.getOffersChildList();
-              } else {
-                Get.toNamed(AppRoutes.OFFERS_SUB_DETAILS_PAGE,arguments: data.name);
-                widget._controllerOffers.selectOffersModel = data;
-                widget._controllerOffers.getOffersDetailsList();
-              }
-
-
-            },
-            child: Column(
-              children: [
-                ListTile(
-                  leading: SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(56),
-                    height: SizeConfig.calculateBlockVertical(56),
-                    child: data.image != null
-                        ? SvgPicture.string(
-                            data.image!,
-                            fit: BoxFit.contain,
-                          )
-                        : Image.asset(AppImages.PLAYGROUND),
-                  ),
-                  title: Text(
-                    data.name != null ? data.name! : "----",
-                    style: TextStyle(
-                      color: AppColors.BLACK,
-                      fontSize: SizeConfig.calculateTextSize(16),
-                      fontWeight: FontWeight.w600,
+              return InkWell(
+                onTap: () {
+                  final argument = data.name;
+                  widget._controllerOffers.selectOffersModel = data;
+                  widget._controllerOffers.getOffersChildList();
+                  if (widget._controllerOffers.offersChildList[0].hasSubs!) {
+                    Get.toNamed(
+                      AppRoutes.OFFERS_SUB_PAGE,
+                      arguments: argument,
+                    );
+                  } else {
+                    widget._controllerOffers.getOffersDetailsList();
+                    Get.toNamed(
+                      AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+                      arguments: argument,
+                    );
+                  }
+                },
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: SizedBox(
+                        width: SizeConfig.calculateBlockHorizontal(56),
+                        height: SizeConfig.calculateBlockVertical(56),
+                        child: data.image != null
+                            ? SvgPicture.string(
+                                data.image!,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.asset(AppImages.PLAYGROUND),
+                      ),
+                      title: Text(
+                        data.name != null ? data.name! : "----",
+                        style: TextStyle(
+                          color: AppColors.BLACK,
+                          fontSize: SizeConfig.calculateTextSize(16),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Text(
+                        data.id != null ? "${data.id!} products" : "----",
+                        style: TextStyle(
+                          color: AppColors.SHADOW_BLUE,
+                          fontSize: SizeConfig.calculateTextSize(12),
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    data.id != null ? "${data.id!} products" : "----",
-                    style: TextStyle(
-                      color: AppColors.SHADOW_BLUE,
-                      fontSize: SizeConfig.calculateTextSize(12),
-                      fontWeight: FontWeight.w300,
+                    Divider(
+                      indent: SizeConfig.calculateBlockHorizontal(88),
+                      height: SizeConfig.calculateBlockVertical(8),
                     ),
-                  ),
+                  ],
                 ),
-                Divider(
-                  indent: SizeConfig.calculateBlockHorizontal(88),
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-              ],
-            ),
-          );
-        });
+              );
+            });
+      }
+    );
   }
 
   List<String> offerPageItemsIcons = [

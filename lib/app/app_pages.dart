@@ -14,6 +14,7 @@ import 'package:flutter_template/src/presentation/pages/login/login/login_page.d
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/user_post_page.dart';
@@ -69,6 +70,7 @@ class AppPages {
         name: AppRoutes.RESET_PASSWORD_NEW, page: () => ResetPasswordNewPage()),
     GetPage(name: AppRoutes.HOME, page: () => HomePage()),
     GetPage(name: AppRoutes.OFFERS_SUB_PAGE, page: () => OffersSubPage()),
+    GetPage(name: AppRoutes.OFFERS_SUB_SUB_PAGE, page: () => OffersSubSubPage()),
 
     GetPage(
         name: AppRoutes.ORGANIZATIONS_SUB_PAGE,

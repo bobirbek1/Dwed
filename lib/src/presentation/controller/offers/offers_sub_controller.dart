@@ -7,13 +7,13 @@ import 'package:flutter_template/src/domain/usecase/get_offers.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
 import 'package:get/get.dart';
 
-class OffersController extends GetxController {
+class OffersSubController extends GetxController {
   // usecases
   final GetOffers getOffers;
   final GetOffersChild getOffersChild;
   final GetOffersDetails getOffersDetails;
 
-  OffersController({
+  OffersSubController({
     required this.getOffers,
     required this.getOffersChild,
     required this.getOffersDetails,
@@ -29,47 +29,17 @@ class OffersController extends GetxController {
   int? id;
 
 // ids
-  final String offersId = "offers_id";
-  final String offersChildId = "offers_child_id";
-  final String offersDetailsId = "offers_details_id";
+  final String offersSubId = "offers_sub_id";
+  final String offersSubChildId = "offers_sub_child_id";
+  final String offersSubDetailsId = "offers_sub_details_id";
 
   // additional
   int? offersValue;
   OffersModel? selectOffersModel;
 
-  @override
-  void onInit() {
-    getOffersList();
-    super.onInit();
-  }
-
-
-  void getOffersList() async {
-    updateOffersState(OffersState.loading);
-    Get.log("GetOffersController ");
-    final result = await getOffers.call(NoParams());
-    Get.log("Get offers result ${result}");
-    result.fold((failure) {
-      if (failure is NetworkFailure) {
-        Get.log(
-            "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring"
-                .tr);
-      } else if (failure is ServerTimeOutFailure) {
-        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
-      } else {
-        Get.log("Offers Error");
-      }
-      updateOffersState(OffersState.error);
-    }, (res) {
-      offersList = res;
-      Get.log("Offers Controller list => $offersList");
-      updateOffersState(OffersState.loaded);
-    });
-  }
-
   void getOffersChildList() async {
     updateOffersChildState(OffersState.loading);
-    Get.log("GetOffersController ");
+    Get.log("GetOffersSubController ");
     final result = await getOffersChild
         .call(GetOffersChildParams(id: selectOffersModel!.id!));
     Get.log("Get offersChild result ${result}");
@@ -93,7 +63,7 @@ class OffersController extends GetxController {
 
   void getOffersDetailsList() async {
     updateOffersDetailsState(OffersState.loading);
-    Get.log("GetOffersController ");
+    Get.log("GetOffersSubController ");
     final result = await getOffersDetails
         .call(GetOffersDetailsParams(id: selectOffersModel!.id!));
     Get.log("Get offersDetails result $result");
@@ -117,17 +87,17 @@ class OffersController extends GetxController {
 
   void updateOffersState(OffersState state) {
     offersState = state;
-    update([offersId]);
+    update([offersSubId]);
   }
 
   void updateOffersChildState(OffersState state) {
     offersState = state;
-    update([offersChildId]);
+    update([offersSubChildId]);
   }
 
   void updateOffersDetailsState(OffersState state) {
     offersState = state;
-    update([offersDetailsId]);
+    update([offersSubDetailsId]);
   }
 }
 

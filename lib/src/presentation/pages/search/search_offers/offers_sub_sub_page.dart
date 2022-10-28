@@ -5,13 +5,13 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/get.dart';
 
-class OffersSubPage extends StatelessWidget {
-  OffersSubPage({Key? key}) : super(key: key);
+class OffersSubSubPage extends StatelessWidget {
+  OffersSubSubPage({Key? key}) : super(key: key);
   final argument = Get.arguments;
-  final _controllerOffers = Get.find<OffersController>();
+  final _controllerOffers = Get.find<OffersSubController>();
 
   @override
   Widget build(BuildContext context) {
@@ -117,14 +117,14 @@ class OffersSubPage extends StatelessWidget {
         getOutlinedButton(),
         GetBuilder(
             init: _controllerOffers,
-            id: _controllerOffers.offersChildId,
+            id: _controllerOffers.offersSubChildId,
             builder: (context) {
               return Expanded(
                 child: ListView.builder(
                     itemCount: _controllerOffers.offersChildList.length,
                     itemBuilder: (BuildContext context, int index) {
                       final data = _controllerOffers.offersChildList[index];
-                      Get.log("Offers Sub page data => ${data.name}}");
+                      Get.log("Offers Sub Sub page data => ${data.name}}");
                       return InkWell(
                         onTap: () {
                           final argument=data.name;
@@ -137,6 +137,7 @@ class OffersSubPage extends StatelessWidget {
                             );
                           } else {
                             _controllerOffers.getOffersDetailsList();
+
                             Get.toNamed(
                               AppRoutes.OFFERS_SUB_DETAILS_PAGE,
                               arguments: data.name,

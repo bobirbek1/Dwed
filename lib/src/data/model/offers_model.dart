@@ -42,7 +42,7 @@ class Parent {
   int? id;
   String? name;
   String? description;
-  String? parentId;
+  int? parentId;
   String? image;
 
   Parent({this.id, this.name, this.description, this.parentId, this.image});
