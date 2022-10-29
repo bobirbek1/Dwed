@@ -75,9 +75,7 @@ class OffersController extends GetxController {
       refreshController.loadFailed();
       updateOffersState(OffersState.error);
     }, (res) {
-      horizontalOffSet += 10;
       offersList.addAll(res);
-      offersChildList.addAll(res);
       hasSubs=offersList[0].hasSubs;
       Get.log("Offers Controller list => $offersList");
       refreshController.loadComplete();
