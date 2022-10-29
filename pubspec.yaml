@@ -48,6 +48,9 @@ dependencies:
   flutter_holo_date_picker: ^1.0.6
   intl: ^0.17.0
 
+  # Pull to refresh or load
+  pull_to_refresh: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

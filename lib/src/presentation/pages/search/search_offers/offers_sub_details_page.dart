@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
@@ -5,8 +7,11 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/data/model/offers_details_model.dart';
+import 'package:flutter_template/src/data/model/offers_model.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OffersSubDetailsPage extends StatefulWidget {
   OffersSubDetailsPage({Key? key}) : super(key: key);
@@ -19,6 +24,7 @@ class OffersSubDetailsPage extends StatefulWidget {
 class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   final title = Get.arguments;
   bool isVertical = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -196,46 +202,95 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         id: widget._controller.offersDetailsId,
         init: widget._controller,
         builder: (context) {
+          final gridList = widget._controller.offersDetailsList;
+          final horizontalList = widget._controller.offersChildList;
           Get.log("OfferDetails data ${widget._controller.offersDetailsList}");
           return Column(
             children: [
               getSortFilter(),
-              Expanded(
-                child: isVertical
-                    ? GridView.builder(
-                  itemCount: widget._controller.offersDetailsList.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio:
-                              SizeConfig.calculateBlockHorizontal(167) /
-                                  SizeConfig.calculateBlockVertical(267),
-                        ),
-                        itemBuilder: (context, index) {
-                          final data =
-                              widget._controller.offersDetailsList[index];
-                          return GestureDetector(
-                              onTap: () {},
-                              child: getGridItem(
-                                  data.name != null
-                                      ? widget._controller
-                                          .offersDetailsList[index].name!
-                                      : "----",
-                                  data.cost != null
-                                      ? widget._controller
-                                          .offersDetailsList[index].cost!
-                                      : 0,
-                                  data.image));
-                        })
-                    : ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (BuildContext context, int index) {
-                          return getHorListItem();
-                        }),
+              SmartRefresher(
+                controller: widget._controller.refreshController,
+                enablePullDown: true,
+                enablePullUp: true,
+                onLoading: () {
+                  widget._controller.getOffersDetailsList();
+                },
+                onRefresh: () {
+                  widget._controller.getOffersChildList();
+                },
+                child: Expanded(
+                 child: isVertical ?
+                     //grid Data
+                 buildGridItems(gridList)
+                 // horizontal data
+                     :
+                 buildHorizontalItems(horizontalList)
+                  ,
+                ),
               ),
             ],
           );
         });
   }
+
+  Widget buildGridItems (List<OffersDetailsModel> gridList) {
+    return gridList.isNotEmpty ?
+    GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
+              SizeConfig.calculateBlockVertical(267),
+        ),
+        itemBuilder: (ctx, index) {
+          return GestureDetector(
+            onTap: () {
+
+            },
+            child: getGridItem(gridList[index].name ?? 'no name', gridList[index].cost ?? 0),
+          );
+        })
+    // when gridList is empty
+        :   // here
+    const Center(child: Text('no data'),);
+  }
+
+  Widget buildHorizontalItems(List<OffersModel> horizontalList) {
+    return horizontalList.isNotEmpty ? ListView.builder(
+        itemBuilder: (ctx, index) {
+          return getHorListItem();
+        },
+      itemCount: horizontalList.length,
+        ) : const Center(child: Text('no data'),);
+  }
+
+  // child: isVertical ? // Vertical List
+   //widget._controller.offersDetailsList.isNotEmpty ?
+  // GridView.builder(
+  // itemCount: widget._controller.offersDetailsList.length,
+  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  // crossAxisCount: 2,
+  // childAspectRatio:
+  // SizeConfig.calculateBlockHorizontal(167) /
+  // SizeConfig.calculateBlockVertical(267),
+  // ),
+  // itemBuilder: (context, index) {
+  // final data = widget._controller.offersDetailsList[index];
+  // return GestureDetector(
+  // onTap: () {
+  //
+  // },
+  // child: getGridItem(
+  // data.name != null
+  // ? widget._controller
+  //     .offersDetailsList[index].name!
+  //     : "----",
+  // data.cost != null
+  // ? widget._controller
+  //     .offersDetailsList[index].cost!
+  //     : 0,
+  // data.image));
+  // })
+
 
   getGridItem(String title, int price,
       [String? image, String? text, Widget? prices]) {

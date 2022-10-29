@@ -30,8 +30,8 @@ abstract class LoginRepo {
   Future<Either<Failure, RegionModel>> region(int countryId);
   Future<Either<Failure, List<OrganisationModel>>> organisation();
   Future<Either<Failure, List<OffersModel>>> offers();
-  Future<Either<Failure, List<OffersModel>>> offersChild(int id);
-  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id);
+  Future<Either<Failure, List<OffersModel>>> offersChild(int id, int offset);
+  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id, int offset);
   Future<Either<Failure, CountryModel>> country();
   Future<Either<Failure, SectorModel>> sector();
 }
