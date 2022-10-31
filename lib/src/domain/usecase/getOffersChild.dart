@@ -11,15 +11,16 @@ class GetOffersChild extends Usecase<List<OffersModel>, GetOffersChildParams> {
 
   @override
   Future<Either<Failure, List<OffersModel>>> call(GetOffersChildParams params) {
-    return repo.offersChild(params.id);
+    return repo.offersChild(params.id, params.offset);
   }
 }
 
 class GetOffersChildParams extends Params {
   final int id;
+  final int offset;
 
-  GetOffersChildParams({required this.id,});
+  GetOffersChildParams({required this.id,required this.offset});
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, offset];
 }

@@ -258,12 +258,12 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, List<OffersModel>>> offersChild(int id)
+  Future<Either<Failure, List<OffersModel>>> offersChild(int id, int offset)
     async {
       if (await networkInfo.isConnected) {
         Get.log("get offersChild is connected");
         try {
-          final res = await remoteDatasource.offersChild(id);
+          final res = await remoteDatasource.offersChild(id, offset);
           Get.log("GetOffersChild result =>$res");
           return Right(res);
         } catch (e) {
@@ -278,11 +278,11 @@ class LoginRepoImpl extends LoginRepo {
     }
 
   @override
-  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id)  async {
+  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id, int offset)  async {
     if (await networkInfo.isConnected) {
       Get.log("get offersChild is connected");
       try {
-        final res = await remoteDatasource.offersDetails(id);
+        final res = await remoteDatasource.offersDetails(id, offset);
         Get.log("GetOffersChild result =>$res");
         return Right(res);
       } catch (e) {

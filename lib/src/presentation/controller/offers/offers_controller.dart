@@ -6,12 +6,16 @@ import 'package:flutter_template/src/domain/usecase/getOffersChild.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OffersController extends GetxController {
   // usecases
   final GetOffers getOffers;
   final GetOffersChild getOffersChild;
   final GetOffersDetails getOffersDetails;
+
+  //
+  late final RefreshController refreshController;
 
   OffersController({
     required this.getOffers,
@@ -24,8 +28,9 @@ class OffersController extends GetxController {
 
 // data
   List<OffersModel> offersList = [];
-  List<OffersModel> offersChildList = [];
-  List<OffersDetailsModel> offersDetailsList = [];
+  List<OffersModel> offersChildList = []; //
+  List<OffersDetailsModel> offersDetailsList = []; // list for grid items
+
   int? id;
 
 // ids
@@ -37,12 +42,15 @@ class OffersController extends GetxController {
   int? offersValue;
   OffersModel? selectOffersModel;
 
+  int gridOffSet = 0;
+  int horizontalOffSet = 0;
+
   @override
   void onInit() {
+    refreshController = RefreshController(initialRefresh: true);
     getOffersList();
     super.onInit();
   }
-
 
   void getOffersList() async {
     updateOffersState(OffersState.loading);
@@ -59,10 +67,13 @@ class OffersController extends GetxController {
       } else {
         Get.log("Offers Error");
       }
+      refreshController.loadFailed();
       updateOffersState(OffersState.error);
     }, (res) {
-      offersList = res;
+      offersList.addAll(res);
+      hasSubs = offersList[0].hasSubs;
       Get.log("Offers Controller list => $offersList");
+      refreshController.loadComplete();
       updateOffersState(OffersState.loaded);
     });
   }
@@ -70,8 +81,8 @@ class OffersController extends GetxController {
   void getOffersChildList() async {
     updateOffersChildState(OffersState.loading);
     Get.log("GetOffersController ");
-    final result = await getOffersChild
-        .call(GetOffersChildParams(id: selectOffersModel!.id!));
+    final result = await getOffersChild.call(GetOffersChildParams(
+        id: selectOffersModel!.id!, offset: horizontalOffSet));
     Get.log("Get offersChild result ${result}");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -83,10 +94,14 @@ class OffersController extends GetxController {
       } else {
         Get.log("OffersChild Error");
       }
+      refreshController.loadFailed();
       updateOffersChildState(OffersState.error);
     }, (res) {
-      offersChildList = res;
+      horizontalOffSet += 10;
+      offersChildList.addAll(res);
+      hasSubsChild = offersChildList[0].hasSubs;
       Get.log("OffersChild Controller list => $offersChildList");
+      refreshController.loadComplete();
       updateOffersChildState(OffersState.loaded);
     });
   }
@@ -94,8 +109,8 @@ class OffersController extends GetxController {
   void getOffersDetailsList() async {
     updateOffersDetailsState(OffersState.loading);
     Get.log("GetOffersController ");
-    final result = await getOffersDetails
-        .call(GetOffersDetailsParams(id: selectOffersModel!.id!));
+    final result = await getOffersDetails.call(
+        GetOffersDetailsParams(id: selectOffersModel!.id!, offset: gridOffSet));
     Get.log("Get offersDetails result $result");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -107,10 +122,13 @@ class OffersController extends GetxController {
       } else {
         Get.log("OfferDetails Error");
       }
+      refreshController.loadFailed();
       updateOffersDetailsState(OffersState.error);
     }, (res) {
-      offersDetailsList = res;
+      gridOffSet += 10;
+      offersDetailsList.addAll(res);
       Get.log("OffersDetails Controller list => $offersDetailsList");
+      refreshController.loadComplete();
       updateOffersDetailsState(OffersState.loaded);
     });
   }

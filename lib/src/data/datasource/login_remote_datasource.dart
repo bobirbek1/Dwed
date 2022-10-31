@@ -33,8 +33,8 @@ abstract class LoginRemoteDatasource {
 
   Future<List<OrganisationModel>> organisation();
   Future<List<OffersModel>> offers();
-  Future<List<OffersModel>> offersChild(int id);
-  Future<List<OffersDetailsModel>> offersDetails(int id);
+  Future<List<OffersModel>> offersChild(int id, int offset);
+  Future<List<OffersDetailsModel>> offersDetails(int id, int offset);
 
   Future<CountryModel> country();
 
@@ -285,10 +285,15 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<List<OffersModel>> offersChild(int id) async {
+  Future<List<OffersModel>> offersChild(int id, int offset) async {
+    Map<String , String> qParams = {
+      'offset': '$offset',
+      'limit' :'10'
+    };
+
     try {
       final result = await client.get(
-        "v1.0/api/cats/offers_cats/get_subs/$id/",
+        "v1.0/api/cats/offers_cats/get_subs/$id/", queryParameters: qParams
       );
       final data = result.data;
       if (data != null) {
@@ -310,10 +315,16 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<List<OffersDetailsModel>> offersDetails(int id)async {
+  Future<List<OffersDetailsModel>> offersDetails(int id, int offset)async {
+    Map<String, String> qParams = {
+      'limit' : '20',
+      'offer_cat' : '$id',
+      'offset' : '$offset'
+    };
+
     try {
       final result = await client.get(
-        "v1.0/api/offerings/?limit=200&offer_cat=$id",
+        "v1.0/api/offerings/",queryParameters: qParams
       );
       final data = result.data;
       if (data != null) {
