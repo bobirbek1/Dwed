@@ -1,164 +1,335 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/pages/checkout/presentation/controller/checkout_page_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 
 import '../../../../../../app/app_icons.dart';
 
 class CheckoutPage extends StatelessWidget {
+  final _controller = Get.find<CheckoutPageController>();
+  final TextEditingController _textEditingController = TextEditingController(text: 'I liked the App',);
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: getAppBar(
-          IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                AppIcons.ARROW_LEFT,
-                color: Colors.black,
-              )),
-          'Checkout'),
-      body: Column(
-        children: [
-          Expanded(
-              child: Column(
-            children: [
-              getSettings(getList()),
-            ],
-          )),
-          buildBottomButton()
-        ],
-      ),
-    );
+        appBar: getAppBar(
+            IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.ARROW_LEFT,
+                  color: Colors.black,
+                )),
+            'Checkout'),
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: SingleChildScrollView(child: buildBodySection()),
+              ),
+            ),
+            buildBottomButton()
+          ],
+        ));
   }
 
-  Widget getCommentSection() {
-    return SizedBox(
-      height: SizeConfig.calculateBlockVertical(296),
-      width: double.infinity,
-      child: Column(
-        children: [getComment(), getSummarySection(getSummaryInformations())],
-      ),
-    );
-  }
-
-  getSummarySection(List<SummaryItem> list) {
-    return Expanded(
-        child: Padding(
-      padding: EdgeInsets.only(
-        top: SizeConfig.calculateBlockVertical(16),
-        bottom: SizeConfig.calculateBlockVertical(16),
-        left: SizeConfig.calculateBlockHorizontal(16),
-        right: SizeConfig.calculateBlockHorizontal(16),
-      ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          const Text(
-            'Summary',
-          ),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(2),
-          ),
-          ...list.map((e) => buildSummaries(e)).toList(),
-        ],
-      ),
-    ));
-  }
-
-  buildSummaries(SummaryItem item) {
-    Row(
+  Widget buildBodySection() {
+    return Column(
       children: [
-        SizedBox(height: SizeConfig.calculateBlockVertical(12)),
-        Text(
-          item.title,
-          style: TextStyle(
-              fontSize: SizeConfig.calculateTextSize(16),
-              fontWeight: FontWeight.w400),
+        buildDelivery(),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
         ),
-        const Expanded(child: SizedBox()),
-        Text(
-          item.description,
-          style: TextStyle(
-              fontSize: SizeConfig.calculateTextSize(12),
-              fontWeight: FontWeight.w500,
-              color: item.color),
+        buildMeetingTime(),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
         ),
+        buildPaymentMethod(),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
+        buildCoupons(),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
+        buildComment(),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
+        buildSummary()
       ],
     );
   }
 
-  getComment() {
+  Widget buildDelivery() {
     return SizedBox(
-      height: SizeConfig.calculateBlockVertical(82.5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Comment',
-              style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(16),
-                  fontWeight: FontWeight.w500)),
-          Text('Comment',
-              style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(16),
-                  fontWeight: FontWeight.w500)),
-          Container(
-            height: 1,
-            color: Colors.black87,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getSettings(List<Settings> list) {
-    return SizedBox(
-      height: SizeConfig.calculateBlockVertical(319.5),
-      width: double.infinity,
-      child: Column(
-        children: [...list.map((e) => buildSettings(e)).toList()],
-      ),
-    );
-  }
-
-  Widget buildSettings(Settings item) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: SizeConfig.calculateBlockVertical(16),
-        bottom: SizeConfig.calculateBlockVertical(16),
-        left: SizeConfig.calculateBlockHorizontal(16),
-        right: SizeConfig.calculateBlockHorizontal(16),
-      ),
-      child: Row(
-        children: [
-          Column(
+        height: SizeConfig.calculateBlockVertical(64),
+        child: InkWell(
+          onTap: () {},
+          child: Row(
             children: [
-              Text(item.title,
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(16),
-                      fontWeight: FontWeight.w500)),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(6),
-              ),
               Expanded(
-                  child: Text(item.description,
-                      style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(12),
-                          fontWeight: FontWeight.w300))),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(6),
-              ),
-              Container(
-                height: 1,
-                color: Colors.black87,
-              )
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text(
+                    'Delivery Method',
+                    style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(16),
+                        fontWeight: FontWeight.w500),
+                  )),
+                  SizedBox(
+                    height: SizeConfig.calculateTextSize(6),
+                  ),
+                  Text(
+                    'If you don’t select a delivery method, the system will take the default location',
+                    style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(12),
+                        fontWeight: FontWeight.w200),
+                  ),
+                  SizedBox(
+                    height: SizeConfig.calculateTextSize(5),
+                  ),
+                  Container(
+                    color: Colors.black12,
+                    height: 1,
+                  ),
+                ],
+              )),
+              SvgPicture.asset(AppIcons.ARROW_RIGHT)
             ],
           ),
-          const Expanded(child: SizedBox()),
-          Image.asset('assets/images/arrov_right.png')
-        ],
-      ),
+        ));
+  }
+
+  Widget buildMeetingTime() {
+    return SizedBox(
+        height: SizeConfig.calculateBlockVertical(64),
+        child: InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                            'Meeting Time',
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(16),
+                                fontWeight: FontWeight.w500),
+                          )),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(6),
+                      ),
+                      Text(
+                        'If you don’t select a time, the system will select it automatically',
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w200),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(5),
+                      ),
+                      Container(
+                        color: Colors.black12,
+                        height: 1,
+                      ),
+                    ],
+                  )),
+              SvgPicture.asset(AppIcons.ARROW_RIGHT)
+            ],
+          ),
+        ));
+  }
+
+  Widget buildPaymentMethod() {
+    return SizedBox(
+        height: SizeConfig.calculateBlockVertical(64),
+        child: InkWell(
+          onTap: () {
+            Get.toNamed(AppRoutes.PAYMENTMETHOD);
+          },
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                            'Payment Method',
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(16),
+                                fontWeight: FontWeight.w500),
+                          )),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(6),
+                      ),
+                      Text(
+                        'Select a payment method',
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w200),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(5),
+                      ),
+                      Container(
+                        color: Colors.black12,
+                        height: 1,
+                      ),
+                    ],
+                  )),
+              SvgPicture.asset(AppIcons.ARROW_RIGHT)
+            ],
+          ),
+        ));
+  }
+
+  Widget buildCoupons() {
+    return SizedBox(
+        height: SizeConfig.calculateBlockVertical(64),
+        child: InkWell(
+          onTap: () {},
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                            'Coupons',
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(16),
+                                fontWeight: FontWeight.w500),
+                          )),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(6),
+                      ),
+                      Text(
+                        'coupon',
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w200),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.calculateTextSize(5),
+                      ),
+                      Container(
+                        color: Colors.black12,
+                        height: 1,
+                      ),
+                    ],
+                  )),
+              SvgPicture.asset(AppIcons.ARROW_RIGHT)
+            ],
+          ),
+        ));
+  }
+
+  Widget buildComment() {
+    return SizedBox(
+        height: SizeConfig.calculateBlockVertical(74),
+        child: Row(
+          children: [
+            Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                          'Comment',
+                          style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(16),
+                              fontWeight: FontWeight.w500),
+                        )),
+                    SizedBox(
+                      height: SizeConfig.calculateTextSize(6),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(17),
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 1,
+                        cursorColor: Colors.black38,
+                        controller: _textEditingController,
+                        decoration: const InputDecoration(border: InputBorder.none),
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w200),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateTextSize(5),
+                    ),
+                    Container(
+                      color: Colors.black12,
+                      height: 1,
+                    ),
+                  ],
+                )),
+            SvgPicture.asset(AppIcons.ARROW_RIGHT)
+          ],
+        ));
+  }
+
+  Widget buildSummary() {
+    return Column(
+      children: [
+        SizedBox(height: SizeConfig.calculateBlockVertical(24),),
+        Row(
+          children: [
+            Text('Summary', style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeConfig.calculateTextSize(18)),),
+            const Expanded(child: SizedBox())
+          ],
+        ),
+        SizedBox(height: SizeConfig.calculateBlockVertical(14),),
+        Row(
+          children: [
+            Text('Price', style: TextStyle(fontWeight: FontWeight.w400, fontSize: SizeConfig.calculateTextSize(16 )),),
+            const Expanded(child: SizedBox()),
+            Text('${_controller.getPrice()}  UZS', style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeConfig.calculateTextSize(16 )),),
+          ],
+        ),
+        SizedBox(height: SizeConfig.calculateBlockVertical(14),),
+        Row(
+          children: [
+            Text('Delivery', style: TextStyle(fontWeight: FontWeight.w400, fontSize: SizeConfig.calculateTextSize(16 )),),
+            const Expanded(child: SizedBox()),
+            Text('${_controller.getDeliverySum()} UZS', style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeConfig.calculateTextSize(16 )),),
+          ],
+        ),
+        SizedBox(height: SizeConfig.calculateBlockVertical(14),),
+        Row(
+          children: [
+            Text('Discount', style: TextStyle(fontWeight: FontWeight.w400, fontSize: SizeConfig.calculateTextSize(16 ), color: Colors.redAccent),),
+            const Expanded(child: SizedBox()),
+            Text('${_controller.getDiscountSum()} UZS', style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeConfig.calculateTextSize(16 ), color: Colors.redAccent),),
+          ],
+        ),
+        SizedBox(height: SizeConfig.calculateBlockVertical(14),),
+        Row(
+          children: [
+            Text('Total Price', style: TextStyle(fontWeight: FontWeight.w400, fontSize: SizeConfig.calculateTextSize(16 ),),),
+            const Expanded(child: SizedBox()),
+            Text('${_controller.getTotalSum()} UZS', style: TextStyle(fontWeight: FontWeight.w500, fontSize: SizeConfig.calculateTextSize(16 ),),),
+          ],
+        ),
+
+      ],
     );
   }
 
@@ -175,8 +346,11 @@ class CheckoutPage extends StatelessWidget {
         ),
         child: SizedBox(
           child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Checkout'),
+            onPressed: () {
+              _controller.comment = _textEditingController.text;
+              Get.toNamed(AppRoutes.CHECKOUTORDEREDPAGE);
+            },
+            child: const Text('Place order'),
           ),
           width: double.infinity,
         ));

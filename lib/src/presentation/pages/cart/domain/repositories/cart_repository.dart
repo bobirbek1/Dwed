@@ -9,5 +9,5 @@ abstract class CartRepository {
 
   Future<Either<Failure, List<SpecialistItemModel>>> getItems(String org_slug_name, int responsible);
 
-  Future<Either<Failure , bool>> deleteItem(int id);
+  Future<Either<Failure , bool>> changeAmount(int id, int amount);
 }

@@ -51,5 +51,11 @@ class AppImages {
   static const String DACHA_1 = "assets/images/dacha_1.png";
   static const String DACHA_2 = "assets/images/dacha_2.png";
   static const String DACHA_3 = "assets/images/dacha_3.png";
-  static const String DACHA_4 = "assets/images/dacha_4.png";
+  static const String DACHA_4 = "assets/images/dacha_4.png";  static const String ICON_ANOR_BANK = "assets/images/icon_anorbank.png";
+  static const String ICON_MUDDATLI = "assets/images/icon_muddatli.png";
+  static const String ICON_NAQD_PUL = "assets/images/icon_naqdpul.png";
+  static const String ICON_PAY_ME = "assets/images/icon_payme.png";
+  static const String ICON_TERMINAL = "assets/images/icon_terminalnew.png";
+
+
 }

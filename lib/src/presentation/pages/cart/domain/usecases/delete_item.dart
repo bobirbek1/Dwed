@@ -8,13 +8,17 @@ class DeleteItemUseCase extends Usecase<bool , DeleteCartProductParams>{
   DeleteItemUseCase({ required this.cartRepository});
   @override
   Future<Either<Failure, bool>> call(DeleteCartProductParams params) async {
-    return cartRepository.deleteItem(params.id);
+    return cartRepository.changeAmount(params.id, params.amount);
   }
 }
 
 class DeleteCartProductParams extends Params{
   int id;
-  DeleteCartProductParams({required this.id});
+  int amount;
+  DeleteCartProductParams({
+    required this.id,
+    required this.amount
+  });
   @override
   List<Object?> get props => [id];
 }
