@@ -73,7 +73,7 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
   }
 
   getSortFilter() {
-   return Column(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
@@ -182,174 +182,204 @@ class OrganizationsSubDetailsPage extends StatelessWidget {
             child: ListView.builder(
                 itemCount: orgSubDetailsImages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    leading: Image.asset(
-                      orgSubDetailsImages[index],
-                      width: SizeConfig.calculateBlockHorizontal(56),
-                      height: SizeConfig.calculateBlockVertical(56),
-                    ),
-                    title: InkWell(
-                      onTap: () {
-                        Get.toNamed(
-                          AppRoutes.USER_POST_PAGE,
-                          arguments: orgSubDetailsTitles[index],
-                        );
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                  return Stack(
+                    children: [
+                      ListTile(
+                        leading: Image.asset(
+                          orgSubDetailsImages[index],
+                          width: SizeConfig.calculateBlockHorizontal(56),
+                          height: SizeConfig.calculateBlockVertical(56),
+                        ),
+                        title: InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.USER_POST_PAGE,
+                              arguments: orgSubDetailsTitles[index],
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                orgSubDetailsTitles[index],
-                                style: TextStyle(
-                                  fontSize: SizeConfig.calculateTextSize(16),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(
-                                width: SizeConfig.calculateBlockHorizontal(4),
-                              ),
-                              SvgPicture.asset(
-                                AppIcons.LEGAL,
-                                width: SizeConfig.calculateBlockHorizontal(16),
-                                height: SizeConfig.calculateBlockVertical(16),
-                              ),
-                              const Expanded(
-                                child: SizedBox(),
-                              ),
-                              Container(
-                                width: SizeConfig.calculateBlockHorizontal(70),
-                                height: SizeConfig.calculateBlockVertical(30),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: AppColors.BUTTON_BLUE,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Follow",
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    orgSubDetailsTitles[index],
                                     style: TextStyle(
                                       fontSize:
-                                          SizeConfig.calculateTextSize(12),
+                                          SizeConfig.calculateTextSize(16),
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.WHITE,
                                     ),
                                   ),
+                                  SizedBox(
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(4),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: SizeConfig.calculateBlockVertical(2),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppIcons.LEGAL,
+                                      width:
+                                          SizeConfig.calculateBlockHorizontal(
+                                              16),
+                                      height:
+                                          SizeConfig.calculateBlockVertical(16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: SizeConfig.calculateBlockVertical(4),
+                              ),
+                              Text(
+                                orgSubDetailsSubtitles[index],
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(14),
+                                  fontWeight: FontWeight.w300,
+                                  color: AppColors.SHADOW_BLUE,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      SizeConfig.calculateBlockHorizontal(8.0),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppIcons.MAGISTR,
+                                      width:
+                                          SizeConfig.calculateBlockHorizontal(
+                                              13.94),
+                                      height: SizeConfig.calculateBlockVertical(
+                                          11.63),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left:
+                                            SizeConfig.calculateBlockHorizontal(
+                                                4.67),
+                                        right:
+                                            SizeConfig.calculateBlockHorizontal(
+                                                12.67),
+                                      ),
+                                      child: Text(
+                                        "55",
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.calculateTextSize(10),
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.ROYAL_ORANGE,
+                                        ),
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      AppIcons.ORDEN,
+                                      width:
+                                          SizeConfig.calculateBlockHorizontal(
+                                              6.67),
+                                      height: SizeConfig.calculateBlockVertical(
+                                          12.98),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left:
+                                            SizeConfig.calculateBlockHorizontal(
+                                                8.67),
+                                        right:
+                                            SizeConfig.calculateBlockHorizontal(
+                                                8.51),
+                                      ),
+                                      child: Text(
+                                        "12",
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.calculateTextSize(10),
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.VIOLET_BLUE,
+                                        ),
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      AppIcons.SHAKE_HAND,
+                                      width:
+                                          SizeConfig.calculateBlockHorizontal(
+                                              14.92),
+                                      height: SizeConfig.calculateBlockVertical(
+                                          9.74),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left:
+                                            SizeConfig.calculateBlockHorizontal(
+                                                4.57),
+                                      ),
+                                      child: Text(
+                                        "45",
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.calculateTextSize(10),
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.ROYAL_ORANGE,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                orgSubDetailsDescriptions[index],
+                                style: TextStyle(
+                                    fontSize: SizeConfig.calculateTextSize(12),
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.BLACK),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: SizeConfig.calculateBlockVertical(12),
+                                  bottom: SizeConfig.calculateBlockVertical(8),
+                                ),
+                                child: Divider(
+                                  height: SizeConfig.calculateBlockVertical(1),
+                                  color: AppColors.BLACK.withOpacity(0.1),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: SizeConfig.calculateBlockVertical(4),
-                          ),
-                          Text(
-                            orgSubDetailsSubtitles[index],
-                            style: TextStyle(
-                              fontSize: SizeConfig.calculateTextSize(14),
-                              fontWeight: FontWeight.w300,
-                              color: AppColors.SHADOW_BLUE,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical:
-                                  SizeConfig.calculateBlockHorizontal(8.0),
-                            ),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  AppIcons.MAGISTR,
-                                  width: SizeConfig.calculateBlockHorizontal(
-                                      13.94),
-                                  height:
-                                      SizeConfig.calculateBlockVertical(11.63),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: SizeConfig.calculateBlockHorizontal(
-                                        4.67),
-                                    right: SizeConfig.calculateBlockHorizontal(
-                                        12.67),
-                                  ),
-                                  child: Text(
-                                    "55",
-                                    style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.calculateTextSize(10),
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.ROYAL_ORANGE,
-                                    ),
-                                  ),
-                                ),
-                                SvgPicture.asset(
-                                  AppIcons.ORDEN,
-                                  width:
-                                      SizeConfig.calculateBlockHorizontal(6.67),
-                                  height:
-                                      SizeConfig.calculateBlockVertical(12.98),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: SizeConfig.calculateBlockHorizontal(
-                                        8.67),
-                                    right: SizeConfig.calculateBlockHorizontal(
-                                        8.51),
-                                  ),
-                                  child: Text(
-                                    "12",
-                                    style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.calculateTextSize(10),
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.VIOLET_BLUE,
-                                    ),
-                                  ),
-                                ),
-                                SvgPicture.asset(
-                                  AppIcons.SHAKE_HAND,
-                                  width: SizeConfig.calculateBlockHorizontal(
-                                      14.92),
-                                  height:
-                                      SizeConfig.calculateBlockVertical(9.74),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: SizeConfig.calculateBlockHorizontal(
-                                        4.57),
-                                  ),
-                                  child: Text(
-                                    "45",
-                                    style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.calculateTextSize(10),
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.ROYAL_ORANGE,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            orgSubDetailsDescriptions[index],
-                            style: TextStyle(
-                                fontSize: SizeConfig.calculateTextSize(12),
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.BLACK),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: SizeConfig.calculateBlockVertical(12),
-                              bottom: SizeConfig.calculateBlockVertical(8),
-                            ),
-                            child: Divider(
-                              height: SizeConfig.calculateBlockVertical(1),
-                              color: AppColors.BLACK.withOpacity(0.1),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: SizeConfig.calculateBlockHorizontal(17),
+                          ),
+                          child: InkWell(
+                            onTap: () {},
+                            child: Container(
+                              width: SizeConfig.calculateBlockHorizontal(70),
+                              height: SizeConfig.calculateBlockVertical(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: AppColors.BUTTON_BLUE,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Follow",
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.calculateTextSize(12),
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.WHITE,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 }),
           ),

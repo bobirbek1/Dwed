@@ -8,6 +8,8 @@ import 'package:flutter_template/src/presentation/pages/checkout_payment_method_
 import 'package:get/get.dart';
 
 class MethodFirst extends StatelessWidget {
+  const MethodFirst({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

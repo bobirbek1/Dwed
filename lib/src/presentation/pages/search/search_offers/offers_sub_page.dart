@@ -85,13 +85,18 @@ class OffersSubPage extends StatelessWidget {
           height: SizeConfig.calculateBlockVertical(45),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(11.0),
-              child: Text(
-                "Show all offers",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(14),
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.BUTTON_BLUE,
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.calculateBlockHorizontal(11),
+                vertical: SizeConfig.calculateBlockVertical(11),
+              ),
+              child: FittedBox(
+                child: Text(
+                  "Show all offers",
+                  style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(14),
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.BUTTON_BLUE,
+                  ),
                 ),
               ),
             ),
@@ -115,7 +120,6 @@ class OffersSubPage extends StatelessWidget {
         getOutlinedButton(),
         Expanded(
           child: ListView.builder(
-            
               itemCount: phonePageItemsIcons.length,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(

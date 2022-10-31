@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 
 class CardsWidget extends StatefulWidget {
+  const CardsWidget({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return CardsWidgetState();
@@ -14,7 +15,7 @@ class CardsWidgetState extends State<CardsWidget> {
   Widget build(BuildContext context) {
     var list = getList();
 
-    return Container(
+    return SizedBox(
       height: SizeConfig.calculateBlockVertical(list.length < 3 ? 200 : 300),
       width: double.infinity,
       child: Column(

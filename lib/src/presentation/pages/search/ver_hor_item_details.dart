@@ -5,13 +5,64 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 
-class ItemDetailsPage extends StatelessWidget {
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+];
+
+class ItemDetailsPage extends StatefulWidget {
   const ItemDetailsPage({Key? key}) : super(key: key);
 
   @override
+  State<ItemDetailsPage> createState() => _ItemDetailsPageState();
+}
+
+class _ItemDetailsPageState extends State<ItemDetailsPage> {
+  int _current = 0;
+
+  final CarouselController _controller = CarouselController();
+
+  @override
   Widget build(BuildContext context) {
+    final List<Widget> images = [
+      Image.asset(
+        AppImages.DACHA,
+        width: double.infinity,
+        height: SizeConfig.calculateBlockVertical(375),
+        fit: BoxFit.cover,
+      ),
+      Image.asset(
+        AppImages.DACHA_1,
+        width: double.infinity,
+        height: SizeConfig.calculateBlockVertical(375),
+        fit: BoxFit.cover,
+      ),
+      Image.asset(
+        AppImages.DACHA_2,
+        width: double.infinity,
+        height: SizeConfig.calculateBlockVertical(375),
+        fit: BoxFit.cover,
+      ),
+      Image.asset(
+        AppImages.DACHA_3,
+        width: double.infinity,
+        height: SizeConfig.calculateBlockVertical(375),
+        fit: BoxFit.cover,
+      ),
+      Image.asset(
+        AppImages.DACHA_4,
+        width: double.infinity,
+        height: SizeConfig.calculateBlockVertical(375),
+        fit: BoxFit.cover,
+      ),
+    ];
+    int length = images.length;
     return Scaffold(
       backgroundColor: AppColors.WHITE,
       appBar: AppBar(
@@ -56,15 +107,63 @@ class ItemDetailsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
-                Image.asset(
-                  AppImages.UY,
+                SizedBox(
                   width: double.infinity,
-                  height: SizeConfig.calculateBlockVertical(375),
-                  fit: BoxFit.cover,
+                  child: CarouselSlider(
+                    items: images,
+                    carouselController: _controller,
+                    options: CarouselOptions(
+                      height: SizeConfig.calculateBlockVertical(375),
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      disableCenter: true,
+                      viewportFraction: 1,
+                      // aspectRatio: SizeConfig.calculateBlockHorizontal(475)/SizeConfig.calculateBlockVertical(400),
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current = index;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: imgList.asMap().entries.map((entry) {
+                        return GestureDetector(
+                          onTap: () => _controller.animateToPage(entry.key),
+                          child: Container(
+                            width: SizeConfig.calculateBlockHorizontal(6),
+                            height: SizeConfig.calculateBlockVertical(6),
+                            margin: EdgeInsets.symmetric(
+                              vertical: SizeConfig.calculateBlockVertical(12),
+                              horizontal:
+                                  SizeConfig.calculateBlockHorizontal(4),
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.WHITE
+                                      : AppColors.WHITE)
+                                  .withOpacity(
+                                      _current == entry.key ? 0.9 : 0.4),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
                 getPrice(),
                 Positioned(
@@ -79,7 +178,7 @@ class ItemDetailsPage extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        "1/4",
+                        "${_current + 1}/$length",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: SizeConfig.calculateTextSize(12),

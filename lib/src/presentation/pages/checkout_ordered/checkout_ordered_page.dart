@@ -4,6 +4,8 @@ import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get.dart';
 
 class CheckoutOrdered extends StatelessWidget {
+  const CheckoutOrdered({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -76,4 +78,6 @@ class CheckoutOrdered extends StatelessWidget {
       ],
     );
   }
+
 }
+

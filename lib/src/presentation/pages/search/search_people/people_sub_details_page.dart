@@ -72,7 +72,7 @@ class PeoplesSubDetailsPage extends StatelessWidget {
   }
 
   getSortFilter() {
-  return Column(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
@@ -191,6 +191,7 @@ class PeoplesSubDetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               peopleSubDetailsTitles[index],
@@ -202,10 +203,15 @@ class PeoplesSubDetailsPage extends StatelessWidget {
                             SizedBox(
                               width: SizeConfig.calculateBlockHorizontal(4),
                             ),
-                            SvgPicture.asset(
-                              AppIcons.LEGAL,
-                              width: SizeConfig.calculateBlockHorizontal(16),
-                              height: SizeConfig.calculateBlockVertical(16),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: SizeConfig.calculateBlockVertical(2),
+                              ),
+                              child: SvgPicture.asset(
+                                AppIcons.LEGAL,
+                                width: SizeConfig.calculateBlockHorizontal(16),
+                                height: SizeConfig.calculateBlockVertical(16),
+                              ),
                             ),
                             const Expanded(
                               child: SizedBox(),
