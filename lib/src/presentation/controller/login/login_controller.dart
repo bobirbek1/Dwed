@@ -68,7 +68,7 @@ class LoginController extends GetxController {
         updateLoginState(LoginState.error);
       }, (res) {
         updateLoginState(LoginState.loaded);
-        Get.toNamed(AppRoutes.HOME);
+        Get.toNamed(AppRoutes.BOTTOM_BAR_VIEW);
       });
     }
   }

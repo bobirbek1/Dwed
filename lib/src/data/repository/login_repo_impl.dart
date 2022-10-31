@@ -4,6 +4,9 @@ import 'package:flutter_template/src/data/datasource/login_local_datasource.dart
 import 'package:flutter_template/src/data/datasource/login_remote_datasource.dart';
 import 'package:flutter_template/src/data/model/country_model.dart';
 import 'package:flutter_template/src/data/model/create_account_token_model.dart';
+import 'package:flutter_template/src/data/model/offers_details_model.dart';
+import 'package:flutter_template/src/data/model/offers_model.dart';
+import 'package:flutter_template/src/data/model/organisation_model.dart';
 import 'package:flutter_template/src/data/model/region_model.dart';
 import 'package:flutter_template/src/data/model/sector_model.dart';
 import 'package:flutter_template/src/data/model/specialty_model.dart';
@@ -213,6 +216,83 @@ class LoginRepoImpl extends LoginRepo {
         Get.log("SendPhone disconnected");
         return const Left(NetworkFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OrganisationModel>>> organisation() async {
+    if (await networkInfo.isConnected) {
+      Get.log("get region is connected");
+      try {
+        final res = await remoteDatasource.organisation();
+        // Get.log("Organisation repo $res");
+        return Right(res);
+      } catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log("get region failure $failure");
+        return Left(failure);
+      }
+    } else {
+      Get.log("get region disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OffersModel>>> offers() async {
+    if (await networkInfo.isConnected) {
+      Get.log("get offers is connected");
+      try {
+        final res = await remoteDatasource.offers();
+        Get.log("GetOffers result =>$res");
+        return Right(res);
+      } catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log("get offets failure $failure");
+        return Left(failure);
+      }
+    } else {
+      Get.log("get offers disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OffersModel>>> offersChild(int id)
+    async {
+      if (await networkInfo.isConnected) {
+        Get.log("get offersChild is connected");
+        try {
+          final res = await remoteDatasource.offersChild(id);
+          Get.log("GetOffersChild result =>$res");
+          return Right(res);
+        } catch (e) {
+          final failure = handleException(e as Exception);
+          Get.log("get offetsChild failure $failure");
+          return Left(failure);
+        }
+      } else {
+        Get.log("get offersChild disconnected");
+        return const Left(NetworkFailure());
+      }
+    }
+
+  @override
+  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id)  async {
+    if (await networkInfo.isConnected) {
+      Get.log("get offersChild is connected");
+      try {
+        final res = await remoteDatasource.offersDetails(id);
+        Get.log("GetOffersChild result =>$res");
+        return Right(res);
+      } catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log("get offetsChild failure $failure");
+        return Left(failure);
+      }
+    } else {
+      Get.log("get offersChild disconnected");
+      return const Left(NetworkFailure());
     }
   }
 }

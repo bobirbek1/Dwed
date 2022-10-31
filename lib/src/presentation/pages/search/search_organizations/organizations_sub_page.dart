@@ -5,13 +5,18 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/injection_container.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 
 class OrganizationsSubPage extends StatelessWidget {
   OrganizationsSubPage({Key? key}) : super(key: key);
-  final title = Get.arguments;
+  final List arguments=Get.arguments;
+  final _controllerOffers = Get.find<OffersController>();
+
   @override
   Widget build(BuildContext context) {
+    _controllerOffers.id=arguments[1];
     return Scaffold(
       backgroundColor: AppColors.WHITE,
       appBar: getAppBar(),
@@ -52,7 +57,7 @@ class OrganizationsSubPage extends StatelessWidget {
         ],
       ),
       title: Text(
-        title.toString(),
+        arguments[0],
         style: TextStyle(
           fontSize: SizeConfig.calculateTextSize(16),
           color: AppColors.BLACK,
@@ -119,14 +124,16 @@ class OrganizationsSubPage extends StatelessWidget {
         getOutlinedButton(),
         Expanded(
           child: ListView.builder(
-              itemCount: phonePageItemsIcons.length,
+              itemCount: _controllerOffers.offersList.length,
               itemBuilder: (BuildContext context, int index) {
+                final data=_controllerOffers.offersChildList[index];
                 return InkWell(
                   onTap: () {
                     Get.toNamed(
                       AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
-                      arguments: phonePageItemsTitles[index],
+                      arguments: data.name,
                     );
+                    _controllerOffers.id=data.id!;
                   },
                   child: Column(
                     children: [
@@ -134,10 +141,12 @@ class OrganizationsSubPage extends StatelessWidget {
                         leading: SizedBox(
                           width: SizeConfig.calculateBlockHorizontal(56),
                           height: SizeConfig.calculateBlockVertical(56),
-                          child: Image.asset(phonePageItemsIcons[index]),
+                          child: data.image != null
+                              ? SvgPicture.string(data.image!,fit: BoxFit.contain,)
+                              : Image.asset(AppImages.PLAYGROUND),
                         ),
                         title: Text(
-                          phonePageItemsTitles[index],
+                          data.name != null ? data.name! : "----",
                           style: TextStyle(
                             color: AppColors.BLACK,
                             fontSize: SizeConfig.calculateTextSize(16),
@@ -145,7 +154,7 @@ class OrganizationsSubPage extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          phonePageItemsSubtitles[index],
+                          data.id != null ? "${data.id!} products" : "----",
                           style: TextStyle(
                             color: AppColors.SHADOW_BLUE,
                             fontSize: SizeConfig.calculateTextSize(12),

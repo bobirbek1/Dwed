@@ -5,6 +5,8 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:flutter_template/src/presentation/pages/search/recent_searches_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_typing.dart';
 import 'package:get/get.dart';
@@ -14,11 +16,14 @@ class SearchPage extends StatefulWidget {
 
   @override
   State<SearchPage> createState() => _SearchPageState();
+  final _controllerOrganisation = Get.find<OrganisationController>();
+  final _controllerOffers = Get.find<OffersController>();
 }
 
 class _SearchPageState extends State<SearchPage> {
   bool typing = true;
   final TextEditingController controller = TextEditingController();
+
   @override
   void dispose() {
     controller.dispose();
@@ -212,47 +217,74 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getOffersPage() {
-    return ListView.builder(
-        itemCount: offerPageItemsIcons.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              Get.toNamed(AppRoutes.OFFERS_SUB_PAGE,
-                  arguments: offerPageItemsTitles[index]);
-            },
-            child: Column(
-              children: [
-                ListTile(
-                  leading: SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(56),
-                    height: SizeConfig.calculateBlockVertical(56),
-                    child: Image.asset(offerPageItemsIcons[index]),
-                  ),
-                  title: Text(
-                    offerPageItemsTitles[index],
-                    style: TextStyle(
-                      color: AppColors.BLACK,
-                      fontSize: SizeConfig.calculateTextSize(16),
-                      fontWeight: FontWeight.w600,
+    return GetBuilder(
+      init: widget._controllerOffers,
+      id: widget._controllerOffers.offersId,
+      builder: (context) {
+        return ListView.builder(
+            itemCount: widget._controllerOffers.offersList.length,
+            itemBuilder: (BuildContext context, int index) {
+              final data = widget._controllerOffers.offersList[index];
+              Get.log("OffersPage list=> ${data.id}");
+
+              return InkWell(
+                onTap: () {
+                  final argument = data.name;
+                  widget._controllerOffers.selectOffersModel = data;
+                  widget._controllerOffers.getOffersChildList();
+                  if (widget._controllerOffers.offersChildList[0].hasSubs!) {
+                    Get.toNamed(
+                      AppRoutes.OFFERS_SUB_PAGE,
+                      arguments: argument,
+                    );
+                  } else {
+                    widget._controllerOffers.getOffersDetailsList();
+                    Get.toNamed(
+                      AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+                      arguments: argument,
+                    );
+                  }
+                },
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: SizedBox(
+                        width: SizeConfig.calculateBlockHorizontal(56),
+                        height: SizeConfig.calculateBlockVertical(56),
+                        child: data.image != null
+                            ? SvgPicture.string(
+                                data.image!,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.asset(AppImages.PLAYGROUND),
+                      ),
+                      title: Text(
+                        data.name != null ? data.name! : "----",
+                        style: TextStyle(
+                          color: AppColors.BLACK,
+                          fontSize: SizeConfig.calculateTextSize(16),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Text(
+                        data.id != null ? "${data.id!} products" : "----",
+                        style: TextStyle(
+                          color: AppColors.SHADOW_BLUE,
+                          fontSize: SizeConfig.calculateTextSize(12),
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    offerPageItemsSubtitles[index],
-                    style: TextStyle(
-                      color: AppColors.SHADOW_BLUE,
-                      fontSize: SizeConfig.calculateTextSize(12),
-                      fontWeight: FontWeight.w300,
+                    Divider(
+                      indent: SizeConfig.calculateBlockHorizontal(88),
+                      height: SizeConfig.calculateBlockVertical(8),
                     ),
-                  ),
+                  ],
                 ),
-                Divider(
-                  indent: SizeConfig.calculateBlockHorizontal(88),
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-              ],
-            ),
-          );
-        });
+              );
+            });
+      }
+    );
   }
 
   List<String> offerPageItemsIcons = [
@@ -290,13 +322,22 @@ class _SearchPageState extends State<SearchPage> {
 
   getOrganizationsPage() {
     return ListView.builder(
-        itemCount: organizationPageItemsIcons.length,
+        itemCount: widget._controllerOrganisation.organisationList.length,
         itemBuilder: (BuildContext context, int index) {
+          final data = widget._controllerOrganisation.organisationList[index];
+          Get.log("Organisation index=>$index");
+          Get.log(
+              "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
+          Get.log("Organisation List => $data}");
+          Get.log("Organisation item logo ${data.category!.image!}");
+          // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
+          // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
+
           return InkWell(
             onTap: () {
               Get.toNamed(
                 AppRoutes.ORGANIZATIONS_SUB_PAGE,
-                arguments: organizationPageItemsTitles[index],
+                arguments: data.name!,
               );
             },
             child: Column(
@@ -305,10 +346,12 @@ class _SearchPageState extends State<SearchPage> {
                   leading: SizedBox(
                     width: SizeConfig.calculateBlockHorizontal(56),
                     height: SizeConfig.calculateBlockVertical(56),
-                    child: Image.asset(organizationPageItemsIcons[index]),
+                    child: data.logo != null
+                        ? Image.network(data.category!.image!)
+                        : Image.asset(AppImages.PLAYGROUND),
                   ),
                   title: Text(
-                    organizationPageItemsTitles[index],
+                    data.name != null ? data.name! : "----",
                     style: TextStyle(
                       color: AppColors.BLACK,
                       fontSize: SizeConfig.calculateTextSize(16),
@@ -316,7 +359,9 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   subtitle: Text(
-                    organizationPageItemsSubtitles[index],
+                    data.subs!.me != null
+                        ? "${data.subs!.me!} Organizations"
+                        : "0 Organizations",
                     style: TextStyle(
                       color: AppColors.GRAY_X11,
                       fontSize: SizeConfig.calculateTextSize(12),
