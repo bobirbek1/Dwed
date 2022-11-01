@@ -32,7 +32,7 @@ abstract class LoginRemoteDatasource {
   Future<RegionModel> region(int countryId);
 
   Future<List<OrganisationModel>> organisation();
-  Future<List<OffersModel>> offers();
+  Future<List<OffersModel>> offers(int offset);
   Future<List<OffersModel>> offersChild(int id, int offset);
   Future<List<OffersDetailsModel>> offersDetails(int id, int offset);
 
@@ -260,10 +260,14 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
   }
 
   @override
-  Future<List<OffersModel>> offers()  async {
+  Future<List<OffersModel>> offers(int offset)  async {
+    Map<String , String> qParams = {
+      'offset': '$offset',
+      'limit' :'10'
+    };
     try {
       final result = await client.get(
-        "v1.0/api/cats/offers_cats/get_subs/0/",
+        "v1.0/api/cats/offers_cats/get_subs/0/",queryParameters: qParams
       );
       final data = result.data;
       Get.log("Offers remotedata result$data");

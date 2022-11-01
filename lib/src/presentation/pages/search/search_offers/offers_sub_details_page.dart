@@ -216,7 +216,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                   widget._controller.getOffersDetailsList();
                 },
                 onRefresh: () {
-                  widget._controller.getOffersChildList();
+                  widget._controller.getOffersDetailsList();
                 },
                 child: Expanded(
                  child: isVertical ?
@@ -257,7 +257,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   Widget buildHorizontalItems(List<OffersModel> horizontalList) {
     return horizontalList.isNotEmpty ? ListView.builder(
         itemBuilder: (ctx, index) {
-          return getHorListItem();
+          return getHorListItem(horizontalList[index].image,horizontalList[index].name, 1);
         },
       itemCount: horizontalList.length,
         ) : const Center(child: Text('no data'),);

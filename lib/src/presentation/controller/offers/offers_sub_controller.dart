@@ -1,3 +1,5 @@
+
+
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/offers_details_model.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_template/src/domain/usecase/getOffersChild.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OffersSubController extends GetxController {
   // usecases
@@ -37,11 +40,17 @@ class OffersSubController extends GetxController {
   int? offersValue;
   OffersModel? selectOffersModel;
 
+  //offsets
+  int offset = 0;
+
+  //refreshControllers
+  RefreshController refreshController = RefreshController(initialRefresh: true);
+
   void getOffersChildList() async {
     updateOffersChildState(OffersState.loading);
     Get.log("GetOffersSubController ");
     final result = await getOffersChild
-        .call(GetOffersChildParams(id: selectOffersModel!.id!));
+        .call(GetOffersChildParams(id: selectOffersModel!.id!, offset: offset));
     Get.log("Get offersChild result ${result}");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -53,9 +62,14 @@ class OffersSubController extends GetxController {
       } else {
         Get.log("OffersChild Error");
       }
+      refreshController.refreshFailed();
+      refreshController.loadFailed();
       updateOffersChildState(OffersState.error);
     }, (res) {
       offersChildList = res;
+      offset = offersChildList.length;
+      refreshController.loadComplete();
+      refreshController.refreshCompleted();
       Get.log("OffersChild Controller list => $offersChildList");
       updateOffersChildState(OffersState.loaded);
     });
@@ -65,7 +79,7 @@ class OffersSubController extends GetxController {
     updateOffersDetailsState(OffersState.loading);
     Get.log("GetOffersSubController ");
     final result = await getOffersDetails
-        .call(GetOffersDetailsParams(id: selectOffersModel!.id!));
+        .call(GetOffersDetailsParams(id: selectOffersModel!.id!, offset: 1));
     Get.log("Get offersDetails result $result");
     result.fold((failure) {
       if (failure is NetworkFailure) {

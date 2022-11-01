@@ -14,8 +14,15 @@ class OffersController extends GetxController {
   final GetOffersChild getOffersChild;
   final GetOffersDetails getOffersDetails;
 
-  //
+  //refreshController for offers' first page that has TV, fashion and card items
+  late final RefreshController refreshControllerSearchPage;
+
+  //refreshController for offers' second page that has vertical electronic items in figma
+  late final RefreshController refreshControllerForSubPage;
+
+  //refreshController for offers' third page that has vertical and grid item
   late final RefreshController refreshController;
+
 
   OffersController({
     required this.getOffers,
@@ -26,14 +33,14 @@ class OffersController extends GetxController {
   // states
   OffersState offersState = OffersState.initial;
 
-// data
-  List<OffersModel> offersList = [];
-  List<OffersModel> offersChildList = []; //
-  List<OffersDetailsModel> offersDetailsList = []; // list for grid items
+  // data
+  List<OffersModel> offersList = []; // list for search page items
+  List<OffersModel> offersChildList = []; // list for sub page
+  List<OffersDetailsModel> offersDetailsList = []; // list for details page
 
   int? id;
 
-// ids
+  // ids
   final String offersId = "offers_id";
   final String offersChildId = "offers_child_id";
   final String offersDetailsId = "offers_details_id";
@@ -42,20 +49,40 @@ class OffersController extends GetxController {
   int? offersValue;
   OffersModel? selectOffersModel;
 
+  // offsets for count of items
+  int offsetForOffersList = 0;
+  int offsetForSubPage = 0;
   int gridOffSet = 0;
   int horizontalOffSet = 0;
+
+  var hasSubsChild;
+  var hasSubs;
 
   @override
   void onInit() {
     refreshController = RefreshController(initialRefresh: true);
-    getOffersList();
+    refreshControllerSearchPage = RefreshController(initialRefresh: true);
+    refreshControllerForSubPage = RefreshController(initialRefresh: true);
+   // getOffersList();
     super.onInit();
   }
 
+  void onLoadingForSearchPage() {
+    getOffersList();
+  }
+
+  void onRefreshForSearchPage() {
+    getOffersList();
+  }
+
+  void onLoadingAndRefreshForSubpage() {
+    getOffersChildList();
+  }
+
+
   void getOffersList() async {
-    updateOffersState(OffersState.loading);
     Get.log("GetOffersController ");
-    final result = await getOffers.call(NoParams());
+    final result = await getOffers.call(GetOffersParams(offset: offsetForOffersList));
     Get.log("Get offers result ${result}");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -67,14 +94,16 @@ class OffersController extends GetxController {
       } else {
         Get.log("Offers Error");
       }
-      refreshController.loadFailed();
       updateOffersState(OffersState.error);
+      refreshControllerSearchPage.loadFailed();
     }, (res) {
       offersList.addAll(res);
       hasSubs = offersList[0].hasSubs;
+      offsetForOffersList = offersList.length;
       Get.log("Offers Controller list => $offersList");
-      refreshController.loadComplete();
       updateOffersState(OffersState.loaded);
+      refreshControllerSearchPage.loadComplete();
+      refreshControllerSearchPage.refreshCompleted();
     });
   }
 
@@ -82,7 +111,7 @@ class OffersController extends GetxController {
     updateOffersChildState(OffersState.loading);
     Get.log("GetOffersController ");
     final result = await getOffersChild.call(GetOffersChildParams(
-        id: selectOffersModel!.id!, offset: horizontalOffSet));
+        id: selectOffersModel!.id!, offset: offsetForSubPage));
     Get.log("Get offersChild result ${result}");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -94,15 +123,20 @@ class OffersController extends GetxController {
       } else {
         Get.log("OffersChild Error");
       }
-      refreshController.loadFailed();
+      refreshControllerForSubPage.loadFailed();
+      refreshControllerForSubPage.refreshFailed();
       updateOffersChildState(OffersState.error);
+      updateOffersDetailsState(OffersState.error);
     }, (res) {
-      horizontalOffSet += 10;
+      horizontalOffSet = offersChildList.length;
       offersChildList.addAll(res);
       hasSubsChild = offersChildList[0].hasSubs;
       Get.log("OffersChild Controller list => $offersChildList");
-      refreshController.loadComplete();
+      refreshControllerForSubPage.loadComplete();
+      refreshControllerForSubPage.refreshCompleted();
+      offsetForSubPage = res.length;
       updateOffersChildState(OffersState.loaded);
+      updateOffersDetailsState(OffersState.loaded);
     });
   }
 
@@ -123,10 +157,11 @@ class OffersController extends GetxController {
         Get.log("OfferDetails Error");
       }
       refreshController.loadFailed();
+      refreshController.refreshFailed();
       updateOffersDetailsState(OffersState.error);
     }, (res) {
-      gridOffSet += 10;
       offersDetailsList.addAll(res);
+      gridOffSet = offersDetailsList.length;
       Get.log("OffersDetails Controller list => $offersDetailsList");
       refreshController.loadComplete();
       updateOffersDetailsState(OffersState.loaded);

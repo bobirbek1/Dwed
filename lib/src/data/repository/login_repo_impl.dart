@@ -239,11 +239,11 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, List<OffersModel>>> offers() async {
+  Future<Either<Failure, List<OffersModel>>> offers(int offset) async {
     if (await networkInfo.isConnected) {
       Get.log("get offers is connected");
       try {
-        final res = await remoteDatasource.offers();
+        final res = await remoteDatasource.offers(offset);
         Get.log("GetOffers result =>$res");
         return Right(res);
       } catch (e) {

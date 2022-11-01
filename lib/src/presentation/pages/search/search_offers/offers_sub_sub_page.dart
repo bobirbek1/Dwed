@@ -7,6 +7,7 @@ import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OffersSubSubPage extends StatelessWidget {
   OffersSubSubPage({Key? key}) : super(key: key);
@@ -119,71 +120,82 @@ class OffersSubSubPage extends StatelessWidget {
             init: _controllerOffers,
             id: _controllerOffers.offersSubChildId,
             builder: (context) {
-              return Expanded(
-                child: ListView.builder(
-                    itemCount: _controllerOffers.offersChildList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final data = _controllerOffers.offersChildList[index];
-                      Get.log("Offers Sub Sub page data => ${data.name}}");
-                      return InkWell(
-                        onTap: () {
-                          final argument=data.name;
-                          _controllerOffers.selectOffersModel = data;
-                          _controllerOffers.getOffersChildList();
-                          if (_controllerOffers.offersChildList[0].hasSubs!) {
-                            Get.toNamed(
-                              AppRoutes.OFFERS_SUB_SUB_PAGE,
-                              arguments: data.name,
-                            );
-                          } else {
-                            _controllerOffers.getOffersDetailsList();
+              return Container(
+                child: SmartRefresher(
+                  controller: _controllerOffers.refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onRefresh: (){
+                    _controllerOffers.getOffersChildList();
+                  },
+                  onLoading: () {
+                    _controllerOffers.getOffersChildList();
+                  },
+                  child: ListView.builder(
+                      itemCount: _controllerOffers.offersChildList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final data = _controllerOffers.offersChildList[index];
+                        Get.log("Offers Sub Sub page data => ${data.name}}");
+                        return InkWell(
+                          onTap: () {
+                            final argument=data.name;
+                            _controllerOffers.selectOffersModel = data;
+                            _controllerOffers.getOffersChildList();
+                            if (_controllerOffers.offersChildList[0].hasSubs!) {
+                              Get.toNamed(
+                                AppRoutes.OFFERS_SUB_SUB_PAGE,
+                                arguments: data.name,
+                              );
+                            } else {
+                              _controllerOffers.getOffersDetailsList();
 
-                            Get.toNamed(
-                              AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                              arguments: data.name,
-                            );
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: SizedBox(
-                                width: SizeConfig.calculateBlockHorizontal(56),
-                                height: SizeConfig.calculateBlockVertical(56),
-                                child: data.image != null
-                                    ? SvgPicture.string(
-                                        data.image!,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : Image.asset(AppImages.PLAYGROUND),
-                              ),
-                              title: Text(
-                                data.name != null ? data.name! : "----",
-                                style: TextStyle(
-                                  color: AppColors.BLACK,
-                                  fontSize: SizeConfig.calculateTextSize(16),
-                                  fontWeight: FontWeight.w600,
+                              Get.toNamed(
+                                AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+                                arguments: data.name,
+                              );
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: SizedBox(
+                                  width: SizeConfig.calculateBlockHorizontal(56),
+                                  height: SizeConfig.calculateBlockVertical(56),
+                                  child: data.image != null
+                                      ? SvgPicture.string(
+                                          data.image!,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : Image.asset(AppImages.PLAYGROUND),
+                                ),
+                                title: Text(
+                                  data.name != null ? data.name! : "----",
+                                  style: TextStyle(
+                                    color: AppColors.BLACK,
+                                    fontSize: SizeConfig.calculateTextSize(16),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  data.id != null
+                                      ? "${data.id!} products"
+                                      : "----",
+                                  style: TextStyle(
+                                    color: AppColors.SHADOW_BLUE,
+                                    fontSize: SizeConfig.calculateTextSize(12),
+                                    fontWeight: FontWeight.w300,
+                                  ),
                                 ),
                               ),
-                              subtitle: Text(
-                                data.id != null
-                                    ? "${data.id!} products"
-                                    : "----",
-                                style: TextStyle(
-                                  color: AppColors.SHADOW_BLUE,
-                                  fontSize: SizeConfig.calculateTextSize(12),
-                                  fontWeight: FontWeight.w300,
-                                ),
+                              Divider(
+                                indent: SizeConfig.calculateBlockHorizontal(88),
+                                height: SizeConfig.calculateBlockVertical(8),
                               ),
-                            ),
-                            Divider(
-                              indent: SizeConfig.calculateBlockHorizontal(88),
-                              height: SizeConfig.calculateBlockVertical(8),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
               );
             }),
       ],
