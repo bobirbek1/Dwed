@@ -18,5 +18,5 @@ void main(List<String> args) async {
   print("main function worked after init");
 
   // Run the app
-  runApp(const  MyApp());
+  runApp(const MyApp());
 }

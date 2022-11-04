@@ -29,6 +29,7 @@ import 'package:flutter_template/src/presentation/pages/search/search_streams/st
 import 'package:flutter_template/src/presentation/pages/search/ver_hor_item_details.dart';
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
+import 'package:flutter_template/src/presentation/pages/stream/stream_details_page.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter_template/app/app_routes.dart';
 
@@ -92,15 +93,15 @@ class AppPages {
     GetPage(
         name: AppRoutes.PEOPLES_SUB_DETAILS_PAGE,
         page: () => PeoplesSubDetailsPage()),
-    GetPage(name: AppRoutes.USER_POST_PAGE, page: () =>  UserPostPage()),
-          GetPage(
-        name: AppRoutes.ITEM_DETAILS_PAGE,
-        page: () => const ItemDetailsPage()),
+    GetPage(name: AppRoutes.USER_POST_PAGE, page: () => UserPostPage()),
+    GetPage(
+        name: AppRoutes.ITEM_DETAILS_PAGE, page: () => const ItemDetailsPage()),
     GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => const BottomBarView()),
-    GetPage(name: AppRoutes.CARTPAGE, page: () =>  CartPage()),
-    GetPage(name: AppRoutes.CHECKOUTPAGE, page: () =>  CheckoutPage()),
-    GetPage(name: AppRoutes.PAYMENTMETHOD, page: () =>  MethodFirst()),
-    GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () =>  CheckoutOrdered()),
-    GetPage(name: AppRoutes.INFORMATIONPAGE, page: () =>  InformationPage()),
+    GetPage(name: AppRoutes.CARTPAGE, page: () => CartPage()),
+    GetPage(name: AppRoutes.CHECKOUTPAGE, page: () => CheckoutPage()),
+    GetPage(name: AppRoutes.PAYMENTMETHOD, page: () => MethodFirst()),
+    GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () => CheckoutOrdered()),
+    GetPage(name: AppRoutes.INFORMATIONPAGE, page: () => InformationPage()),
+    GetPage(name: AppRoutes.STREAM_DETAILS_PAGE, page: () => const StreamDetailsPage()),
   ];
 }

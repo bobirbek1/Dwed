@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class AppImages{
   static const String OFFER_PAINT = "assets/images/offer_paint.png";
   static const String OFFER_TIME = "assets/images/offer_time.png";
@@ -44,6 +46,9 @@ class AppImages{
   static const String UY = "assets/images/uy.png";
   static const String BORDER = "assets/images/Border.png";
   static const String ANHOR_4 = "assets/images/anhor_4.png";
+  static const String VIDEO_FRAME = "assets/images/video_frame.png";
+  static const String STREAM_LIVE = "assets/images/stream_live.png";
+  static const String COMMENT_AVATAR = "assets/images/comment_avatar.png";
 
 
 }

@@ -5,7 +5,7 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/pages/basket/basket_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
-import 'package:flutter_template/src/presentation/pages/news/news_page.dart';
+import 'package:flutter_template/src/presentation/pages/stream/stream_page.dart';
 import 'package:flutter_template/src/presentation/pages/profile/profile_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_page.dart';
 
@@ -22,7 +22,7 @@ class _BottomBarViewState extends State<BottomBarView> {
   final List<Widget> _tabs = [
     HomePage(),
     SearchPage(),
-    NewsPage(),
+    StreamPage(),
     BasketPage(),
     ProfilPage(),
   ];

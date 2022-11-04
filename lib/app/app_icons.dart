@@ -27,4 +27,9 @@ class AppIcons {
   static const String CALL_CALLING = "assets/icons/call-calling.svg";
   
   static const String BRO = "assets/icons/bro.svg";
+  static const String FILTER_2 = "assets/icons/filter_2.svg";
+  static const String MORE = "assets/icons/more.svg";
+  static const String EYE = "assets/icons/eye.svg";
+  static const String COMMENT = "assets/icons/comment.svg";
+  static const String ARROW_DOWN = "assets/icons/arrow_down.svg";
 }
