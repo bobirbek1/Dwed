@@ -16,5 +16,9 @@ class AppColors {
   static const ANTI_FLASH_WHITE = Color(0xFFF2F2F2);
   static const BACKGROUND = Color(0xFFE5E5E5);
   static const DIVIDER = Color(0xFFE5E9EC);
+  static const RED = Color(0xFFFA1A3A);
+  static const BG_STREAM_CONTAINER = Color(0xFF3B6EA6);
+  static const MAIN_TEXT_COLOR = Color(0xff7f92a0);
+  static const SUB_TEXT_COLOR = Color(0x007f929f);
 
 }

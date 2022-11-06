@@ -3,12 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/basket/basket_page.dart';
 import 'package:flutter_template/src/presentation/pages/cart/presentation/pages/cart_page.dart';
 import 'package:flutter_template/src/presentation/pages/home/home_page.dart';
-import 'package:flutter_template/src/presentation/pages/news/news_page.dart';
 import 'package:flutter_template/src/presentation/pages/profile/profile_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_page.dart';
+import 'package:flutter_template/src/presentation/pages/stream/stream_page.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class _BottomBarViewState extends State<BottomBarView> {
   final List<Widget> _tabs = [
     HomePage(),
     SearchPage(),
-    NewsPage(),
+    StreamPage(),
     CartPage(),
     ProfilPage(),
   ];
