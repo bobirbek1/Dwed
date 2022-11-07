@@ -13,56 +13,117 @@ class StreamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
+      appBar:getAppBar(
+        typing
+            ? Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: SizeConfig.calculateBlockHorizontal(16),
+                right: SizeConfig.calculateBlockHorizontal(6),
+              ),
+              child: SvgPicture.asset(AppIcons.SHAPE),
+            ),
+            SvgPicture.asset(
+              AppIcons.DWED,
+              height: SizeConfig.calculateBlockVertical(11),
+            ),
+          ],
+        )
+            : Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: SizeConfig.calculateBlockHorizontal(16),
+                right: SizeConfig.calculateBlockHorizontal(6),
+              ),
+              child: InkWell(
+                onTap: () {
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.calculateBlockVertical(12.5),
+                    horizontal: SizeConfig.calculateBlockHorizontal(10),
+                  ),
+                  child: SvgPicture.asset(
+                    AppIcons.ARROW_LEFT,
+                    color: AppColors.BLACK,
+                    fit: BoxFit.cover,
+                    height: SizeConfig.calculateBlockVertical(22),
+                    width: SizeConfig.calculateBlockHorizontal(7),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        typing
+            ? const SizedBox()
+            : TextField(
+          controller: textController,
+          cursorHeight: 24,
+          onChanged: (val) {
+          },
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: "Search",
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColors.SHADOW_BLUE,
+            ),
+          ),
+        ),
+        typing
+            ? SizeConfig.calculateBlockHorizontal(100)
+            : SizeConfig.calculateBlockHorizontal(55),
+      ),
       body: Column(
         children: [getStreamCategoriesList(), getStreamList()],
       ),
     );
   }
 
-  AppBar getAppBar() {
-    return AppBar(
-      leading: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: SizeConfig.calculateBlockHorizontal(16),
-              right: SizeConfig.calculateBlockHorizontal(6),
-            ),
-            child: SvgPicture.asset(AppIcons.SHAPE),
-          ),
-           Padding(
-              padding: EdgeInsets.zero,
-              child: SvgPicture.asset(
-                AppIcons.DWED,
-                height: SizeConfig.calculateBlockVertical(11),
-              ),
-            ),
-        ],
-      ),
-      title: const Text(
-        "Stream Video",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: AppColors.BLACK,
-        ),
-      ),
-      actions: [
-        Padding(
-            padding: EdgeInsets.only(
-              right: SizeConfig.calculateBlockHorizontal(19),
-            ),
-            child: SvgPicture.asset(AppIcons.SEARCH_NORMAL)),
-        Padding(
-            padding: EdgeInsets.only(
-              right: SizeConfig.calculateBlockHorizontal(19),
-            ),
-            child: SvgPicture.asset(AppIcons.FILTER)),
-      ],
+   getAppBar(Widget leading, Widget title, double leadingWidth) {
+    return  AppBar(
+      backgroundColor: Colors.white,
       centerTitle: true,
-      elevation: 0,
-      backgroundColor: AppColors.WHITE,
+      elevation: 0.3,
+      leading: leading,
+      leadingWidth: leadingWidth,
+      title: title,
+      actions: [
+        typing
+            ? InkWell(
+          onTap: () {
+
+          },
+          child: Padding(
+              padding: EdgeInsets.only(
+                right: SizeConfig.calculateBlockHorizontal(19),
+              ),
+              child: SvgPicture.asset(AppIcons.SEARCH_NORMAL)),
+        )
+            : textController.text.isEmpty
+            ? const SizedBox()
+            : InkWell(
+          onTap: () {
+
+          },
+          child: Padding(
+            padding: EdgeInsets.only(
+              right: SizeConfig.calculateBlockHorizontal(19),
+            ),
+            child: SvgPicture.asset(AppIcons.CLOSE_SEARCHFIELD),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            right: SizeConfig.calculateBlockHorizontal(19),
+          ),
+          child: SvgPicture.asset(AppIcons.FILTER),
+        ),
+      ],
     );
   }
 
@@ -79,11 +140,11 @@ class StreamPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 2, bottom: 2, right: 8, left: 8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.BLACK),
-                    color: AppColors.GRAY_X11),
+                    border: Border.all(color: AppColors.MAIN_TEXT_COLOR),
+                    ),
                 child: Text(
                   "Categories",
-                  style: TextStyle(color: AppColors.BLACK, fontSize: 18),
+                  style: TextStyle(color: AppColors.MAIN_TEXT_COLOR, fontSize: 18),
                 ),
               ),
             );
@@ -105,9 +166,9 @@ class StreamPage extends StatelessWidget {
 
   getStreamListItem() {
     return Container(
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
+      margin: const EdgeInsets.only(top: 8, bottom:8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             Stack(
@@ -148,50 +209,82 @@ class StreamPage extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 10,
+              height: 12,
             ),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                       width: SizeConfig.calculateBlockHorizontal(48),
                       height: SizeConfig.calculateBlockVertical(48),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24)),
-                      child: Image.asset(AppImages.PHONES_SMARTWATCHES)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Math for kids",
-                        style: TextStyle(color: AppColors.BLACK, fontSize: 14),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      const Text(
-                        "Math WARS",
-                        style: TextStyle(
-                            color: AppColors.MAIN_TEXT_COLOR, fontSize: 14),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 4, top: 4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.GRAY_X11),
-                        child: const Text(
-                          "Math",
-                          style: TextStyle(
-                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                          borderRadius: BorderRadius.circular(48)),
+                      child: Image.asset(AppImages.PHONES_PHONES)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Math for kids",
+                          style: TextStyle(color: AppColors.BLACK, fontSize: 14),
                         ),
-                      )
-                    ],
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Text(
+                          "MATH WARS",
+                          style: TextStyle(
+                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Wrap(
+                          children:[
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 4, top: 4),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: AppColors.GRAY_X11),
+                            child: const Text(
+                              "Math",
+                              style: TextStyle(
+                                  color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                            ),
+                          ),
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, bottom: 4, top: 4),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: AppColors.GRAY_X11),
+                              child: const Text(
+                                "Beginner",
+                                style: TextStyle(
+                                    color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, bottom: 4, top: 4),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: AppColors.GRAY_X11),
+                              child: const Text(
+                                "Uzbek",
+                                style: TextStyle(
+                                    color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                              ),
+                            ),
+                        ])
+                      ],
+                    ),
                   ),
                 ],
               ),
