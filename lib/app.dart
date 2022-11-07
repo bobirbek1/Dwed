@@ -22,9 +22,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.BOTTOM_BAR_VIEW,
+      initialRoute: AppRoutes.SPLASH,
       getPages: AppPages.getPages,
-      // home: const BottomBarView(),
     );
   }
 }

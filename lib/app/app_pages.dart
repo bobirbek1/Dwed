@@ -35,11 +35,11 @@ import 'package:flutter_template/app/app_routes.dart';
 
 class AppPages {
   static final getPages = [
-    GetPage(name: AppRoutes.SPLASH, page: () => const SplashPage()),
+    GetPage(name: AppRoutes.SPLASH, page: () =>  SplashPage()),
     // GetPage(
     //     name: AppRoutes.ON_BOARDING_LANG,
     //     page: () => const OnBoardingLangPage()),
-    GetPage(name: AppRoutes.ON_BOARDING, page: () => OnBoardingPage()),
+    GetPage(name: AppRoutes.ON_BOARDING, page: () => const OnBoardingPage()),
     GetPage(name: AppRoutes.LOGIN, page: () => LoginPage()),
     GetPage(
         name: AppRoutes.CREATE_ACCOUNT_NAME,

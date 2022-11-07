@@ -22,6 +22,7 @@ import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
+import 'package:flutter_template/src/presentation/controller/splash/splash_controller.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/local_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/remote_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/impl/local_datasource.dart';
@@ -115,6 +116,7 @@ Future<void> init() async {
   Get.lazyPut(() => ChangeAmountUseCase(cartRepository: Get.find()), fenix: true);
 
   // Controller
+  Get.lazyPut(() => SplashController(), fenix: true);
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
   Get.lazyPut(
       () => OffersController(
