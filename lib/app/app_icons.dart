@@ -35,4 +35,6 @@ class AppIcons {
   static const String ICON_UZCART = "assets/icons/icon_uzcart.svg";
 
   static const String BRO = "assets/icons/bro.svg";
+  static const String ICON_MORE = "assets/icons/icon_more.svg";
+  static const String ICON_EYE = "assets/icons/icon_eye.svg";
 }

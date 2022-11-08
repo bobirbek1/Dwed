@@ -32,5 +32,6 @@ class AppRoutes {
   static const PAYMENTMETHOD = "/payment_method";
   static const CHECKOUTORDEREDPAGE = "/checkout_ordered_page";
   static const INFORMATIONPAGE = "/information_page";
+  static const STREAM_DETAIL_PAGE = "/stream_detail_page";
 
 }
