@@ -51,12 +51,15 @@ class StreamDetailsPage extends StatelessWidget {
             left: SizeConfig.calculateBlockHorizontal(16),
             right: SizeConfig.calculateBlockHorizontal(6),
           ),
-          child: IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                AppIcons.ICON_MORE,
-                color: Colors.black,
-              )),
+          child: Transform.scale(
+            scale: 0.5,
+            child: IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.ICON_MORE,
+                  color: Colors.black,
+                )),
+          ),
         )
       ],
     );
@@ -219,8 +222,8 @@ class StreamDetailsPage extends StatelessWidget {
                 style: TextStyle(
                     color: AppColors.BLACK,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16, height: 1.2
-                ),
+                    fontSize: 16,
+                    height: 1.2),
                 maxLines: 1,
               ),
             ),
