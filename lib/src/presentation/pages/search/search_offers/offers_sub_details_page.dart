@@ -101,7 +101,9 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
             children: [
               InkWell(
                 // There'll be a bottomsheet
-                onTap: () {},
+                onTap: () {
+                  widget._controller.updateItemType(Sorting.sortBy);
+                },
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: SizeConfig.calculateBlockVertical(5),
@@ -135,7 +137,9 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
               ),
               InkWell(
                 // There'll be a bottomsheet
-                onTap: () {},
+                onTap: () {
+                  widget._controller.updateItemType(Sorting.filter);
+                },
                 child: Row(
                   children: [
                     Padding(
@@ -203,29 +207,28 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         init: widget._controller,
         builder: (context) {
           final gridList = widget._controller.offersDetailsList;
-          final horizontalList = widget._controller.offersChildList;
+          final horizontalList = widget._controller.offersDetailsList;
           Get.log("OfferDetails data ${widget._controller.offersDetailsList}");
           return Column(
             children: [
               getSortFilter(),
-              SmartRefresher(
-                controller: widget._controller.refreshController,
-                enablePullDown: true,
-                enablePullUp: true,
-                onLoading: () {
-                  widget._controller.getOffersDetailsList();
-                },
-                onRefresh: () {
-                  widget._controller.getOffersDetailsList();
-                },
-                child: Expanded(
-                 child: isVertical ?
-                     //grid Data
-                 buildGridItems(gridList)
-                 // horizontal data
-                     :
-                 buildHorizontalItems(horizontalList)
-                  ,
+              Expanded(
+                child: SmartRefresher(
+                  controller: widget._controller.refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onLoading: () {
+                    widget._controller.onLoadingForDetailsPage();
+                  },
+                  onRefresh: () {
+                    widget._controller.onRefreshForDetailsPage();
+                  },
+                  child: widget._controller.sortType == Sorting.sortBy ?
+                      //grid Data
+                  buildGridItems(gridList)
+                  // horizontal data
+                      :
+                  buildHorizontalItems(horizontalList),
                 ),
               ),
             ],
@@ -236,6 +239,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
   Widget buildGridItems (List<OffersDetailsModel> gridList) {
     return gridList.isNotEmpty ?
     GridView.builder(
+      itemCount: gridList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
@@ -246,54 +250,38 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
             onTap: () {
 
             },
-            child: getGridItem(gridList[index].name ?? 'no name', gridList[index].cost ?? 0),
+            child: getGridItem(
+                gridList[index].name ?? 'no name',
+                gridList[index].cost ?? 0,
+                gridList[index],
+                gridList[index].image,)
           );
         })
     // when gridList is empty
         :   // here
-    const Center(child: Text('no data'),);
+    Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Center(child: SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),),
+    );
   }
 
-  Widget buildHorizontalItems(List<OffersModel> horizontalList) {
+  Widget buildHorizontalItems(List<OffersDetailsModel> horizontalList) {
     return horizontalList.isNotEmpty ? ListView.builder(
         itemBuilder: (ctx, index) {
-          return getHorListItem(horizontalList[index].image,horizontalList[index].name, 1);
+          return getHorListItem(horizontalList[index].image,horizontalList[index].name, 1, horizontalList[index]);
         },
       itemCount: horizontalList.length,
-        ) : const Center(child: Text('no data'),);
+        ) : Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(child: SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),),
+        );
   }
 
-  // child: isVertical ? // Vertical List
-   //widget._controller.offersDetailsList.isNotEmpty ?
-  // GridView.builder(
-  // itemCount: widget._controller.offersDetailsList.length,
-  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  // crossAxisCount: 2,
-  // childAspectRatio:
-  // SizeConfig.calculateBlockHorizontal(167) /
-  // SizeConfig.calculateBlockVertical(267),
-  // ),
-  // itemBuilder: (context, index) {
-  // final data = widget._controller.offersDetailsList[index];
-  // return GestureDetector(
-  // onTap: () {
-  //
-  // },
-  // child: getGridItem(
-  // data.name != null
-  // ? widget._controller
-  //     .offersDetailsList[index].name!
-  //     : "----",
-  // data.cost != null
-  // ? widget._controller
-  //     .offersDetailsList[index].cost!
-  //     : 0,
-  // data.image));
-  // })
-
-
-  getGridItem(String title, int price,
-      [String? image, String? text, Widget? prices]) {
+  getGridItem(
+      String title,
+      int price,
+      OffersDetailsModel data,
+      String? image,) {
     int index = 0;
     for (var i = 0; i < getGridImages.length-1; i++) {
       index = index + 1;
@@ -304,67 +292,66 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         top: SizeConfig.calculateBlockVertical(16),
         right: SizeConfig.calculateBlockHorizontal(4.5),
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: SizeConfig.calculateBlockHorizontal(16),
-              ),
-              Stack(
+      child: InkWell(
+        onTap: () {
+          widget._controller.onItemClickedDetailsPage(data);
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: SizeConfig.calculateBlockHorizontal(16),
+                ),
+                Stack(
+                  children: [
+                    Container(
+                      width: SizeConfig.calculateBlockHorizontal(167),
+                      height: SizeConfig.calculateBlockVertical(180),
+                      child: Expanded(
+                        child: image == null
+                            ? SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain)
+                            : Image.network(image),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: SizeConfig.calculateBlockVertical(12),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: SizeConfig.calculateBlockHorizontal(167),
-                    height: SizeConfig.calculateBlockVertical(180),
-                    child: Expanded(
-                      child: image == null
-                          ? Image.asset(
-                              AppImages.IPHONE_13,
-                              fit: BoxFit.contain,
-                            )
-                          : Image.network(image),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(12),
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(12),
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  prices ?? const SizedBox(),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(8),
+                  ),
+                  Text(
+                    "${price.toString()} UZS",
+                    style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(14),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  data.discount != null ? Text('${data.discount}', style: const TextStyle(color: Colors.redAccent),) : const SizedBox()
                 ],
               ),
-            ],
-          ),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(12),
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              Text(
-                "${price.toString()} uzs",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(14),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                text ?? "",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(12),
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.SUNSET_ORANGE,
-                  decoration: TextDecoration.lineThrough,
-                ),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -385,7 +372,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         children: [
           getPriceContainer(
             "15%",
-            AppColors.SUNSET_ORANGE,
+             AppColors.SUNSET_ORANGE,
           ),
           getPriceContainer(
             "20%",
@@ -427,7 +414,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
     );
   }
 
-  getHorListItem(String? image, String? name, int? cost) {
+  getHorListItem(String? image, String? name, int? cost, OffersDetailsModel horizontalList) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(16),
@@ -436,180 +423,196 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
       ),
       child: InkWell(
         onTap: () {
-          Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
+          widget._controller.onItemClickedDetailsPage(horizontalList);
+         // Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
         },
-        child: Row(
+        child: Column(
           children: [
-            image == null
-                ? Image.asset(
-                    AppImages.IPHONE_13,
-                    fit: BoxFit.contain,
-                    width: SizeConfig.calculateBlockHorizontal(117),
-                    height: SizeConfig.calculateBlockVertical(158),
-                  )
-                : Image.network(
-                    image,
-                    width: SizeConfig.calculateBlockHorizontal(117),
-                    height: SizeConfig.calculateBlockVertical(158),
+            const SizedBox(height: 20,),
+            SizedBox(
+              height: SizeConfig.calculateBlockVertical(158),
+              child: Row(
+                children: [
+                  image == null
+                      ? SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain)
+                      : Image.network(
+                          image,
+                          width: SizeConfig.calculateBlockHorizontal(117),
+                          height: SizeConfig.calculateBlockVertical(158),
+                        ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(12),
                   ),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(12),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name == null ? "----" : name,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(14),
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(9),
-                ),
-                Row(
-                  children: [
-                    Image.asset(
-                      AppImages.ANHOR,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
-                    ),
-                    Text(
-                      "Anhor Relax Zone",
-                      style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(12),
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(9),
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.MAGISTR,
-                      width: SizeConfig.calculateBlockHorizontal(13.94),
-                      height: SizeConfig.calculateBlockVertical(11.63),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: SizeConfig.calculateBlockHorizontal(4.67),
-                        right: SizeConfig.calculateBlockHorizontal(12.67),
-                      ),
-                      child: Text(
-                        "55",
-                        style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(10),
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.ROYAL_ORANGE,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            name == null ? "----" : name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(14),
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      AppIcons.ORDEN,
-                      width: SizeConfig.calculateBlockHorizontal(6.67),
-                      height: SizeConfig.calculateBlockVertical(12.98),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: SizeConfig.calculateBlockHorizontal(8.67),
-                        right: SizeConfig.calculateBlockHorizontal(8.51),
-                      ),
-                      child: Text(
-                        "12",
-                        style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(10),
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.VIOLET_BLUE,
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(9),
                         ),
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      AppIcons.SHAKE_HAND,
-                      width: SizeConfig.calculateBlockHorizontal(14.92),
-                      height: SizeConfig.calculateBlockVertical(9.74),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: SizeConfig.calculateBlockHorizontal(4.57),
-                      ),
-                      child: Text(
-                        "45",
-                        style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(10),
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.ROYAL_ORANGE,
+                        Row(
+                          children: [
+                            horizontalList.org!.logo != null ?
+                            Image.network(horizontalList.org!.logo!,
+                              width: SizeConfig.calculateBlockHorizontal(16),
+                              height: SizeConfig.calculateBlockVertical(16),) :
+                            Image.asset(
+                              AppImages.PLACE_HOLDER,
+                              width: SizeConfig.calculateBlockHorizontal(16),
+                              height: SizeConfig.calculateBlockVertical(16),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(8),
+                            ),
+                            horizontalList.org!.name != null ? Text('${horizontalList.org!.name}') :
+                            Text(
+                              "-------",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(12),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
                         ),
-                      ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(9),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.MAGISTR,
+                              width: SizeConfig.calculateBlockHorizontal(13.94),
+                              height: SizeConfig.calculateBlockVertical(11.63),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(4.67),
+                                right: SizeConfig.calculateBlockHorizontal(12.67),
+                              ),
+                              child: Text(
+                                "55",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ROYAL_ORANGE,
+                                ),
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              AppIcons.ORDEN,
+                              width: SizeConfig.calculateBlockHorizontal(6.67),
+                              height: SizeConfig.calculateBlockVertical(12.98),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(8.67),
+                                right: SizeConfig.calculateBlockHorizontal(8.51),
+                              ),
+                              child: Text(
+                                "12",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.VIOLET_BLUE,
+                                ),
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              AppIcons.SHAKE_HAND,
+                              width: SizeConfig.calculateBlockHorizontal(14.92),
+                              height: SizeConfig.calculateBlockVertical(9.74),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(4.57),
+                              ),
+                              child: Text(
+                                "45",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ROYAL_ORANGE,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.LOCATION,
+                              width: SizeConfig.calculateBlockHorizontal(16),
+                              height: SizeConfig.calculateBlockVertical(16),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(4),
+                            ),
+                            Text(
+                              "Toshkentdan 18 km",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(12),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Text(
+                          horizontalList.category!.name ?? '----',
+                          style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              horizontalList.discount != null ?
+                              '${horizontalList.cost! * horizontalList.discount! / 100} UZS' :
+                              '${horizontalList.cost} UZS',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(14),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(8),
+                            ),
+                          ],
+                        ),
+                        horizontalList.discount != null  ?
+                        Text(
+                          horizontalList.cost == null ? '0 UZS' : '${horizontalList.cost} UZS',
+                          style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(14),
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.SUNSET_ORANGE,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ) : const SizedBox(),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.LOCATION,
-                      width: SizeConfig.calculateBlockHorizontal(16),
-                      height: SizeConfig.calculateBlockVertical(16),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(4),
-                    ),
-                    Text(
-                      "Toshkentdan 18 km",
-                      style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(12),
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-                Text(
-                  "Oilaviy kvartira",
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(12),
-                      fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      cost != 0 ? cost.toString() : "0",
-                      style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(14),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.calculateBlockHorizontal(8),
-                    ),
-                    Text(
-                      "12 599 000 UZS",
-                      style: TextStyle(
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.SUNSET_ORANGE,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: SizeConfig.calculateBlockVertical(20),
+                  ),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(20),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

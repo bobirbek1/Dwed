@@ -97,7 +97,7 @@ class AppPages {
     GetPage(name: AppRoutes.USER_POST_PAGE, page: () =>  UserPostPage()),
           GetPage(
         name: AppRoutes.ITEM_DETAILS_PAGE,
-        page: () => const ItemDetailsPage()),
+        page: () => ItemDetailsPage()),
     GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => const BottomBarView()),
     GetPage(name: AppRoutes.CARTPAGE, page: () =>  CartPage()),
     GetPage(name: AppRoutes.CHECKOUTPAGE, page: () =>  CheckoutPage()),

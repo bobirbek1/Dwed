@@ -1,5 +1,3 @@
-
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_template/app/app_constants.dart';
@@ -11,10 +9,14 @@ import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
 import 'package:flutter_template/src/domain/usecase/getOffersChild.dart';
+import 'package:flutter_template/src/domain/usecase/getProductPageItem.dart';
 import 'package:flutter_template/src/domain/usecase/get_country.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
 import 'package:flutter_template/src/domain/usecase/get_organisation.dart';
+import 'package:flutter_template/src/domain/usecase/get_organisation_details.dart';
+import 'package:flutter_template/src/domain/usecase/get_organisation_sub.dart';
+import 'package:flutter_template/src/domain/usecase/get_organisation_user_post.dart';
 import 'package:flutter_template/src/domain/usecase/get_region.dart';
 import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
@@ -73,11 +75,11 @@ Future<void> init() async {
     fenix: true,
   );
   Get.lazyPut<CardLocalDataSource>(
-          () => CardLocalDataSourceImpl(),
+    () => CardLocalDataSourceImpl(),
     fenix: true,
   );
   Get.lazyPut<CardRemoteDataSource>(
-      () => CardRemoteDataSourceImpl(client: Get.find()),
+    () => CardRemoteDataSourceImpl(client: Get.find()),
     fenix: true,
   );
 
@@ -90,12 +92,12 @@ Future<void> init() async {
           ),
       fenix: true);
 
-  Get.lazyPut<CartRepository> (
+  Get.lazyPut<CartRepository>(
       () => CardRepositoryImpl(
           cardRemoteDataSource: Get.find(),
           cardLocalDataSource: Get.find(),
           networkInfo: Get.find()),
-    fenix: true);
+      fenix: true);
 
   // usecase
   Get.lazyPut(() => Login(repo: Get.find()), fenix: true);
@@ -108,11 +110,17 @@ Future<void> init() async {
   Get.lazyPut(() => GetOffers(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOffersChild(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOffersDetails(repo: Get.find()), fenix: true);
-  Get.lazyPut(() => GetCardProductsImpl(cartRepository: Get.find()), fenix: true);
+  Get.lazyPut(() => GetCardProductsImpl(cartRepository: Get.find()),
+      fenix: true);
   Get.lazyPut(() => DeleteItemUseCase(cartRepository: Get.find()), fenix: true);
   Get.lazyPut(() => GetItemsUseCase(cartRepository: Get.find()), fenix: true);
   Get.lazyPut(() => DeleteItemUseCase(cartRepository: Get.find()), fenix: true);
-  Get.lazyPut(() => ChangeAmountUseCase(cartRepository: Get.find()), fenix: true);
+  Get.lazyPut(() => ChangeAmountUseCase(cartRepository: Get.find()),
+      fenix: true);
+  Get.lazyPut(() => GetOrganisationSub(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOrganisationUserPost(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetProductPageItem(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOrganisationDetails( loginRepo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
@@ -120,7 +128,8 @@ Future<void> init() async {
       () => OffersController(
           getOffers: Get.find(),
           getOffersChild: Get.find(),
-          getOffersDetails: Get.find()),
+          getOffersDetails: Get.find(),
+          getProductPageItem: Get.find()),
       fenix: true);
   Get.lazyPut(
       () => OffersSubController(
@@ -128,7 +137,11 @@ Future<void> init() async {
           getOffersChild: Get.find(),
           getOffersDetails: Get.find()),
       fenix: true);
-  Get.lazyPut(() => OrganisationController(getOrganisation: Get.find()),
+  Get.lazyPut(
+      () => OrganisationController(
+          getOrganisation: Get.find(),
+          getOrganisationSub: Get.find(),
+          getUserPost: Get.find(), getOrganisationDetails: Get.find()),
       fenix: true);
   Get.lazyPut(
       () => CreateAccountController(
@@ -140,10 +153,11 @@ Future<void> init() async {
           ),
       fenix: true);
   Get.lazyPut(
-          () => CardController(getCardProducts: Get.find(), getItemsUseCase:  Get.find(), deleteItemUseCase:  Get.find(), changeAmountUseCase: Get.find()),
-      fenix:  true);
-  Get.lazyPut(
-          () => CheckoutPageController(),
-      fenix:  true);
-
+      () => CardController(
+          getCardProducts: Get.find(),
+          getItemsUseCase: Get.find(),
+          deleteItemUseCase: Get.find(),
+          changeAmountUseCase: Get.find()),
+      fenix: true);
+  Get.lazyPut(() => CheckoutPageController(), fenix: true);
 }

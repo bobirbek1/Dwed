@@ -56,6 +56,7 @@ class AppImages {
   static const String ICON_NAQD_PUL = "assets/images/icon_naqdpul.png";
   static const String ICON_PAY_ME = "assets/images/icon_payme.png";
   static const String ICON_TERMINAL = "assets/images/icon_terminalnew.png";
+  static const String PLACE_HOLDER = "assets/images/placeholder2.png";
 
 
 }

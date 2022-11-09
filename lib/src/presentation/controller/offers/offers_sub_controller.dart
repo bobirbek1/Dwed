@@ -1,5 +1,6 @@
 
 
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/offers_details_model.dart';
@@ -39,12 +40,26 @@ class OffersSubController extends GetxController {
   // additional
   int? offersValue;
   OffersModel? selectOffersModel;
+  OffersModel? selectOffersModelInSubPage;
+
 
   //offsets
   int offset = 0;
+  int offsetForDetails = 0;
 
   //refreshControllers
   RefreshController refreshController = RefreshController(initialRefresh: true);
+
+  ///called when item in sub page is clicked
+  void itemInSubClicked(OffersModel data) {
+    final argument = data.name;
+    selectOffersModelInSubPage = data;
+    getOffersChildList();
+    Get.toNamed(
+      AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+      arguments: argument,
+    );
+  }
 
   void getOffersChildList() async {
     updateOffersChildState(OffersState.loading);
@@ -66,7 +81,7 @@ class OffersSubController extends GetxController {
       refreshController.loadFailed();
       updateOffersChildState(OffersState.error);
     }, (res) {
-      offersChildList = res;
+      offersChildList = res['results'];
       offset = offersChildList.length;
       refreshController.loadComplete();
       refreshController.refreshCompleted();
@@ -79,7 +94,7 @@ class OffersSubController extends GetxController {
     updateOffersDetailsState(OffersState.loading);
     Get.log("GetOffersSubController ");
     final result = await getOffersDetails
-        .call(GetOffersDetailsParams(id: selectOffersModel!.id!, offset: 1));
+        .call(GetOffersDetailsParams(id: selectOffersModel!.id!, offset: offsetForDetails));
     Get.log("Get offersDetails result $result");
     result.fold((failure) {
       if (failure is NetworkFailure) {
@@ -93,7 +108,8 @@ class OffersSubController extends GetxController {
       }
       updateOffersDetailsState(OffersState.error);
     }, (res) {
-      offersDetailsList = res;
+      offersDetailsList.addAll(res['results']);
+      offsetForDetails = offersDetailsList.length;
       Get.log("OffersDetails Controller list => $offersDetailsList");
       updateOffersDetailsState(OffersState.loaded);
     });

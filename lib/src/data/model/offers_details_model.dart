@@ -4,7 +4,7 @@ class OffersDetailsModel {
   String? user;
   String? name;
   int? cost;
-  int? discount;
+  double? discount;
   int? qty;
   int? measurement;
   String? image;

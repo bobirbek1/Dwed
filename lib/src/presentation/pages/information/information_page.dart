@@ -58,40 +58,48 @@ class InformationPage extends StatelessWidget {
   }
 
   Widget buildListItem(SmartPhoneItem item) {
-    return Column(
-      children: [
-        SizedBox(
-          height: SizeConfig.calculateBlockVertical(8),
-        ),
-        Row(
-          children: [
-            Image.asset(item.path),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(
+            height: SizeConfig.calculateBlockVertical(8),
+          ),
+          SizedBox(
+            height: SizeConfig.calculateBlockVertical(64),
+            child: Row(
               children: [
-                Text(
-                  item.description,
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(14),
-                      fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  item.price,
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(16),
-                      fontWeight: FontWeight.w600),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                Image.asset(item.path),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.description,
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(14),
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    Text(
+                      item.price,
+                      style: TextStyle(
+                          fontSize: SizeConfig.calculateTextSize(16),
+                          fontWeight: FontWeight.w600),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-        const Divider(
-          color: Colors.black12,
-          thickness: 0.5,
-        ),
-      ],
+            ),
+          ),
+          const Divider(
+            color: Colors.black12,
+            thickness: 0.5,
+          ),
+        ],
+      ),
     );
   }
 
