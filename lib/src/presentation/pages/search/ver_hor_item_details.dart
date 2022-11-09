@@ -6,6 +6,7 @@ import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 
 final List<String> imgList = [
@@ -16,20 +17,16 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
 ];
 
-class ItemDetailsPage extends StatefulWidget {
-  const ItemDetailsPage({Key? key}) : super(key: key);
 
-  @override
-  State<ItemDetailsPage> createState() => _ItemDetailsPageState();
-}
-
-class _ItemDetailsPageState extends State<ItemDetailsPage> {
+class ItemDetailsPage extends StatelessWidget {
   int _current = 0;
 
   final CarouselController _controller = CarouselController();
+  final _controllerOffers = Get.find<OffersController>();
 
   @override
   Widget build(BuildContext context) {
+
     final List<Widget> images = [
       Image.asset(
         AppImages.DACHA,
@@ -63,6 +60,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
       ),
     ];
     int length = images.length;
+
     return Scaffold(
       backgroundColor: AppColors.WHITE,
       appBar: AppBar(
@@ -96,417 +94,424 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
             ),
           ],
         ),
-        title: const Text(
-          '''13 kishilik "Yovvoyi G'arb" uyi (d...''',
-          style: TextStyle(
+        title: Text(
+           '-----',
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: AppColors.BLACK,
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: CarouselSlider(
-                    items: images,
-                    carouselController: _controller,
-                    options: CarouselOptions(
-                      height: SizeConfig.calculateBlockVertical(375),
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      disableCenter: true,
-                      viewportFraction: 1,
-                      // aspectRatio: SizeConfig.calculateBlockHorizontal(475)/SizeConfig.calculateBlockVertical(400),
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _current = index;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: imgList.asMap().entries.map((entry) {
-                        return GestureDetector(
-                          onTap: () => _controller.animateToPage(entry.key),
-                          child: Container(
-                            width: SizeConfig.calculateBlockHorizontal(6),
-                            height: SizeConfig.calculateBlockVertical(6),
-                            margin: EdgeInsets.symmetric(
-                              vertical: SizeConfig.calculateBlockVertical(12),
-                              horizontal:
-                                  SizeConfig.calculateBlockHorizontal(4),
-                            ),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? AppColors.WHITE
-                                      : AppColors.WHITE)
-                                  .withOpacity(
-                                      _current == entry.key ? 0.9 : 0.4),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                getPrice(),
-                Positioned(
-                  left: SizeConfig.calculateBlockHorizontal(363),
-                  top: SizeConfig.calculateBlockVertical(12),
-                  child: Container(
-                    width: SizeConfig.calculateBlockHorizontal(36),
-                    height: SizeConfig.calculateBlockVertical(24),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: AppColors.SHADOW_BLUE,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "${_current + 1}/$length",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(12),
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.WHITE,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.all(
-                SizeConfig.calculateBlockHorizontal(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: GetBuilder(
+        builder: (GetxController controller) {
+         // final data = _controllerOffers.productsPageItem;
+          return _controllerOffers.offersStateProductPage == OffersState.error ?
+              const Center(child: Text('Error'),) :
+              _controllerOffers.offersStateProductPage == OffersState.loading ?
+                  const CircularProgressIndicator() :
+        SingleChildScrollView(
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  getText(
-                    text:
-                        '''13 kishilik "Yovvoyi G'arb" uyi (dam olish\nkunlari)''',
-                    fontSize: SizeConfig.calculateTextSize(16),
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.BLACK,
-                  ),
-                  getText(
-                    text: '''254 pieces available''',
-                    fontSize: SizeConfig.calculateTextSize(12),
-                    fontWeight: FontWeight.w300,
-                    color: AppColors.SHADOW_BLUE,
-                  ),
                   SizedBox(
-                    height: SizeConfig.calculateBlockVertical(12),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      getText(
-                        text: "24 408 000 UZS",
-                        fontSize: SizeConfig.calculateTextSize(22),
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.BLACK,
+                    width: double.infinity,
+                    child: CarouselSlider(
+                      items: images,
+                      carouselController: _controller,
+                      options: CarouselOptions(
+                        height: SizeConfig.calculateBlockVertical(375),
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        disableCenter: true,
+                        viewportFraction: 1,
+                        // aspectRatio: SizeConfig.calculateBlockHorizontal(475)/SizeConfig.calculateBlockVertical(400),
+                        onPageChanged: (index, reason) {
+
+                        },
                       ),
-                      SizedBox(
-                        width: SizeConfig.calculateBlockHorizontal(12),
-                      ),
-                      Text(
-                        "32 400 000 UZS",
-                        style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(16),
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.SUNSET_ORANGE,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(16),
-                  ),
-                  getText(
-                    text: "Choose a specialist for this offer",
-                    fontSize: SizeConfig.calculateTextSize(16),
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.BLACK,
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(12),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      getCircleAvatar(),
-                      getCircleAvatar(),
-                      getCircleAvatar(),
-                      getCircleAvatar(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(24),
-                  ),
-                  getOutlinedButton(
-                    (){},
-                    "Savatga qo'shish",
-                    AppColors.WHITE,
-                    AppColors.BUTTON_BLUE,
-                    AppColors.BUTTON_BLUE,
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.BAG,
-                          width: SizeConfig.calculateBlockHorizontal(24),
-                          height: SizeConfig.calculateBlockVertical(24),
-                          color: AppColors.BUTTON_BLUE,
-                        ),
-                        SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(8),
-                        ),
-                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(12),
-                  ),
-                  getOutlinedButton(
-                        (){},
-                    "Bo'lib to'lash",
-                    AppColors.ROYAL_ORANGE,
-                    AppColors.WHITE,
-                    AppColors.WHITE,
-                    const SizedBox(),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(12),
-                  ),
-                  getOutlinedButton(
-                        (){ Get.toNamed(AppRoutes.CARTPAGE);},
-                    "Hoziroq rasmiylashtirish",
-                    AppColors.BUTTON_BLUE,
-                    AppColors.WHITE,
-                    AppColors.WHITE,
-                    const SizedBox(),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(24),
-                  ),
-                  getText(
-                    text: "Description",
-                    fontSize: SizeConfig.calculateTextSize(16),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.BLACK,
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(8),
-                  ),
-                  getText(
-                    text:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam odio est morbi diam convallis. Placerat non elit sit ut. Lorem lacinia proin egestas mauris, sed egestas hendrerit. Nascetur diam nunc, dui odio dignissim neque. Elementum magna...more",
-                    fontSize: SizeConfig.calculateTextSize(14),
-                    fontWeight: FontWeight.w300,
-                    color: AppColors.SHADOW_BLUE,
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(16),
-                  ),
-                  getText(
-                    text: "Specifications",
-                    fontSize: SizeConfig.calculateTextSize(16),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.BLACK,
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(12),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      getText(
-                        text: "Ajratish turi",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.BLACK,
+                  Positioned(
+                    bottom: 0,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: imgList.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () => _controller.animateToPage(entry.key),
+                            child: Container(
+                              width: SizeConfig.calculateBlockHorizontal(6),
+                              height: SizeConfig.calculateBlockVertical(6),
+                              margin: EdgeInsets.symmetric(
+                                vertical: SizeConfig.calculateBlockVertical(12),
+                                horizontal:
+                                    SizeConfig.calculateBlockHorizontal(4),
+                              ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? AppColors.WHITE
+                                        : AppColors.WHITE)
+                                    .withOpacity(
+                                        _current == entry.key ? 0.9 : 0.4),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      getText(
-                        text: "Oilaviy kvartira",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.BLACK,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(8),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      getText(
-                        text: "Odamlar soni",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.BLACK,
-                      ),
-                      getText(
-                        text: "13",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.BLACK,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(8),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      getText(
-                        text: "Texnika",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.BLACK,
-                      ),
-                      getText(
-                        text: "Wi-Fi, Televizor",
-                        fontSize: SizeConfig.calculateTextSize(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.BLACK,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.calculateBlockVertical(40),
-                  ),
-                  getText(
-                    text: "Selling organization",
-                    fontSize: SizeConfig.calculateTextSize(16),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.BLACK,
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      AppImages.ANHOR_4,
-                      width: SizeConfig.calculateBlockHorizontal(48),
-                      height: SizeConfig.calculateBlockVertical(48),
                     ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        getText(
-                          text: "Anhor Relax Zone",
-                          fontSize: SizeConfig.calculateTextSize(16),
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.BLACK,
-                        ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.CALL_CALLING,
-                              width: SizeConfig.calculateBlockHorizontal(24),
-                              height: SizeConfig.calculateBlockVertical(24),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.calculateBlockHorizontal(16),
-                            ),
-                            SvgPicture.asset(
-                              AppIcons.MESSENGER,
-                              width: SizeConfig.calculateBlockHorizontal(24),
-                              height: SizeConfig.calculateBlockVertical(24),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.MAGISTR,
-                          width: SizeConfig.calculateBlockHorizontal(13.94),
-                          height: SizeConfig.calculateBlockVertical(11.63),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: SizeConfig.calculateBlockHorizontal(4.67),
-                            right: SizeConfig.calculateBlockHorizontal(12.67),
-                          ),
-                          child: Text(
-                            "55",
-                            style: TextStyle(
-                              fontSize: SizeConfig.calculateTextSize(10),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.ROYAL_ORANGE,
-                            ),
+                  ),
+                  getPrice(),
+                  Positioned(
+                    left: SizeConfig.calculateBlockHorizontal(363),
+                    top: SizeConfig.calculateBlockVertical(12),
+                    child: Container(
+                      width: SizeConfig.calculateBlockHorizontal(36),
+                      height: SizeConfig.calculateBlockVertical(24),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: AppColors.SHADOW_BLUE,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "${_current + 1}/$length",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.WHITE,
                           ),
                         ),
-                        SvgPicture.asset(
-                          AppIcons.ORDEN,
-                          width: SizeConfig.calculateBlockHorizontal(6.67),
-                          height: SizeConfig.calculateBlockVertical(12.98),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: SizeConfig.calculateBlockHorizontal(8.67),
-                            right: SizeConfig.calculateBlockHorizontal(8.51),
-                          ),
-                          child: Text(
-                            "12",
-                            style: TextStyle(
-                              fontSize: SizeConfig.calculateTextSize(10),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.VIOLET_BLUE,
-                            ),
-                          ),
-                        ),
-                        SvgPicture.asset(
-                          AppIcons.SHAKE_HAND,
-                          width: SizeConfig.calculateBlockHorizontal(14.92),
-                          height: SizeConfig.calculateBlockVertical(9.74),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: SizeConfig.calculateBlockHorizontal(4.57),
-                            right: SizeConfig.calculateBlockHorizontal(12),
-                          ),
-                          child: Text(
-                            "45",
-                            style: TextStyle(
-                              fontSize: SizeConfig.calculateTextSize(10),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.ROYAL_ORANGE,
-                            ),
-                          ),
-                        ),
-                        getText(
-                          text: "509 fikrlar",
-                          fontSize: SizeConfig.calculateTextSize(10),
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.SHADOW_BLUE,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
+              Padding(
+                padding: EdgeInsets.all(
+                  SizeConfig.calculateBlockHorizontal(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    getText(
+                      text:
+                          '''13 kishilik "Yovvoyi G'arb" uyi (dam olish\nkunlari)''',
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.BLACK,
+                    ),
+                    getText(
+                      text: '''254 pieces available''',
+                      fontSize: SizeConfig.calculateTextSize(12),
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.SHADOW_BLUE,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(12),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        getText(
+                          text: "24 408 000 UZS",
+                          fontSize: SizeConfig.calculateTextSize(22),
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.BLACK,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.calculateBlockHorizontal(12),
+                        ),
+                        Text(
+                          "32 400 000 UZS",
+                          style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(16),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.SUNSET_ORANGE,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+                    getText(
+                      text: "Choose a specialist for this offer",
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.BLACK,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(12),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        getCircleAvatar(),
+                        getCircleAvatar(),
+                        getCircleAvatar(),
+                        getCircleAvatar(),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(24),
+                    ),
+                    getOutlinedButton(
+                      (){},
+                      "Savatga qo'shish",
+                      AppColors.WHITE,
+                      AppColors.BUTTON_BLUE,
+                      AppColors.BUTTON_BLUE,
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.BAG,
+                            width: SizeConfig.calculateBlockHorizontal(24),
+                            height: SizeConfig.calculateBlockVertical(24),
+                            color: AppColors.BUTTON_BLUE,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(8),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(12),
+                    ),
+                    getOutlinedButton(
+                          (){},
+                      "Bo'lib to'lash",
+                      AppColors.ROYAL_ORANGE,
+                      AppColors.WHITE,
+                      AppColors.WHITE,
+                      const SizedBox(),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(12),
+                    ),
+                    getOutlinedButton(
+                          (){ Get.toNamed(AppRoutes.CARTPAGE);},
+                      "Hoziroq rasmiylashtirish",
+                      AppColors.BUTTON_BLUE,
+                      AppColors.WHITE,
+                      AppColors.WHITE,
+                      const SizedBox(),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(24),
+                    ),
+                    getText(
+                      text: "Description",
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.BLACK,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(8),
+                    ),
+                    getText(
+                      text:
+                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam odio est morbi diam convallis. Placerat non elit sit ut. Lorem lacinia proin egestas mauris, sed egestas hendrerit. Nascetur diam nunc, dui odio dignissim neque. Elementum magna...more",
+                      fontSize: SizeConfig.calculateTextSize(14),
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.SHADOW_BLUE,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+                    getText(
+                      text: "Specifications",
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.BLACK,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(12),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        getText(
+                          text: "Ajratish turi",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w300,
+                          color: AppColors.BLACK,
+                        ),
+                        getText(
+                          text: "Oilaviy kvartira",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.BLACK,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(8),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        getText(
+                          text: "Odamlar soni",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w300,
+                          color: AppColors.BLACK,
+                        ),
+                        getText(
+                          text: "13",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.BLACK,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(8),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        getText(
+                          text: "Texnika",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w300,
+                          color: AppColors.BLACK,
+                        ),
+                        getText(
+                          text: "Wi-Fi, Televizor",
+                          fontSize: SizeConfig.calculateTextSize(14),
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.BLACK,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(40),
+                    ),
+                    getText(
+                      text: "Selling organization",
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.BLACK,
+                    ),
+                    ListTile(
+                      leading: Image.asset(
+                        AppImages.ANHOR_4,
+                        width: SizeConfig.calculateBlockHorizontal(48),
+                        height: SizeConfig.calculateBlockVertical(48),
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          getText(
+                            text: "Anhor Relax Zone",
+                            fontSize: SizeConfig.calculateTextSize(16),
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.BLACK,
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.CALL_CALLING,
+                                width: SizeConfig.calculateBlockHorizontal(24),
+                                height: SizeConfig.calculateBlockVertical(24),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.calculateBlockHorizontal(16),
+                              ),
+                              SvgPicture.asset(
+                                AppIcons.MESSENGER,
+                                width: SizeConfig.calculateBlockHorizontal(24),
+                                height: SizeConfig.calculateBlockVertical(24),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.MAGISTR,
+                            width: SizeConfig.calculateBlockHorizontal(13.94),
+                            height: SizeConfig.calculateBlockVertical(11.63),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: SizeConfig.calculateBlockHorizontal(4.67),
+                              right: SizeConfig.calculateBlockHorizontal(12.67),
+                            ),
+                            child: Text(
+                              "55",
+                              style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(10),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.ROYAL_ORANGE,
+                              ),
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.ORDEN,
+                            width: SizeConfig.calculateBlockHorizontal(6.67),
+                            height: SizeConfig.calculateBlockVertical(12.98),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: SizeConfig.calculateBlockHorizontal(8.67),
+                              right: SizeConfig.calculateBlockHorizontal(8.51),
+                            ),
+                            child: Text(
+                              "12",
+                              style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(10),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.VIOLET_BLUE,
+                              ),
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.SHAKE_HAND,
+                            width: SizeConfig.calculateBlockHorizontal(14.92),
+                            height: SizeConfig.calculateBlockVertical(9.74),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: SizeConfig.calculateBlockHorizontal(4.57),
+                              right: SizeConfig.calculateBlockHorizontal(12),
+                            ),
+                            child: Text(
+                              "45",
+                              style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(10),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.ROYAL_ORANGE,
+                              ),
+                            ),
+                          ),
+                          getText(
+                            text: "509 fikrlar",
+                            fontSize: SizeConfig.calculateTextSize(10),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.SHADOW_BLUE,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        },
       ),
     );
   }
@@ -533,7 +538,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              icon!,
+
               Text(
                 text,
                 style: TextStyle(

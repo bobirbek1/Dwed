@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
@@ -6,17 +8,18 @@ import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/injection_container.dart';
+import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OrganizationsSubPage extends StatelessWidget {
   OrganizationsSubPage({Key? key}) : super(key: key);
-  final List arguments=Get.arguments;
-  final _controllerOffers = Get.find<OffersController>();
+  final String arguments=Get.arguments;
+  final _controllerOrganisations = Get.find<OrganisationController>();
 
   @override
   Widget build(BuildContext context) {
-    _controllerOffers.id=arguments[1];
     return Scaffold(
       backgroundColor: AppColors.WHITE,
       appBar: getAppBar(),
@@ -57,7 +60,7 @@ class OrganizationsSubPage extends StatelessWidget {
         ],
       ),
       title: Text(
-        arguments[0],
+        arguments,
         style: TextStyle(
           fontSize: SizeConfig.calculateTextSize(16),
           color: AppColors.BLACK,
@@ -123,53 +126,70 @@ class OrganizationsSubPage extends StatelessWidget {
       children: [
         getOutlinedButton(),
         Expanded(
-          child: ListView.builder(
-              itemCount: _controllerOffers.offersList.length,
-              itemBuilder: (BuildContext context, int index) {
-                final data=_controllerOffers.offersChildList[index];
-                return InkWell(
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
-                      arguments: data.name,
-                    );
-                    _controllerOffers.id=data.id!;
-                  },
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(56),
-                          height: SizeConfig.calculateBlockVertical(56),
-                          child: data.image != null
-                              ? SvgPicture.string(data.image!,fit: BoxFit.contain,)
-                              : Image.asset(AppImages.PLAYGROUND),
+          child: GetBuilder(
+            id: _controllerOrganisations.organisationSubId,
+            init: _controllerOrganisations,
+            builder: (context) {
+              return SmartRefresher(
+                controller: _controllerOrganisations.refreshControllerOrganisationsSubPage,
+                enablePullDown: true,
+                enablePullUp: true,
+                onRefresh: () {
+                  _controllerOrganisations.onRefreshForOrganisationSubPage();
+                },
+                onLoading: () {
+                  _controllerOrganisations.onLoadingForOrganisationSubPage();
+                },
+                child: ListView.builder(
+                    itemCount: _controllerOrganisations.organisationSubList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final data=_controllerOrganisations.organisationSubList[index];
+                      return InkWell(
+                        onTap: () {
+                          // Get.toNamed(
+                          //   AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
+                          //   arguments: data.name,
+                          // );
+                          _controllerOrganisations.onClickOrganisationSubPageItem(data);
+                        },
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: SizedBox(
+                                width: SizeConfig.calculateBlockHorizontal(56),
+                                height: SizeConfig.calculateBlockVertical(56),
+                                child: data.category!.image != null
+                                    ? SvgPicture.string(data.category!.image!,fit: BoxFit.contain,)
+                                    : Image.asset(AppImages.PLACE_HOLDER),
+                              ),
+                              title: Text(
+                                data.name != null ? data.name! : "----",
+                                style: TextStyle(
+                                  color: AppColors.BLACK,
+                                  fontSize: SizeConfig.calculateTextSize(16),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                data.category!.id != null ? "${data.category!.id!} products" : "----",
+                                style: TextStyle(
+                                  color: AppColors.SHADOW_BLUE,
+                                  fontSize: SizeConfig.calculateTextSize(12),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              indent: SizeConfig.calculateBlockHorizontal(88),
+                              height: SizeConfig.calculateBlockVertical(8),
+                            ),
+                          ],
                         ),
-                        title: Text(
-                          data.name != null ? data.name! : "----",
-                          style: TextStyle(
-                            color: AppColors.BLACK,
-                            fontSize: SizeConfig.calculateTextSize(16),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        subtitle: Text(
-                          data.id != null ? "${data.id!} products" : "----",
-                          style: TextStyle(
-                            color: AppColors.SHADOW_BLUE,
-                            fontSize: SizeConfig.calculateTextSize(12),
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        indent: SizeConfig.calculateBlockHorizontal(88),
-                        height: SizeConfig.calculateBlockVertical(8),
-                      ),
-                    ],
-                  ),
-                );
-              }),
+                      );
+                    }),
+              );
+            }
+          ),
         ),
       ],
     );

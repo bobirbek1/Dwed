@@ -5,6 +5,7 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -12,7 +13,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class OffersSubSubPage extends StatelessWidget {
   OffersSubSubPage({Key? key}) : super(key: key);
   final argument = Get.arguments;
-  final _controllerOffers = Get.find<OffersSubController>();
+  final _controllerOffers = Get.find<OffersController>();
+  final _controllerOffersSecond = Get.find<OffersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,7 @@ class OffersSubSubPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(11.0),
               child: Text(
-                "Show all offers",
+                "Show all offers akhror",
                 style: TextStyle(
                   fontSize: SizeConfig.calculateTextSize(14),
                   fontWeight: FontWeight.w400,
@@ -116,44 +118,29 @@ class OffersSubSubPage extends StatelessWidget {
     return Column(
       children: [
         getOutlinedButton(),
-        GetBuilder(
-            init: _controllerOffers,
-            id: _controllerOffers.offersSubChildId,
-            builder: (context) {
-              return Container(
-                child: SmartRefresher(
-                  controller: _controllerOffers.refreshController,
+        Expanded(
+          child: GetBuilder(
+              init: _controllerOffers,
+              id: _controllerOffers.offersSubSubId,
+              builder: (context) {
+                return SmartRefresher(
+                  controller: _controllerOffers.refreshControllerForSubSubPage,
                   enablePullDown: true,
                   enablePullUp: true,
                   onRefresh: (){
-                    _controllerOffers.getOffersChildList();
+                    _controllerOffers.onRefreshForSubSubpage();
                   },
                   onLoading: () {
-                    _controllerOffers.getOffersChildList();
+                    _controllerOffers.onLoadingForSubSubPage();
                   },
                   child: ListView.builder(
-                      itemCount: _controllerOffers.offersChildList.length,
+                      itemCount: _controllerOffers.offersSubSubList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final data = _controllerOffers.offersChildList[index];
+                        final data = _controllerOffers.offersSubSubList[index];
                         Get.log("Offers Sub Sub page data => ${data.name}}");
                         return InkWell(
                           onTap: () {
-                            final argument=data.name;
-                            _controllerOffers.selectOffersModel = data;
-                            _controllerOffers.getOffersChildList();
-                            if (_controllerOffers.offersChildList[0].hasSubs!) {
-                              Get.toNamed(
-                                AppRoutes.OFFERS_SUB_SUB_PAGE,
-                                arguments: data.name,
-                              );
-                            } else {
-                              _controllerOffers.getOffersDetailsList();
-
-                              Get.toNamed(
-                                AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                                arguments: data.name,
-                              );
-                            }
+                            _controllerOffers.itemClickedInSubSubPage(data);
                           },
                           child: Column(
                             children: [
@@ -166,7 +153,7 @@ class OffersSubSubPage extends StatelessWidget {
                                           data.image!,
                                           fit: BoxFit.contain,
                                         )
-                                      : Image.asset(AppImages.PLAYGROUND),
+                                      : SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),
                                 ),
                                 title: Text(
                                   data.name != null ? data.name! : "----",
@@ -195,9 +182,9 @@ class OffersSubSubPage extends StatelessWidget {
                           ),
                         );
                       }),
-                ),
-              );
-            }),
+                );
+              }),
+        ),
       ],
     );
   }

@@ -33,6 +33,7 @@ class AppIcons {
   static const String ICON_MUDDATLI = "assets/icons/icon_muddatli.svg";
   static const String ICON_OFFICIAL = "assets/icons/tick_official.svg";
   static const String ICON_UZCART = "assets/icons/icon_uzcart.svg";
+  static const String PLACE_HOLDER = "assets/icons/placeholder3.svg";
 
   static const String BRO = "assets/icons/bro.svg";
 }

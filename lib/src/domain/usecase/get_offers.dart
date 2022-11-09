@@ -6,13 +6,13 @@ import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/offers_model.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
 
-class GetOffers extends Usecase<List<OffersModel>, GetOffersParams> {
+class GetOffers extends Usecase<Map<String , dynamic>, GetOffersParams> {
   final LoginRepo repo;
 
   GetOffers({required this.repo});
 
   @override
-  Future<Either<Failure, List<OffersModel>>> call(GetOffersParams params) {
+  Future<Either<Failure, Map<String , dynamic>>> call(GetOffersParams params) {
     return repo.offers(params.offset);
   }
 }
