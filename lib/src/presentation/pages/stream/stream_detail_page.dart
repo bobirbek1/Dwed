@@ -7,7 +7,9 @@ import '../../../../app/app_icons.dart';
 import '../../../../core/utils/size_config.dart';
 
 class StreamDetailsPage extends StatelessWidget {
-  const StreamDetailsPage({Key? key}) : super(key: key);
+  StreamDetailsPage({Key? key}) : super(key: key);
+
+  bool isMessagePressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +22,25 @@ class StreamDetailsPage extends StatelessWidget {
                 color: Colors.black,
               )),
           'Stream name'),
-      body: getStreamDetails(),
+      body: Column(
+        children: [
+          Container(
+            height: SizeConfig.calculateBlockVertical(240),
+            decoration: BoxDecoration(color: AppColors.ROYAL_ORANGE),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          isMessagePressed ? getMessageScreen() : getStreamDetails()
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        onPressed: () {},
-        child: Icon(Icons.message),
+        onPressed: () {
+          isMessagePressed = !isMessagePressed;
+        },
+        child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
       ),
     );
   }
@@ -66,19 +81,15 @@ class StreamDetailsPage extends StatelessWidget {
   }
 
   getStreamDetails() {
+    final String descText =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis magna orci, sit accumsan scelerisqe. Vehicula arcu, scelerisque id in. Velit, iaculis sem purus lobortis. Adipiscing quam egestas odio habitant eget massa. Suspendisse proin et diam tellus arcu...more";
+    bool flagText = false;
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: SizeConfig.calculateBlockVertical(240),
-            decoration: BoxDecoration(color: AppColors.ROYAL_ORANGE),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -88,7 +99,7 @@ class StreamDetailsPage extends StatelessWidget {
                     width: SizeConfig.calculateBlockHorizontal(48),
                     height: SizeConfig.calculateBlockVertical(48),
                     decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(48)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(48)),
                     child: Image.asset(AppImages.PHONES_PHONES)),
                 Padding(
                   padding: EdgeInsets.only(left: 8),
@@ -119,7 +130,7 @@ class StreamDetailsPage extends StatelessWidget {
                                 // Expanded(child: Container()),
                                 SizedBox(
                                   width:
-                                      SizeConfig.calculateBlockHorizontal(200),
+                                  SizeConfig.calculateBlockHorizontal(200),
                                 ),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -199,20 +210,32 @@ class StreamDetailsPage extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Expanded(
-              child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis magna orci, sit accumsan scelerisqe. Vehicula arcu, scelerisque id in. Velit, iaculis sem purus lobortis. Adipiscing quam egestas odio habitant eget massa. Suspendisse proin et diam tellus arcu...more",
-                style: TextStyle(
-                    color: AppColors.BLACK, fontSize: 14, height: 1.2),
-                maxLines: 5,
-                softWrap: true,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
+                child: Column(
+                  children: [
+                    Text(descText,
+                        maxLines: flagText ? 8 : 5, textAlign: TextAlign.start),
+                    GestureDetector(
+                      onTap: () {
+                        flagText = !flagText;
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          flagText
+                              ? Text(
+                            "Show Less",
+                            style: TextStyle(color: Colors.blue),
+                          )
+                              : Text("Show More",
+                              style: TextStyle(color: Colors.blue))
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -231,5 +254,59 @@ class StreamDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  getMessageScreen() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Container(
+            height: SizeConfig.calculateBlockVertical(56),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Live Chat",
+                  style: TextStyle(
+                      color: AppColors.BLACK, fontSize: 16, height: 1.2),
+                ),
+                Transform.scale(
+                  scale: 0.5,
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset(
+                        AppIcons.ARROW_DOWN,
+                        color: Colors.black,
+                      )),
+                ),
+              ],
+            ),
+          ),
+          ListView.builder(itemBuilder: (_, int index) {
+            return getStreamChatList(
+                "https://www.google.com/imgres?imgurl=https%3A%2F%2Foecdenvironmentfocusblog.files.wordpress.com%2F2020%2F06%2Fwed-blog-shutterstock_1703194387_low_nwm.jpg&imgrefurl=https%3A%2F%2Foecd-environment-focus.blog%2F2020%2F06%2F05%2Ftime-for-nature-is-a-global-public-health-crisis-what-it-takes-to-protect-the-planets-biodiversity%2F&tbnid=mxmAv-yoofVX-M&vet=12ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ..i&docid=Dtq-qGkM6AowdM&w=500&h=262&q=nature&ved=2ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ",
+                "name",
+                "message",
+                4);
+          })
+        ],
+      ),
+    );
+  }
+
+  getStreamChatList(String profileImage, String name, String message,
+      int time) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          alignment: Alignment.topCenter,
+          
+        )
+      ],
+
+    )
   }
 }
