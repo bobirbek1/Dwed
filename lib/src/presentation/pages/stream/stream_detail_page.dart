@@ -302,11 +302,15 @@ class StreamDetailsPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          width: SizeConfig.calculateBlockHorizontal(48),
+          height: SizeConfig.calculateBlockVertical(48),
           alignment: Alignment.topCenter,
-          
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24)
+          ),
+          child: Image.network(profileImage),
         )
       ],
-
-    )
+    );
   }
 }
