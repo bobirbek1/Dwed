@@ -1,4 +1,6 @@
-class OffersModel {
+import 'package:equatable/equatable.dart';
+
+class OffersModel extends Equatable{
   int? id;
   String? name;
   String? description;
@@ -36,6 +38,15 @@ class OffersModel {
     data['has_subs'] = this.hasSubs;
     return data;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id,
+      name,
+      description,
+      parent,
+      image,
+      hasSubs];
 }
 
 class Parent {

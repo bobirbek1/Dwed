@@ -3,13 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
+import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/data/model/offers_details_model.dart';
+import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
+import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserPostPage extends StatelessWidget {
   UserPostPage({Key? key}) : super(key: key);
+  final _controller = Get.find<OrganisationController>();
+  final _controllerOffers = Get.find<OffersController>();
+
   final title = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +72,7 @@ class UserPostPage extends StatelessWidget {
   }
 
   getBody() {
+    final data = _controller.selectedOrganisationUserPost;
     return Column(
       children: [
         SizedBox(
@@ -70,12 +80,14 @@ class UserPostPage extends StatelessWidget {
           height: SizeConfig.calculateBlockVertical(144),
           child: Stack(
             children: [
-              Image.asset(
-                AppImages.USER_POST_DETAILS,
-                width: double.infinity,
-                height: SizeConfig.calculateBlockVertical(96),
-                fit: BoxFit.cover,
-              ),
+              data!.background != null
+                  ? SvgPicture.string(data.background!)
+                  : Image.asset(
+                      AppImages.USER_POST_DETAILS,
+                      width: double.infinity,
+                      height: SizeConfig.calculateBlockVertical(96),
+                      fit: BoxFit.cover,
+                    ),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Row(
@@ -85,11 +97,17 @@ class UserPostPage extends StatelessWidget {
                       padding: EdgeInsets.only(
                         left: SizeConfig.calculateBlockHorizontal(16),
                       ),
-                      child: Image.asset(
-                        AppImages.USER_POST_PROFIL,
-                        width: SizeConfig.calculateBlockHorizontal(96),
-                        height: SizeConfig.calculateBlockVertical(96),
-                      ),
+                      child: data.category!.image != null
+                          ? Image.network(
+                              data.category!.image!,
+                              width: SizeConfig.calculateBlockHorizontal(96),
+                              height: SizeConfig.calculateBlockVertical(96),
+                            )
+                          : Image.asset(
+                              AppImages.USER_POST_PROFIL,
+                              width: SizeConfig.calculateBlockHorizontal(96),
+                              height: SizeConfig.calculateBlockVertical(96),
+                            ),
                     ),
                     const Expanded(
                       child: SizedBox(),
@@ -175,7 +193,7 @@ class UserPostPage extends StatelessWidget {
               Row(
                 children: [
                   getBodyText(
-                    text: "MEDION",
+                    text: data.name ?? '------',
                     fontSize: SizeConfig.calculateTextSize(18),
                     textColor: AppColors.BLACK,
                     fontWeight: FontWeight.w600,
@@ -183,18 +201,20 @@ class UserPostPage extends StatelessWidget {
                   SizedBox(
                     width: SizeConfig.calculateBlockHorizontal(6),
                   ),
-                  SvgPicture.asset(
-                    AppIcons.LEGAL,
-                    width: SizeConfig.calculateBlockHorizontal(20),
-                    height: SizeConfig.calculateBlockVertical(20),
-                  ),
+                  data.isOfficial!
+                      ? SvgPicture.asset(
+                          AppIcons.LEGAL,
+                          width: SizeConfig.calculateBlockHorizontal(20),
+                          height: SizeConfig.calculateBlockVertical(20),
+                        )
+                      : const SizedBox(),
                 ],
               ),
               SizedBox(
                 height: SizeConfig.calculateBlockVertical(6),
               ),
               getBodyText(
-                text: "Project Owner at Akfa Group",
+                text: data.category!.name ?? '----------',
                 fontSize: SizeConfig.calculateTextSize(16),
                 fontWeight: FontWeight.w400,
                 textColor: AppColors.BLACK,
@@ -212,7 +232,7 @@ class UserPostPage extends StatelessWidget {
                 height: SizeConfig.calculateBlockVertical(8),
               ),
               getBodyText(
-                text:
+                text: data.category!.description ??
                     "Let’s have fun while creating awesome products #memes #inspiration #2022 #Design",
                 fontSize: SizeConfig.calculateTextSize(14),
                 fontWeight: FontWeight.w400,
@@ -310,35 +330,389 @@ class UserPostPage extends StatelessWidget {
   }
 
   getPostsPage() {
-    return const SizedBox();
+    return GetBuilder(
+        id: _controllerOffers.offersDetailsId,
+        init: _controllerOffers,
+        builder: (context) {
+          final gridList = _controllerOffers.offersDetailsList;
+          final horizontalList = _controllerOffers.offersDetailsList;
+          Get.log("OfferDetails data ${_controllerOffers.offersDetailsList}");
+          return Column(
+            children: [
+              Expanded(
+                child: SmartRefresher(
+                  controller: _controllerOffers.refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onLoading: () {
+                    _controllerOffers.onLoadingForDetailsPage();
+                  },
+                  onRefresh: () {
+                    _controllerOffers.onRefreshForDetailsPage();
+                  },
+                  child: _controllerOffers.sortType == Sorting.sortBy
+                      ?
+                      //grid Data
+                      buildGridItems(gridList)
+                      // horizontal data
+                      : buildHorizontalItems(horizontalList),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
-  getShopPage() {
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
-          SizeConfig.calculateBlockVertical(267),
-      children: [
-        getGridItem(
-          "12 599 000 UZS",
-          getPrice(),
+  Widget buildGridItems(List<OffersDetailsModel> gridList) {
+    return gridList.isNotEmpty
+        ? GridView.builder(
+            itemCount: gridList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
+                  SizeConfig.calculateBlockVertical(267),
+            ),
+            itemBuilder: (ctx, index) {
+              return GestureDetector(
+                  onTap: () {},
+                  child: getGridItem(
+                    gridList[index].name ?? 'no name',
+                    gridList[index].cost ?? 0,
+                    gridList[index],
+                    gridList[index].image,
+                  ));
+            })
+        // when gridList is empty
+        : // here
+        Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: SvgPicture.asset(
+                AppIcons.PLACE_HOLDER,
+                fit: BoxFit.contain,
+                width: SizeConfig.calculateBlockVertical(160),
+                height: SizeConfig.calculateBlockHorizontal(160),
+              ),
+            ),
+          );
+  }
+
+  Widget buildHorizontalItems(List<OffersDetailsModel> horizontalList) {
+    return horizontalList.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (ctx, index) {
+              return getHorListItem(horizontalList[index].image,
+                  horizontalList[index].name, 1, horizontalList[index]);
+            },
+            itemCount: horizontalList.length,
+          )
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child:
+                  SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),
+            ),
+          );
+  }
+
+  getHorListItem(String? image, String? name, int? cost,
+      OffersDetailsModel horizontalList) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: SizeConfig.calculateBlockHorizontal(16),
+        top: SizeConfig.calculateBlockVertical(16),
+        right: SizeConfig.calculateBlockHorizontal(16),
+      ),
+      child: InkWell(
+        onTap: () {
+          Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
+        },
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: SizeConfig.calculateBlockVertical(158),
+              child: Row(
+                children: [
+                  image == null
+                      ? SvgPicture.asset(AppIcons.PLACE_HOLDER,
+                          fit: BoxFit.contain)
+                      : Image.network(
+                          image,
+                          width: SizeConfig.calculateBlockHorizontal(117),
+                          height: SizeConfig.calculateBlockVertical(158),
+                        ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(12),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            name == null ? "----" : name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontSize: SizeConfig.calculateTextSize(14),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(9),
+                        ),
+                        Row(
+                          children: [
+                            horizontalList.org!.logo != null
+                                ? Image.network(
+                                    horizontalList.org!.logo!,
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(16),
+                                    height:
+                                        SizeConfig.calculateBlockVertical(16),
+                                  )
+                                : Image.asset(
+                                    AppImages.PLACE_HOLDER,
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(16),
+                                    height:
+                                        SizeConfig.calculateBlockVertical(16),
+                                  ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(8),
+                            ),
+                            horizontalList.org!.name != null
+                                ? Text('${horizontalList.org!.name}')
+                                : Text(
+                                    "-------",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.calculateTextSize(12),
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(9),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.MAGISTR,
+                              width: SizeConfig.calculateBlockHorizontal(13.94),
+                              height: SizeConfig.calculateBlockVertical(11.63),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(4.67),
+                                right:
+                                    SizeConfig.calculateBlockHorizontal(12.67),
+                              ),
+                              child: Text(
+                                "55",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ROYAL_ORANGE,
+                                ),
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              AppIcons.ORDEN,
+                              width: SizeConfig.calculateBlockHorizontal(6.67),
+                              height: SizeConfig.calculateBlockVertical(12.98),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(8.67),
+                                right:
+                                    SizeConfig.calculateBlockHorizontal(8.51),
+                              ),
+                              child: Text(
+                                "12",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.VIOLET_BLUE,
+                                ),
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              AppIcons.SHAKE_HAND,
+                              width: SizeConfig.calculateBlockHorizontal(14.92),
+                              height: SizeConfig.calculateBlockVertical(9.74),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: SizeConfig.calculateBlockHorizontal(4.57),
+                              ),
+                              child: Text(
+                                "45",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(10),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ROYAL_ORANGE,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.LOCATION,
+                              width: SizeConfig.calculateBlockHorizontal(16),
+                              height: SizeConfig.calculateBlockVertical(16),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(4),
+                            ),
+                            Text(
+                              "Toshkentdan 18 km",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(12),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Text(
+                          horizontalList.category!.name ?? '----',
+                          style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              horizontalList.discount != null
+                                  ? '${horizontalList.cost! * horizontalList.discount! / 100} UZS'
+                                  : '${horizontalList.cost} UZS',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(14),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.calculateBlockHorizontal(8),
+                            ),
+                          ],
+                        ),
+                        horizontalList.discount != null
+                            ? Text(
+                                horizontalList.cost == null
+                                    ? '0 UZS'
+                                    : '${horizontalList.cost} UZS',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(14),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.SUNSET_ORANGE,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(20),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        getGridItem(),
-        getGridItem(),
-        getGridItem(
-          "12 599 000 UZS",
-          getPrice(),
-        ),
-        getGridItem(),
-        getGridItem(
-          "12 599 000 UZS",
-          getPrice(),
-        ),
-      ],
+      ),
     );
   }
 
-  getGridItem([String? text, Widget? prices]) {
+  getShopPage() {
+    return GetBuilder(
+        init: _controllerOffers,
+        id: _controllerOffers.offersId,
+        builder: (context) {
+          return SmartRefresher(
+            controller: _controllerOffers.refreshControllerSearchPage,
+            enablePullDown: true,
+            enablePullUp: true,
+            onLoading: () {
+              _controllerOffers.onLoadingForSearchPage();
+            },
+            onRefresh: () {
+              _controllerOffers.onRefreshForSearchPage();
+            },
+            child: ListView.builder(
+                itemCount: _controllerOffers.offersList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final data = _controllerOffers.offersList[index];
+                  Get.log("OffersPage list=> ${data.id}");
+
+                  return InkWell(
+                    onTap: () {
+                      //_controllerOffers.itemClicked(data);
+                    },
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(56),
+                            height: SizeConfig.calculateBlockVertical(56),
+                            child: data.image != null
+                                ? SvgPicture.string(
+                                    data.image!,
+                                    fit: BoxFit.contain,
+                                  )
+                                : SvgPicture.asset(
+                                    AppIcons.PLACE_HOLDER,
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
+                          title: Text(
+                            data.name != null ? data.name! : "----",
+                            style: TextStyle(
+                              color: AppColors.BLACK,
+                              fontSize: SizeConfig.calculateTextSize(16),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            data.id != null ? "${data.id!} products" : "----",
+                            style: TextStyle(
+                              color: AppColors.SHADOW_BLUE,
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          indent: SizeConfig.calculateBlockHorizontal(88),
+                          height: SizeConfig.calculateBlockVertical(8),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+          );
+        });
+  }
+
+  getGridItem(
+    String title,
+    int price,
+    OffersDetailsModel data,
+    String? image,
+  ) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(4.5),
@@ -354,12 +728,16 @@ class UserPostPage extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  Image.asset(
-                    AppImages.IPHONE_13,
+                  Container(
                     width: SizeConfig.calculateBlockHorizontal(167),
                     height: SizeConfig.calculateBlockVertical(180),
+                    child: Expanded(
+                      child: image == null
+                          ? SvgPicture.asset(AppIcons.PLACE_HOLDER,
+                              fit: BoxFit.contain)
+                          : Image.network(image),
+                    ),
                   ),
-                  prices ?? const SizedBox(),
                 ],
               ),
             ],
@@ -367,41 +745,109 @@ class UserPostPage extends StatelessWidget {
           SizedBox(
             height: SizeConfig.calculateBlockVertical(12),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Smartphone iPhone 12 Pro\n128GB Graphite",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(12),
-                  fontWeight: FontWeight.w400,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(12),
                 ),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              Text(
-                "11 124 000 UZS",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(14),
-                  fontWeight: FontWeight.w600,
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(12),
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              Text(
-                text ?? "",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(12),
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.SUNSET_ORANGE,
-                  decoration: TextDecoration.lineThrough,
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(8),
                 ),
-              ),
-            ],
+                Text(
+                  "${price.toString()} UZS",
+                  style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(14),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                data.discount != null
+                    ? Text(
+                        '${data.discount}',
+                        style: const TextStyle(color: Colors.redAccent),
+                      )
+                    : const SizedBox()
+              ],
+            ),
           ),
         ],
       ),
     );
   }
+
+  // getGridItem([String? text, Widget? prices]) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(
+  //       left: SizeConfig.calculateBlockHorizontal(4.5),
+  //       top: SizeConfig.calculateBlockVertical(16),
+  //       right: SizeConfig.calculateBlockHorizontal(4.5),
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         Row(
+  //           children: [
+  //             SizedBox(
+  //               width: SizeConfig.calculateBlockHorizontal(16),
+  //             ),
+  //             Stack(
+  //               children: [
+  //                 Image.asset(
+  //                   AppImages.IPHONE_13,
+  //                   width: SizeConfig.calculateBlockHorizontal(167),
+  //                   height: SizeConfig.calculateBlockVertical(180),
+  //                 ),
+  //                 prices ?? const SizedBox(),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //         SizedBox(
+  //           height: SizeConfig.calculateBlockVertical(12),
+  //         ),
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               "Smartphone iPhone 12 Pro\n128GB Graphite",
+  //               style: TextStyle(
+  //                 fontSize: SizeConfig.calculateTextSize(12),
+  //                 fontWeight: FontWeight.w400,
+  //               ),
+  //             ),
+  //             SizedBox(
+  //               height: SizeConfig.calculateBlockVertical(8),
+  //             ),
+  //             Text(
+  //               "11 124 000 UZS",
+  //               style: TextStyle(
+  //                 fontSize: SizeConfig.calculateTextSize(14),
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             Text(
+  //               text ?? "",
+  //               style: TextStyle(
+  //                 fontSize: SizeConfig.calculateTextSize(12),
+  //                 fontWeight: FontWeight.w400,
+  //                 color: AppColors.SUNSET_ORANGE,
+  //                 decoration: TextDecoration.lineThrough,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   getPrice() {
     return Positioned(

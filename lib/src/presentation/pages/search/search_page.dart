@@ -35,6 +35,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: AppColors.WHITE,
       appBar: getAppBar(
@@ -122,6 +123,7 @@ class _SearchPageState extends State<SearchPage> {
                   Expanded(
                     child: getTabViews(),
                   ),
+                  SizedBox(height : SizeConfig.calculateBlockVertical(72))
                 ],
               ),
             )
@@ -219,86 +221,70 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getOffersPage() {
-    return Expanded(
-      child: GetBuilder(
-        init: widget._controllerOffers,
-        id: widget._controllerOffers.offersId,
-        builder: (context) {
-          return SmartRefresher(
-            controller: widget._controllerOffers.refreshControllerSearchPage,
-            enablePullDown: true,
-            enablePullUp: true,
-            onLoading: (){
-              widget._controllerOffers.onLoadingForSearchPage();
-            },
-            onRefresh: () {
-              widget._controllerOffers.onRefreshForSearchPage();
-            },
-            child: ListView.builder(
-                itemCount: widget._controllerOffers.offersList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final data = widget._controllerOffers.offersList[index];
-                  Get.log("OffersPage list=> ${data.id}");
+    return GetBuilder(
+      init: widget._controllerOffers,
+      id: widget._controllerOffers.offersId,
+      builder: (context) {
+        return SmartRefresher(
+          controller: widget._controllerOffers.refreshControllerSearchPage,
+          enablePullDown: true,
+          enablePullUp: true,
+          onLoading: (){
+            widget._controllerOffers.onLoadingForSearchPage();
+          },
+          onRefresh: () {
+            widget._controllerOffers.onRefreshForSearchPage();
+          },
+          child: ListView.builder(
+              itemCount: widget._controllerOffers.offersList.length,
+              itemBuilder: (BuildContext context, int index) {
+                final data = widget._controllerOffers.offersList[index];
+                Get.log("OffersPage list=> ${data.id}");
 
-                  return InkWell(
-                    onTap: () {
-                      final argument = data.name;
-                      widget._controllerOffers.selectOffersModel = data;
-                      widget._controllerOffers.getOffersChildList();
-                      if (widget._controllerOffers.offersChildList[0].hasSubs!) {
-                        Get.toNamed(
-                          AppRoutes.OFFERS_SUB_PAGE,
-                          arguments: argument,
-                        );
-                      } else {
-                        widget._controllerOffers.getOffersDetailsList();
-                        Get.toNamed(
-                          AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                          arguments: argument,
-                        );
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: SizedBox(
-                            width: SizeConfig.calculateBlockHorizontal(56),
-                            height: SizeConfig.calculateBlockVertical(56),
-                            child: data.image != null
-                                ? SvgPicture.string(
-                                    data.image!,
-                                    fit: BoxFit.contain,
-                                  )
-                                : Image.asset(AppImages.PLAYGROUND),
-                          ),
-                          title: Text(
-                            data.name != null ? data.name! : "----",
-                            style: TextStyle(
-                              color: AppColors.BLACK,
-                              fontSize: SizeConfig.calculateTextSize(16),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          subtitle: Text(
-                            data.id != null ? "${data.id!} products" : "----",
-                            style: TextStyle(
-                              color: AppColors.SHADOW_BLUE,
-                              fontSize: SizeConfig.calculateTextSize(12),
-                              fontWeight: FontWeight.w300,
-                            ),
+                return InkWell(
+                  onTap: () {
+                    widget._controllerOffers.itemClicked(data);
+                  },
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: SizedBox(
+                          width: SizeConfig.calculateBlockHorizontal(56),
+                          height: SizeConfig.calculateBlockVertical(56),
+                          child: data.image != null
+                              ? SvgPicture.string(
+                                  data.image!,
+                                  fit: BoxFit.contain,
+                                )
+                              : SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain,),
+                        ),
+                        title: Text(
+                          data.name != null ? data.name! : "----",
+                          style: TextStyle(
+                            color: AppColors.BLACK,
+                            fontSize: SizeConfig.calculateTextSize(16),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Divider(
-                          indent: SizeConfig.calculateBlockHorizontal(88),
-                          height: SizeConfig.calculateBlockVertical(8),
+                        subtitle: Text(
+                          data.id != null ? "${data.id!} products" : "----",
+                          style: TextStyle(
+                            color: AppColors.SHADOW_BLUE,
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
-                      ],
-                    ),
-                  );
-                }),
-          );
-        }
-      ),
+                      ),
+                      Divider(
+                        indent: SizeConfig.calculateBlockHorizontal(88),
+                        height: SizeConfig.calculateBlockVertical(8),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+        );
+      }
     );
   }
 
@@ -336,62 +322,80 @@ class _SearchPageState extends State<SearchPage> {
   ];
 
   getOrganizationsPage() {
-    return ListView.builder(
-        itemCount: widget._controllerOrganisation.organisationList.length,
-        itemBuilder: (BuildContext context, int index) {
-          final data = widget._controllerOrganisation.organisationList[index];
-          Get.log("Organisation index=>$index");
-          Get.log(
-              "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
-          Get.log("Organisation List => $data}");
-          Get.log("Organisation item logo ${data.category!.image!}");
-          // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
-          // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
+    return GetBuilder(
+      id: widget._controllerOrganisation.organisationId,
+      init: widget._controllerOrganisation,
+      builder: (context) {
+        return SmartRefresher(
+          controller: widget._controllerOrganisation.refreshControllerOrganisations,
+          enablePullUp: true,
+          enablePullDown: true,
+          onRefresh: () {
+            widget._controllerOrganisation.onRefreshForOrganisationPage();
+          },
+          onLoading: (){
+            widget._controllerOrganisation.onLoadingForOrganisationPage();
+          },
+          child: ListView.builder(
+              itemCount: widget._controllerOrganisation.organisationList.length,
+              itemBuilder: (BuildContext context, int index) {
+                final data = widget._controllerOrganisation.organisationList[index];
+                Get.log("Organisation index=>$index");
+                Get.log(
+                    "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
+                Get.log("Organisation List => $data}");
+                Get.log("Organisation item logo ${data.category!.image!}");
+                // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
+                // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
 
-          return InkWell(
-            onTap: () {
-              Get.toNamed(
-                AppRoutes.ORGANIZATIONS_SUB_PAGE,
-                arguments: data.name!,
-              );
-            },
-            child: Column(
-              children: [
-                ListTile(
-                  leading: SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(56),
-                    height: SizeConfig.calculateBlockVertical(56),
-                    child: data.logo != null
-                        ? Image.network(data.category!.image!)
-                        : Image.asset(AppImages.PLAYGROUND),
+                return InkWell(
+                  onTap: () {
+                    // Get.toNamed(
+                    //   AppRoutes.ORGANIZATIONS_SUB_PAGE,
+                    //   arguments: data.name!,
+                    // );
+                    widget._controllerOrganisation.onClickOrganisationItem(data);
+                  },
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: SizedBox(
+                          width: SizeConfig.calculateBlockHorizontal(56),
+                          height: SizeConfig.calculateBlockVertical(56),
+                          child: data.logo != null
+                              ? Image.network(data.category!.image!)
+                              : Image.asset(AppImages.PLAYGROUND),
+                        ),
+                        title: Text(
+                          data.name != null ? data.name! : "----",
+                          style: TextStyle(
+                            color: AppColors.BLACK,
+                            fontSize: SizeConfig.calculateTextSize(16),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Text(
+                          data.subs!.me != null
+                              ? "${data.subs!.me!} Organizations"
+                              : "0 Organizations",
+                          style: TextStyle(
+                            color: AppColors.GRAY_X11,
+                            fontSize: SizeConfig.calculateTextSize(12),
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        indent: SizeConfig.calculateBlockHorizontal(88),
+                        height: SizeConfig.calculateBlockVertical(8),
+                      ),
+                    ],
                   ),
-                  title: Text(
-                    data.name != null ? data.name! : "----",
-                    style: TextStyle(
-                      color: AppColors.BLACK,
-                      fontSize: SizeConfig.calculateTextSize(16),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  subtitle: Text(
-                    data.subs!.me != null
-                        ? "${data.subs!.me!} Organizations"
-                        : "0 Organizations",
-                    style: TextStyle(
-                      color: AppColors.GRAY_X11,
-                      fontSize: SizeConfig.calculateTextSize(12),
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                Divider(
-                  indent: SizeConfig.calculateBlockHorizontal(88),
-                  height: SizeConfig.calculateBlockVertical(8),
-                ),
-              ],
-            ),
-          );
-        });
+                );
+              }),
+        );
+      }
+    );
   }
 
   List<String> organizationPageItemsIcons = [

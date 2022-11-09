@@ -122,20 +122,20 @@ class OffersSubPage extends StatelessWidget {
     return Column(
       children: [
         getOutlinedButton(),
-        GetBuilder(
-            init: _controllerOffers,
-            id: _controllerOffers.offersChildId,
-            builder: (context) {
-              return Expanded(
-                child: SmartRefresher(
+        Expanded(
+          child: GetBuilder(
+              init: _controllerOffers,
+              id: _controllerOffers.offersChildId,
+              builder: (context) {
+                return SmartRefresher(
                   controller: _controllerOffers.refreshControllerForSubPage,
                   enablePullUp: true,
                   enablePullDown: true,
                   onLoading: (){
-                    _controllerOffers.onLoadingAndRefreshForSubpage();
+                    _controllerOffers.onLoadingForSubpage();
                   },
                   onRefresh: () {
-                    _controllerOffers.onLoadingAndRefreshForSubpage();
+                    _controllerOffers.onRefreshForSubPage();
                   },
                   child: ListView.builder(
                       itemCount: _controllerOffers.offersChildList.length,
@@ -144,21 +144,23 @@ class OffersSubPage extends StatelessWidget {
                         Get.log("Offers Sub page data => ${data.name}}");
                         return InkWell(
                           onTap: () {
-                            final argument=data.name;
-                            _controllerOffers.selectOffersModel = data;
-                            _controllerOffers.getOffersChildList();
-                            if (_controllerOffers.offersChildList[0].hasSubs!) {
-                              Get.toNamed(
-                                AppRoutes.OFFERS_SUB_SUB_PAGE,
-                                arguments: data.name,
-                              );
-                            } else {
-                              _controllerOffers.getOffersDetailsList();
-                              Get.toNamed(
-                                AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                                arguments: data.name,
-                              );
-                            }
+                            // final argument=data.name;
+                            // _controllerOffers.selectOffersModel = data;
+                            // _controllerOffers.getOffersChildList();
+                            // if (_controllerOffers.offersChildList[0].hasSubs!) {
+                            //   Get.toNamed(
+                            //     AppRoutes.OFFERS_SUB_SUB_PAGE,
+                            //     arguments: data.name,
+                            //   );
+                            // } else {
+                            //   _controllerOffers.getOffersDetailsList();
+                            //   Get.toNamed(
+                            //     AppRoutes.OFFERS_SUB_DETAILS_PAGE,
+                            //     arguments: data.name,
+                            //   );
+                            // }
+
+                            _controllerOffers.itemInSubClicked(data);
                           },
                           child: Column(
                             children: [
@@ -171,7 +173,7 @@ class OffersSubPage extends StatelessWidget {
                                           data.image!,
                                           fit: BoxFit.contain,
                                         )
-                                      : Image.asset(AppImages.PLAYGROUND),
+                                      : SvgPicture.asset(AppIcons.PLACE_HOLDER),
                                 ),
                                 title: Text(
                                   data.name != null ? data.name! : "----",
@@ -200,9 +202,9 @@ class OffersSubPage extends StatelessWidget {
                           ),
                         );
                       }),
-                ),
-              );
-            }),
+                );
+              }),
+        ),
       ],
     );
   }

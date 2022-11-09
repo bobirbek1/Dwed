@@ -4,8 +4,10 @@ import 'package:flutter_template/src/data/datasource/login_local_datasource.dart
 import 'package:flutter_template/src/data/datasource/login_remote_datasource.dart';
 import 'package:flutter_template/src/data/model/country_model.dart';
 import 'package:flutter_template/src/data/model/create_account_token_model.dart';
+import 'package:flutter_template/src/data/model/details_model_for_products_page.dart';
 import 'package:flutter_template/src/data/model/offers_details_model.dart';
 import 'package:flutter_template/src/data/model/offers_model.dart';
+import 'package:flutter_template/src/data/model/organisation_details_model.dart';
 import 'package:flutter_template/src/data/model/organisation_model.dart';
 import 'package:flutter_template/src/data/model/region_model.dart';
 import 'package:flutter_template/src/data/model/sector_model.dart';
@@ -220,11 +222,11 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, List<OrganisationModel>>> organisation() async {
+  Future<Either<Failure, Map<String, dynamic>>> organisation(int offset) async {
     if (await networkInfo.isConnected) {
       Get.log("get region is connected");
       try {
-        final res = await remoteDatasource.organisation();
+        final res = await remoteDatasource.organisation(offset);
         // Get.log("Organisation repo $res");
         return Right(res);
       } catch (e) {
@@ -239,7 +241,46 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, List<OffersModel>>> offers(int offset) async {
+  Future<Either<Failure, Map<String, dynamic>>> organisationSub(int offset, String category) async {
+    if (await networkInfo.isConnected) {
+      Get.log("get region is connected");
+      try {
+        final res = await remoteDatasource.organisationSub(offset, category);
+        Get.log("Organisation repo $res");
+        return Right(res);
+      } catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log("get region failure $failure");
+        return Left(failure);
+      }
+    } else {
+      Get.log("get region disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, OrganisationModel>> organisationUserPage(String slugName) async {
+    if(await networkInfo.isConnected) {
+      Get.log("get user post page item is connected");
+      try {
+        final res = await remoteDatasource.organisationUSerPost(slugName);
+        Get.log("organisation user post item => $res");
+        return Right(res);
+      }catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log('repos organisation user post page => $e');
+        return Left(failure);
+      }
+    }else {
+      Get.log("get user post page item disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
+
+  @override
+  Future<Either<Failure, Map<String , dynamic>>> offers(int offset) async {
     if (await networkInfo.isConnected) {
       Get.log("get offers is connected");
       try {
@@ -258,7 +299,7 @@ class LoginRepoImpl extends LoginRepo {
   }
 
   @override
-  Future<Either<Failure, List<OffersModel>>> offersChild(int id, int offset)
+  Future<Either<Failure, Map<String , dynamic>>> offersChild(int id, int offset)
     async {
       if (await networkInfo.isConnected) {
         Get.log("get offersChild is connected");
@@ -278,7 +319,7 @@ class LoginRepoImpl extends LoginRepo {
     }
 
   @override
-  Future<Either<Failure, List<OffersDetailsModel>>> offersDetails(int id, int offset)  async {
+  Future<Either<Failure, Map<String , dynamic>>> offersDetails(int id, int offset)  async {
     if (await networkInfo.isConnected) {
       Get.log("get offersChild is connected");
       try {
@@ -295,4 +336,42 @@ class LoginRepoImpl extends LoginRepo {
       return const Left(NetworkFailure());
     }
   }
+
+  ///is called to get the item for product page
+  @override
+  Future<Either<Failure, DetailsModelForProductsPage>> getProductPageItem(String type, int id) async {
+    if(await networkInfo.isConnected) {
+      Get.log("get product page item is connected");
+      try {
+       final res = await remoteDatasource.getProductPageItem(type, id);
+       return Right(res);
+      }catch(e) {
+        final failure = handleException(e as Exception);
+        Get.log("get product page item failure $failure");
+        return Left(failure);
+      }
+    }else {
+      Get.log("get product page item disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OrganisationDetailsModel>>> organisationDetails(String slugName, int offset) async {
+    if(await networkInfo.isConnected) {
+      Get.log("get organisation details model connected");
+      try {
+        final res = await remoteDatasource.organisationDetails(slugName, offset);
+        return Right(res);
+      }catch (e) {
+        final failure = handleException(e as Exception);
+        Get.log("get organisation details item failure => ${failure.toString()}");
+        return Left(failure);
+      }
+    }else {
+      Get.log("get organisation item in repo disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+
 }
