@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_routes.dart';
-import 'package:flutter_template/src/presentation/widgets/splash/indicator.dart';
+import 'package:flutter_template/src/presentation/widgets/indicator.dart';
 import 'package:get/get.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -71,10 +71,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Indicator(
-                  controller: controller,
-                  itemCount: 4,
-                ),
+                DotIndicator(dotSize: const Size(12,4), spacing: 4,count: 4, pageController: controller),
                 const Expanded(child: SizedBox()),
                 FloatingActionButton(
                   onPressed: () {

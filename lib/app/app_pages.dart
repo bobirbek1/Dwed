@@ -17,9 +17,9 @@ import 'package:flutter_template/src/presentation/pages/login/login/reset_passwo
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
-import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_details_page.dart';
-import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_page.dart';
-import 'package:flutter_template/src/presentation/pages/search/search_offers/offers_sub_sub_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/offers/offers_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_cat_page.dart';
+import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_sub_cat_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/organizations_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_organizations/user_post_page.dart';
@@ -27,7 +27,7 @@ import 'package:flutter_template/src/presentation/pages/search/search_people/peo
 import 'package:flutter_template/src/presentation/pages/search/search_people/people_sub_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/search_streams/streams_sub_page.dart';
-import 'package:flutter_template/src/presentation/pages/search/ver_hor_item_details.dart';
+import 'package:flutter_template/src/presentation/pages/search/offers/offer_details_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
 import 'package:get/route_manager.dart';
@@ -35,7 +35,7 @@ import 'package:flutter_template/app/app_routes.dart';
 
 class AppPages {
   static final getPages = [
-    GetPage(name: AppRoutes.SPLASH, page: () =>  SplashPage()),
+    GetPage(name: AppRoutes.SPLASH, page: () => SplashPage()),
     // GetPage(
     //     name: AppRoutes.ON_BOARDING_LANG,
     //     page: () => const OnBoardingLangPage()),
@@ -74,17 +74,16 @@ class AppPages {
     GetPage(
         name: AppRoutes.RESET_PASSWORD_NEW, page: () => ResetPasswordNewPage()),
     GetPage(name: AppRoutes.HOME, page: () => HomePage()),
-    GetPage(name: AppRoutes.OFFERS_SUB_PAGE, page: () => OffersSubPage()),
-    GetPage(name: AppRoutes.OFFERS_SUB_SUB_PAGE, page: () => OffersSubSubPage()),
+    GetPage(name: AppRoutes.OFFERS_SUB_PAGE, page: () => OffersSubCatPage()),
+    GetPage(
+        name: AppRoutes.OFFERS_SUB_SUB_PAGE, page: () => OffersSubSubCatPage()),
 
     GetPage(
         name: AppRoutes.ORGANIZATIONS_SUB_PAGE,
         page: () => OrganizationsSubPage()),
     GetPage(name: AppRoutes.STREAMS_SUB_PAGE, page: () => StreamsSubPage()),
     GetPage(name: AppRoutes.PEOPLE_SUB_PAGE, page: () => PeopleSubPage()),
-    GetPage(
-        name: AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-        page: () => OffersSubDetailsPage()),
+    GetPage(name: AppRoutes.OFFERS_SUB_DETAILS_PAGE, page: () => OffersPage()),
     GetPage(
         name: AppRoutes.ORGANIZATIONS_SUB_DETAILS_PAGE,
         page: () => OrganizationsSubDetailsPage()),
@@ -94,15 +93,13 @@ class AppPages {
     GetPage(
         name: AppRoutes.PEOPLES_SUB_DETAILS_PAGE,
         page: () => PeoplesSubDetailsPage()),
-    GetPage(name: AppRoutes.USER_POST_PAGE, page: () =>  UserPostPage()),
-          GetPage(
-        name: AppRoutes.ITEM_DETAILS_PAGE,
-        page: () => ItemDetailsPage()),
+    GetPage(name: AppRoutes.USER_POST_PAGE, page: () => UserPostPage()),
+    GetPage(name: AppRoutes.ITEM_DETAILS_PAGE, page: () => OfferDetailsPage()),
     GetPage(name: AppRoutes.BOTTOM_BAR_VIEW, page: () => const BottomBarView()),
-    GetPage(name: AppRoutes.CARTPAGE, page: () =>  CartPage()),
-    GetPage(name: AppRoutes.CHECKOUTPAGE, page: () =>  CheckoutPage()),
-    GetPage(name: AppRoutes.PAYMENTMETHOD, page: () =>  MethodFirst()),
-    GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () =>  CheckoutOrdered()),
-    GetPage(name: AppRoutes.INFORMATIONPAGE, page: () =>  InformationPage()),
+    GetPage(name: AppRoutes.CARTPAGE, page: () => CartPage()),
+    GetPage(name: AppRoutes.CHECKOUTPAGE, page: () => CheckoutPage()),
+    GetPage(name: AppRoutes.PAYMENTMETHOD, page: () => MethodFirst()),
+    GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () => CheckoutOrdered()),
+    GetPage(name: AppRoutes.INFORMATIONPAGE, page: () => InformationPage()),
   ];
 }

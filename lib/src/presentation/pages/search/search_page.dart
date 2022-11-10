@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
@@ -29,7 +28,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void dispose() {
     controller.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -123,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                   Expanded(
                     child: getTabViews(),
                   ),
-                  SizedBox(height : SizeConfig.calculateBlockVertical(72))
+                  SizedBox(height: SizeConfig.calculateBlockVertical(72))
                 ],
               ),
             )
@@ -222,70 +220,72 @@ class _SearchPageState extends State<SearchPage> {
 
   getOffersPage() {
     return GetBuilder(
-      init: widget._controllerOffers,
-      id: widget._controllerOffers.offersId,
-      builder: (context) {
-        return SmartRefresher(
-          controller: widget._controllerOffers.refreshControllerSearchPage,
-          enablePullDown: true,
-          enablePullUp: true,
-          onLoading: (){
-            widget._controllerOffers.onLoadingForSearchPage();
-          },
-          onRefresh: () {
-            widget._controllerOffers.onRefreshForSearchPage();
-          },
-          child: ListView.builder(
-              itemCount: widget._controllerOffers.offersList.length,
-              itemBuilder: (BuildContext context, int index) {
-                final data = widget._controllerOffers.offersList[index];
-                Get.log("OffersPage list=> ${data.id}");
+        init: widget._controllerOffers,
+        id: widget._controllerOffers.offersCatId,
+        builder: (context) {
+          return SmartRefresher(
+            controller: widget._controllerOffers.offersCatController,
+            enablePullDown: true,
+            enablePullUp: true,
+            onLoading: () {
+              widget._controllerOffers.loadingOffersCat();
+            },
+            onRefresh: () {
+              widget._controllerOffers.refreshOffersCat();
+            },
+            child: ListView.builder(
+                itemCount: widget._controllerOffers.offersCatList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final data = widget._controllerOffers.offersCatList[index];
+                  Get.log("OffersPage list=> ${data.id}");
 
-                return InkWell(
-                  onTap: () {
-                    widget._controllerOffers.itemClicked(data);
-                  },
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(56),
-                          height: SizeConfig.calculateBlockVertical(56),
-                          child: data.image != null
-                              ? SvgPicture.string(
-                                  data.image!,
-                                  fit: BoxFit.contain,
-                                )
-                              : SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain,),
-                        ),
-                        title: Text(
-                          data.name != null ? data.name! : "----",
-                          style: TextStyle(
-                            color: AppColors.BLACK,
-                            fontSize: SizeConfig.calculateTextSize(16),
-                            fontWeight: FontWeight.w600,
+                  return InkWell(
+                    onTap: () {
+                      widget._controllerOffers.itemClicked(data);
+                    },
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(56),
+                            height: SizeConfig.calculateBlockVertical(56),
+                            child: data.image != null
+                                ? SvgPicture.string(
+                                    data.image!,
+                                    fit: BoxFit.contain,
+                                  )
+                                : SvgPicture.asset(
+                                    AppIcons.PLACE_HOLDER,
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
+                          title: Text(
+                            data.name != null ? data.name! : "----",
+                            style: TextStyle(
+                              color: AppColors.BLACK,
+                              fontSize: SizeConfig.calculateTextSize(16),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            data.id != null ? "${data.id!} products" : "----",
+                            style: TextStyle(
+                              color: AppColors.SHADOW_BLUE,
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                         ),
-                        subtitle: Text(
-                          data.id != null ? "${data.id!} products" : "----",
-                          style: TextStyle(
-                            color: AppColors.SHADOW_BLUE,
-                            fontSize: SizeConfig.calculateTextSize(12),
-                            fontWeight: FontWeight.w300,
-                          ),
+                        Divider(
+                          indent: SizeConfig.calculateBlockHorizontal(88),
+                          height: SizeConfig.calculateBlockVertical(8),
                         ),
-                      ),
-                      Divider(
-                        indent: SizeConfig.calculateBlockHorizontal(88),
-                        height: SizeConfig.calculateBlockVertical(8),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        );
-      }
-    );
+                      ],
+                    ),
+                  );
+                }),
+          );
+        });
   }
 
   List<String> offerPageItemsIcons = [
@@ -323,79 +323,82 @@ class _SearchPageState extends State<SearchPage> {
 
   getOrganizationsPage() {
     return GetBuilder(
-      id: widget._controllerOrganisation.organisationId,
-      init: widget._controllerOrganisation,
-      builder: (context) {
-        return SmartRefresher(
-          controller: widget._controllerOrganisation.refreshControllerOrganisations,
-          enablePullUp: true,
-          enablePullDown: true,
-          onRefresh: () {
-            widget._controllerOrganisation.onRefreshForOrganisationPage();
-          },
-          onLoading: (){
-            widget._controllerOrganisation.onLoadingForOrganisationPage();
-          },
-          child: ListView.builder(
-              itemCount: widget._controllerOrganisation.organisationList.length,
-              itemBuilder: (BuildContext context, int index) {
-                final data = widget._controllerOrganisation.organisationList[index];
-                Get.log("Organisation index=>$index");
-                Get.log(
-                    "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
-                Get.log("Organisation List => $data}");
-                Get.log("Organisation item logo ${data.category!.image!}");
-                // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
-                // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
+        id: widget._controllerOrganisation.organisationId,
+        init: widget._controllerOrganisation,
+        builder: (context) {
+          return SmartRefresher(
+            controller:
+                widget._controllerOrganisation.refreshControllerOrganisations,
+            enablePullUp: true,
+            enablePullDown: true,
+            onRefresh: () {
+              widget._controllerOrganisation.onRefreshForOrganisationPage();
+            },
+            onLoading: () {
+              widget._controllerOrganisation.onLoadingForOrganisationPage();
+            },
+            child: ListView.builder(
+                itemCount:
+                    widget._controllerOrganisation.organisationList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final data =
+                      widget._controllerOrganisation.organisationList[index];
+                  Get.log("Organisation index=>$index");
+                  Get.log(
+                      "Organisation ListAll=> ${widget._controllerOrganisation.organisationList}");
+                  Get.log("Organisation List => $data}");
+                  Get.log("Organisation item logo ${data.category!.image!}");
+                  // Get.log("Organisation item name ${ _controllerOrganisation.organisationList[index].name!}");
+                  // Get.log("Organisation item name ${_controllerOrganisation.organisationList[index].slugName!}");
 
-                return InkWell(
-                  onTap: () {
-                    // Get.toNamed(
-                    //   AppRoutes.ORGANIZATIONS_SUB_PAGE,
-                    //   arguments: data.name!,
-                    // );
-                    widget._controllerOrganisation.onClickOrganisationItem(data);
-                  },
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: SizedBox(
-                          width: SizeConfig.calculateBlockHorizontal(56),
-                          height: SizeConfig.calculateBlockVertical(56),
-                          child: data.logo != null
-                              ? Image.network(data.category!.image!)
-                              : Image.asset(AppImages.PLAYGROUND),
-                        ),
-                        title: Text(
-                          data.name != null ? data.name! : "----",
-                          style: TextStyle(
-                            color: AppColors.BLACK,
-                            fontSize: SizeConfig.calculateTextSize(16),
-                            fontWeight: FontWeight.w600,
+                  return InkWell(
+                    onTap: () {
+                      // Get.toNamed(
+                      //   AppRoutes.ORGANIZATIONS_SUB_PAGE,
+                      //   arguments: data.name!,
+                      // );
+                      widget._controllerOrganisation
+                          .onClickOrganisationItem(data);
+                    },
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(56),
+                            height: SizeConfig.calculateBlockVertical(56),
+                            child: data.logo != null
+                                ? Image.network(data.category!.image!)
+                                : Image.asset(AppImages.PLAYGROUND),
+                          ),
+                          title: Text(
+                            data.name != null ? data.name! : "----",
+                            style: TextStyle(
+                              color: AppColors.BLACK,
+                              fontSize: SizeConfig.calculateTextSize(16),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            data.subs!.me != null
+                                ? "${data.subs!.me!} Organizations"
+                                : "0 Organizations",
+                            style: TextStyle(
+                              color: AppColors.GRAY_X11,
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                         ),
-                        subtitle: Text(
-                          data.subs!.me != null
-                              ? "${data.subs!.me!} Organizations"
-                              : "0 Organizations",
-                          style: TextStyle(
-                            color: AppColors.GRAY_X11,
-                            fontSize: SizeConfig.calculateTextSize(12),
-                            fontWeight: FontWeight.w300,
-                          ),
+                        Divider(
+                          indent: SizeConfig.calculateBlockHorizontal(88),
+                          height: SizeConfig.calculateBlockVertical(8),
                         ),
-                      ),
-                      Divider(
-                        indent: SizeConfig.calculateBlockHorizontal(88),
-                        height: SizeConfig.calculateBlockVertical(8),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        );
-      }
-    );
+                      ],
+                    ),
+                  );
+                }),
+          );
+        });
   }
 
   List<String> organizationPageItemsIcons = [

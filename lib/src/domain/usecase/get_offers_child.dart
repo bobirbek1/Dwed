@@ -3,23 +3,24 @@ import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/domain/repository/offers_repo.dart';
 
-class GetOffers extends Usecase<Map<String, dynamic>, GetOffersDetailsParams> {
+class GetOffersSubCat
+    extends Usecase<Map<String, dynamic>, GetOffersChildParams> {
   final OffersRepo repo;
 
-  GetOffers({required this.repo});
+  GetOffersSubCat({required this.repo});
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> call(
-      GetOffersDetailsParams params) {
-    return repo.offersDetails(params.id, params.offset);
+      GetOffersChildParams params) {
+    return repo.offersChild(params.id, params.offset);
   }
 }
 
-class GetOffersDetailsParams extends Params {
+class GetOffersChildParams extends Params {
   final int id;
   final int offset;
 
-  GetOffersDetailsParams({required this.id, required this.offset});
+  GetOffersChildParams({required this.id, required this.offset});
 
   @override
   List<Object?> get props => [id, offset];

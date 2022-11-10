@@ -1,7 +1,5 @@
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
-import 'package:flutter_template/core/usecases/usecase.dart';
-import 'package:flutter_template/src/data/model/offers_details_model.dart';
 import 'package:flutter_template/src/data/model/organisation_details_model.dart';
 import 'package:flutter_template/src/data/model/organisation_model.dart';
 import 'package:flutter_template/src/domain/usecase/get_organisation.dart';

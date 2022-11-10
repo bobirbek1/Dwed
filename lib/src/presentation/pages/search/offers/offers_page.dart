@@ -1,30 +1,25 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
-import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/data/model/offers_details_model.dart';
-import 'package:flutter_template/src/data/model/offers_model.dart';
+import 'package:flutter_template/src/data/model/offers/offer_model.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class OffersSubDetailsPage extends StatefulWidget {
-   OffersSubDetailsPage({Key? key}) : super(key: key);
+class OffersPage extends StatefulWidget {
+  OffersPage({Key? key}) : super(key: key);
   final _controller = Get.find<OffersController>();
 
   @override
-  State<OffersSubDetailsPage> createState() => _OffersSubDetailsPageState();
+  State<OffersPage> createState() => _OffersPageState();
 }
 
-class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
+class _OffersPageState extends State<OffersPage> {
   final title = Get.arguments;
   bool isVertical = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -203,32 +198,32 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
 
   getItems() {
     return GetBuilder(
-        id: widget._controller.offersDetailsId,
+        id: widget._controller.offersId,
         init: widget._controller,
         builder: (context) {
-          final gridList = widget._controller.offersDetailsList;
-          final horizontalList = widget._controller.offersDetailsList;
-          Get.log("OfferDetails data ${widget._controller.offersDetailsList}");
+          final gridList = widget._controller.offersList;
+          final horizontalList = widget._controller.offersList;
+          Get.log("OfferDetails data ${widget._controller.offersList}");
           return Column(
             children: [
               getSortFilter(),
               Expanded(
                 child: SmartRefresher(
-                  controller: widget._controller.refreshController,
+                  controller: widget._controller.offersController,
                   enablePullDown: true,
                   enablePullUp: true,
                   onLoading: () {
-                    widget._controller.onLoadingForDetailsPage();
+                    widget._controller.loadingOffers();
                   },
                   onRefresh: () {
-                    widget._controller.onRefreshForDetailsPage();
+                    widget._controller.refreshOffers();
                   },
-                  child: widget._controller.sortType == Sorting.sortBy ?
+                  child: widget._controller.sortType == Sorting.sortBy
+                      ?
                       //grid Data
-                  buildGridItems(gridList)
-                  // horizontal data
-                      :
-                  buildHorizontalItems(horizontalList),
+                      buildGridItems(gridList)
+                      // horizontal data
+                      : buildHorizontalItems(horizontalList),
                 ),
               ),
             ],
@@ -236,54 +231,62 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         });
   }
 
-  Widget buildGridItems (List<OffersDetailsModel> gridList) {
-    return gridList.isNotEmpty ?
-    GridView.builder(
-      itemCount: gridList.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
-              SizeConfig.calculateBlockVertical(267),
-        ),
-        itemBuilder: (ctx, index) {
-          return GestureDetector(
-            onTap: () {
-
-            },
-            child: getGridItem(
-                gridList[index].name ?? 'no name',
-                gridList[index].cost ?? 0,
-                gridList[index],
-                gridList[index].image,)
+  Widget buildGridItems(List<OfferModel> gridList) {
+    return gridList.isNotEmpty
+        ? GridView.builder(
+            itemCount: gridList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: SizeConfig.calculateBlockHorizontal(167) /
+                  SizeConfig.calculateBlockVertical(267),
+            ),
+            itemBuilder: (ctx, index) {
+              return GestureDetector(
+                  onTap: () {},
+                  child: getGridItem(
+                    gridList[index].name ?? 'no name',
+                    gridList[index].cost ?? 0,
+                    gridList[index],
+                    gridList[index].image,
+                  ));
+            })
+        // when gridList is empty
+        : // here
+        Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child:
+                  SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),
+            ),
           );
-        })
-    // when gridList is empty
-        :   // here
-    Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Center(child: SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),),
-    );
   }
 
-  Widget buildHorizontalItems(List<OffersDetailsModel> horizontalList) {
-    return horizontalList.isNotEmpty ? ListView.builder(
-        itemBuilder: (ctx, index) {
-          return getHorListItem(horizontalList[index].image,horizontalList[index].name, 1, horizontalList[index]);
-        },
-      itemCount: horizontalList.length,
-        ) : Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(child: SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),),
-        );
+  Widget buildHorizontalItems(List<OfferModel> horizontalList) {
+    return horizontalList.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (ctx, index) {
+              return getHorListItem(horizontalList[index].image,
+                  horizontalList[index].name, 1, horizontalList[index]);
+            },
+            itemCount: horizontalList.length,
+          )
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child:
+                  SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),
+            ),
+          );
   }
 
   getGridItem(
-      String title,
-      int price,
-      OffersDetailsModel data,
-      String? image,) {
+    String title,
+    int price,
+    OfferModel data,
+    String? image,
+  ) {
     int index = 0;
-    for (var i = 0; i < getGridImages.length-1; i++) {
+    for (var i = 0; i < getGridImages.length - 1; i++) {
       index = index + 1;
     }
     return Padding(
@@ -305,12 +308,13 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                 ),
                 Stack(
                   children: [
-                    Container(
+                    SizedBox(
                       width: SizeConfig.calculateBlockHorizontal(167),
                       height: SizeConfig.calculateBlockVertical(180),
                       child: Expanded(
                         child: image == null
-                            ? SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain)
+                            ? SvgPicture.asset(AppIcons.PLACE_HOLDER,
+                                fit: BoxFit.contain)
                             : Image.network(image),
                       ),
                     ),
@@ -346,7 +350,12 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  data.discount != null ? Text('${data.discount}', style: const TextStyle(color: Colors.redAccent),) : const SizedBox()
+                  data.discount != null
+                      ? Text(
+                          '${data.discount}',
+                          style: const TextStyle(color: Colors.redAccent),
+                        )
+                      : const SizedBox()
                 ],
               ),
             ),
@@ -372,7 +381,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
         children: [
           getPriceContainer(
             "15%",
-             AppColors.SUNSET_ORANGE,
+            AppColors.SUNSET_ORANGE,
           ),
           getPriceContainer(
             "20%",
@@ -414,7 +423,8 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
     );
   }
 
-  getHorListItem(String? image, String? name, int? cost, OffersDetailsModel horizontalList) {
+  getHorListItem(
+      String? image, String? name, int? cost, OfferModel horizontalList) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(16),
@@ -424,17 +434,20 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
       child: InkWell(
         onTap: () {
           widget._controller.onItemClickedDetailsPage(horizontalList);
-         // Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
+          // Get.toNamed(AppRoutes.ITEM_DETAILS_PAGE);
         },
         child: Column(
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             SizedBox(
               height: SizeConfig.calculateBlockVertical(158),
               child: Row(
                 children: [
                   image == null
-                      ? SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain)
+                      ? SvgPicture.asset(AppIcons.PLACE_HOLDER,
+                          fit: BoxFit.contain)
                       : Image.network(
                           image,
                           width: SizeConfig.calculateBlockHorizontal(117),
@@ -449,7 +462,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            name == null ? "----" : name,
+                            name ?? "- - - -",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             softWrap: false,
@@ -463,25 +476,33 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                         ),
                         Row(
                           children: [
-                            horizontalList.org!.logo != null ?
-                            Image.network(horizontalList.org!.logo!,
-                              width: SizeConfig.calculateBlockHorizontal(16),
-                              height: SizeConfig.calculateBlockVertical(16),) :
-                            Image.asset(
-                              AppImages.PLACE_HOLDER,
-                              width: SizeConfig.calculateBlockHorizontal(16),
-                              height: SizeConfig.calculateBlockVertical(16),
-                            ),
+                            horizontalList.org!.logo != null
+                                ? Image.network(
+                                    horizontalList.org!.logo!,
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(16),
+                                    height:
+                                        SizeConfig.calculateBlockVertical(16),
+                                  )
+                                : Image.asset(
+                                    AppImages.PLACE_HOLDER,
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(16),
+                                    height:
+                                        SizeConfig.calculateBlockVertical(16),
+                                  ),
                             SizedBox(
                               width: SizeConfig.calculateBlockHorizontal(8),
                             ),
-                            horizontalList.org!.name != null ? Text('${horizontalList.org!.name}') :
-                            Text(
-                              "-------",
-                              style: TextStyle(
-                                  fontSize: SizeConfig.calculateTextSize(12),
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            horizontalList.org!.name != null
+                                ? Text('${horizontalList.org!.name}')
+                                : Text(
+                                    "- - - -",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.calculateTextSize(12),
+                                        fontWeight: FontWeight.w400),
+                                  ),
                           ],
                         ),
                         SizedBox(
@@ -497,7 +518,8 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                             Padding(
                               padding: EdgeInsets.only(
                                 left: SizeConfig.calculateBlockHorizontal(4.67),
-                                right: SizeConfig.calculateBlockHorizontal(12.67),
+                                right:
+                                    SizeConfig.calculateBlockHorizontal(12.67),
                               ),
                               child: Text(
                                 "55",
@@ -516,7 +538,8 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                             Padding(
                               padding: EdgeInsets.only(
                                 left: SizeConfig.calculateBlockHorizontal(8.67),
-                                right: SizeConfig.calculateBlockHorizontal(8.51),
+                                right:
+                                    SizeConfig.calculateBlockHorizontal(8.51),
                               ),
                               child: Text(
                                 "12",
@@ -572,7 +595,7 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                           height: SizeConfig.calculateBlockVertical(8),
                         ),
                         Text(
-                          horizontalList.category!.name ?? '----',
+                          horizontalList.category!.name ?? '- - - -',
                           style: TextStyle(
                               fontSize: SizeConfig.calculateTextSize(12),
                               fontWeight: FontWeight.w400),
@@ -583,9 +606,9 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                         Row(
                           children: [
                             Text(
-                              horizontalList.discount != null ?
-                              '${horizontalList.cost! * horizontalList.discount! / 100} UZS' :
-                              '${horizontalList.cost} UZS',
+                              horizontalList.discount != null
+                                  ? '${horizontalList.cost! * horizontalList.discount! / 100} UZS'
+                                  : '${horizontalList.cost} UZS',
                               style: TextStyle(
                                   fontSize: SizeConfig.calculateTextSize(14),
                                   fontWeight: FontWeight.w600),
@@ -595,16 +618,19 @@ class _OffersSubDetailsPageState extends State<OffersSubDetailsPage> {
                             ),
                           ],
                         ),
-                        horizontalList.discount != null  ?
-                        Text(
-                          horizontalList.cost == null ? '0 UZS' : '${horizontalList.cost} UZS',
-                          style: TextStyle(
-                            fontSize: SizeConfig.calculateTextSize(14),
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.SUNSET_ORANGE,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ) : const SizedBox(),
+                        horizontalList.discount != null
+                            ? Text(
+                                horizontalList.cost == null
+                                    ? '0 UZS'
+                                    : '${horizontalList.cost} UZS',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.calculateTextSize(14),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.SUNSET_ORANGE,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                   ),

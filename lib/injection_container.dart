@@ -3,13 +3,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/core/network/dio_interceptors.dart';
 import 'package:flutter_template/core/platform/network_info.dart';
-import 'package:flutter_template/src/data/datasource/login_local_datasource.dart';
-import 'package:flutter_template/src/data/datasource/login_remote_datasource.dart';
+import 'package:flutter_template/src/data/datasource/offers/offers_local_datasource.dart';
+import 'package:flutter_template/src/data/datasource/offers/offers_remote_datasource.dart';
+import 'package:flutter_template/src/data/datasource/organisations/organisations_remote_datasource.dart';
 import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/offers_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/organisations_repo_impl.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
+import 'package:flutter_template/src/domain/repository/offers_repo.dart';
+import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
-import 'package:flutter_template/src/domain/usecase/getOffersChild.dart';
-import 'package:flutter_template/src/domain/usecase/getProductPageItem.dart';
+import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
+import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
+import 'package:flutter_template/src/domain/usecase/get_product_page_item.dart';
 import 'package:flutter_template/src/domain/usecase/get_country.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
@@ -38,10 +44,12 @@ import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get
 import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
 import 'package:flutter_template/src/presentation/pages/checkout/presentation/controller/checkout_page_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
-import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'src/data/datasource/login/login_local_datasource.dart';
+import 'src/data/datasource/login/login_remote_datasource.dart';
 
 // Dependency injection file
 
@@ -75,6 +83,14 @@ Future<void> init() async {
     () => LoginRemoteDatasourceImpl(client: Get.find()),
     fenix: true,
   );
+  Get.lazyPut<OffersRemoteDatasource>(
+    () => OffersRemoteDatasourceImpl(client: Get.find()),
+    fenix: true,
+  );
+  Get.lazyPut<OrganisationsRemoteDatasource>(
+    () => OrganisationsRemoteDatasourceImpl(client: Get.find()),
+    fenix: true,
+  );
   Get.lazyPut<CardLocalDataSource>(
     () => CardLocalDataSourceImpl(),
     fenix: true,
@@ -99,6 +115,14 @@ Future<void> init() async {
           cardLocalDataSource: Get.find(),
           networkInfo: Get.find()),
       fenix: true);
+  Get.lazyPut<OffersRepo>(
+      () =>
+          OffersRepoImpl(remoteDatasource: Get.find(), networkInfo: Get.find()),
+      fenix: true);
+  Get.lazyPut<OrganisationsRepo>(
+      () => OrganisationsRepoImpl(
+          remoteDatasource: Get.find(), networkInfo: Get.find()),
+      fenix: true);
 
   // usecase
   Get.lazyPut(() => Login(repo: Get.find()), fenix: true);
@@ -108,9 +132,9 @@ Future<void> init() async {
   Get.lazyPut(() => GetRegion(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCountry(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOrganisation(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOffersCat(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOffersSubCat(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOffers(repo: Get.find()), fenix: true);
-  Get.lazyPut(() => GetOffersChild(repo: Get.find()), fenix: true);
-  Get.lazyPut(() => GetOffersDetails(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCardProductsImpl(cartRepository: Get.find()),
       fenix: true);
   Get.lazyPut(() => DeleteItemUseCase(cartRepository: Get.find()), fenix: true);
@@ -121,29 +145,26 @@ Future<void> init() async {
   Get.lazyPut(() => GetOrganisationSub(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOrganisationUserPost(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetProductPageItem(repo: Get.find()), fenix: true);
-  Get.lazyPut(() => GetOrganisationDetails( loginRepo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOrganisationDetails(loginRepo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetOfferGallery(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
   Get.lazyPut(() => LoginController(login: Get.find()), fenix: true);
   Get.lazyPut(
       () => OffersController(
+          getOffersCat: Get.find(),
+          getOffersSubCat: Get.find(),
           getOffers: Get.find(),
-          getOffersChild: Get.find(),
-          getOffersDetails: Get.find(),
+          getOfferGallery: Get.find(),
           getProductPageItem: Get.find()),
-      fenix: true);
-  Get.lazyPut(
-      () => OffersSubController(
-          getOffers: Get.find(),
-          getOffersChild: Get.find(),
-          getOffersDetails: Get.find()),
       fenix: true);
   Get.lazyPut(
       () => OrganisationController(
           getOrganisation: Get.find(),
           getOrganisationSub: Get.find(),
-          getUserPost: Get.find(), getOrganisationDetails: Get.find()),
+          getUserPost: Get.find(),
+          getOrganisationDetails: Get.find()),
       fenix: true);
   Get.lazyPut(
       () => CreateAccountController(

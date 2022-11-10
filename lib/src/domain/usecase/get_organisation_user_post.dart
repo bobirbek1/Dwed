@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/src/data/model/organisation_model.dart';
-import 'package:flutter_template/src/domain/repository/login_repo.dart';
+import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
 
 class GetOrganisationUserPost extends Usecase<OrganisationModel , GetOrganisationUserPostParams> {
-  LoginRepo repo;
+  OrganisationsRepo repo;
   GetOrganisationUserPost({required this.repo});
 
   @override

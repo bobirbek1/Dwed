@@ -1,20 +1,19 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
-import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
-import 'package:flutter_template/src/presentation/controller/offers/offers_sub_controller.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class OffersSubSubPage extends StatelessWidget {
-  OffersSubSubPage({Key? key}) : super(key: key);
+class OffersSubSubCatPage extends StatelessWidget {
+  OffersSubSubCatPage({Key? key}) : super(key: key);
   final argument = Get.arguments;
   final _controllerOffers = Get.find<OffersController>();
-  final _controllerOffersSecond = Get.find<OffersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -121,23 +120,23 @@ class OffersSubSubPage extends StatelessWidget {
         Expanded(
           child: GetBuilder(
               init: _controllerOffers,
-              id: _controllerOffers.offersSubSubId,
+              id: _controllerOffers.offersSubSubCatId,
               builder: (context) {
                 return SmartRefresher(
-                  controller: _controllerOffers.refreshControllerForSubSubPage,
+                  controller: _controllerOffers.offersSubSubCatController,
                   enablePullDown: true,
                   enablePullUp: true,
-                  onRefresh: (){
-                    _controllerOffers.onRefreshForSubSubpage();
+                  onRefresh: () {
+                    _controllerOffers.refreshOffersSubSubCat();
                   },
                   onLoading: () {
-                    _controllerOffers.onLoadingForSubSubPage();
+                    _controllerOffers.loadingOffersSubSubCat();
                   },
                   child: ListView.builder(
-                      itemCount: _controllerOffers.offersSubSubList.length,
+                      itemCount: _controllerOffers.offersSubSubCatList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final data = _controllerOffers.offersSubSubList[index];
-                        Get.log("Offers Sub Sub page data => ${data.name}}");
+                        final data =
+                            _controllerOffers.offersSubSubCatList[index];
                         return InkWell(
                           onTap: () {
                             _controllerOffers.itemClickedInSubSubPage(data);
@@ -146,14 +145,16 @@ class OffersSubSubPage extends StatelessWidget {
                             children: [
                               ListTile(
                                 leading: SizedBox(
-                                  width: SizeConfig.calculateBlockHorizontal(56),
+                                  width:
+                                      SizeConfig.calculateBlockHorizontal(56),
                                   height: SizeConfig.calculateBlockVertical(56),
                                   child: data.image != null
                                       ? SvgPicture.string(
                                           data.image!,
                                           fit: BoxFit.contain,
                                         )
-                                      : SvgPicture.asset(AppIcons.PLACE_HOLDER, fit: BoxFit.contain),
+                                      : SvgPicture.asset(AppIcons.PLACE_HOLDER,
+                                          fit: BoxFit.contain),
                                 ),
                                 title: Text(
                                   data.name != null ? data.name! : "----",

@@ -1,16 +1,17 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
-import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class OffersSubPage extends StatelessWidget {
-  OffersSubPage({Key? key}) : super(key: key);
+class OffersSubCatPage extends StatelessWidget {
+  OffersSubCatPage({Key? key}) : super(key: key);
   final argument = Get.arguments;
   final _controllerOffers = Get.find<OffersController>();
 
@@ -117,7 +118,6 @@ class OffersSubPage extends StatelessWidget {
     );
   }
 
-
   getItems() {
     return Column(
       children: [
@@ -125,48 +125,32 @@ class OffersSubPage extends StatelessWidget {
         Expanded(
           child: GetBuilder(
               init: _controllerOffers,
-              id: _controllerOffers.offersChildId,
+              id: _controllerOffers.offersSubCatId,
               builder: (context) {
                 return SmartRefresher(
-                  controller: _controllerOffers.refreshControllerForSubPage,
+                  controller: _controllerOffers.offersSubCatController,
                   enablePullUp: true,
                   enablePullDown: true,
-                  onLoading: (){
-                    _controllerOffers.onLoadingForSubpage();
+                  onLoading: () {
+                    _controllerOffers.loadingOffersSubCat();
                   },
                   onRefresh: () {
-                    _controllerOffers.onRefreshForSubPage();
+                    _controllerOffers.refreshOffersSubCat();
                   },
                   child: ListView.builder(
-                      itemCount: _controllerOffers.offersChildList.length,
+                      itemCount: _controllerOffers.offersSubCatList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final data = _controllerOffers.offersChildList[index];
-                        Get.log("Offers Sub page data => ${data.name}}");
+                        final data = _controllerOffers.offersSubCatList[index];
                         return InkWell(
                           onTap: () {
-                            // final argument=data.name;
-                            // _controllerOffers.selectOffersModel = data;
-                            // _controllerOffers.getOffersChildList();
-                            // if (_controllerOffers.offersChildList[0].hasSubs!) {
-                            //   Get.toNamed(
-                            //     AppRoutes.OFFERS_SUB_SUB_PAGE,
-                            //     arguments: data.name,
-                            //   );
-                            // } else {
-                            //   _controllerOffers.getOffersDetailsList();
-                            //   Get.toNamed(
-                            //     AppRoutes.OFFERS_SUB_DETAILS_PAGE,
-                            //     arguments: data.name,
-                            //   );
-                            // }
-
                             _controllerOffers.itemInSubClicked(data);
                           },
                           child: Column(
                             children: [
                               ListTile(
                                 leading: SizedBox(
-                                  width: SizeConfig.calculateBlockHorizontal(56),
+                                  width:
+                                      SizeConfig.calculateBlockHorizontal(56),
                                   height: SizeConfig.calculateBlockVertical(56),
                                   child: data.image != null
                                       ? SvgPicture.string(

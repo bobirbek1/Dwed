@@ -5,7 +5,7 @@ import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/data/model/offers_details_model.dart';
+import 'package:flutter_template/src/data/model/offers/offer_model.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 
@@ -331,24 +331,24 @@ class UserPostPage extends StatelessWidget {
 
   getPostsPage() {
     return GetBuilder(
-        id: _controllerOffers.offersDetailsId,
+        id: _controllerOffers.offersId,
         init: _controllerOffers,
         builder: (context) {
-          final gridList = _controllerOffers.offersDetailsList;
-          final horizontalList = _controllerOffers.offersDetailsList;
-          Get.log("OfferDetails data ${_controllerOffers.offersDetailsList}");
+          final gridList = _controllerOffers.offersList;
+          final horizontalList = _controllerOffers.offersList;
+          Get.log("OfferDetails data ${_controllerOffers.offersList}");
           return Column(
             children: [
               Expanded(
                 child: SmartRefresher(
-                  controller: _controllerOffers.refreshController,
+                  controller: _controllerOffers.offersController,
                   enablePullDown: true,
                   enablePullUp: true,
                   onLoading: () {
-                    _controllerOffers.onLoadingForDetailsPage();
+                    _controllerOffers.loadingOffers();
                   },
                   onRefresh: () {
-                    _controllerOffers.onRefreshForDetailsPage();
+                    _controllerOffers.refreshOffers();
                   },
                   child: _controllerOffers.sortType == Sorting.sortBy
                       ?
@@ -363,7 +363,7 @@ class UserPostPage extends StatelessWidget {
         });
   }
 
-  Widget buildGridItems(List<OffersDetailsModel> gridList) {
+  Widget buildGridItems(List<OfferModel> gridList) {
     return gridList.isNotEmpty
         ? GridView.builder(
             itemCount: gridList.length,
@@ -397,7 +397,7 @@ class UserPostPage extends StatelessWidget {
           );
   }
 
-  Widget buildHorizontalItems(List<OffersDetailsModel> horizontalList) {
+  Widget buildHorizontalItems(List<OfferModel> horizontalList) {
     return horizontalList.isNotEmpty
         ? ListView.builder(
             itemBuilder: (ctx, index) {
@@ -415,8 +415,8 @@ class UserPostPage extends StatelessWidget {
           );
   }
 
-  getHorListItem(String? image, String? name, int? cost,
-      OffersDetailsModel horizontalList) {
+  getHorListItem(
+      String? image, String? name, int? cost, OfferModel horizontalList) {
     return Padding(
       padding: EdgeInsets.only(
         left: SizeConfig.calculateBlockHorizontal(16),
@@ -453,7 +453,7 @@ class UserPostPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            name == null ? "----" : name,
+                            name ?? "- - - -",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             softWrap: false,
@@ -488,7 +488,7 @@ class UserPostPage extends StatelessWidget {
                             horizontalList.org!.name != null
                                 ? Text('${horizontalList.org!.name}')
                                 : Text(
-                                    "-------",
+                                    "- - - -",
                                     style: TextStyle(
                                         fontSize:
                                             SizeConfig.calculateTextSize(12),
@@ -586,7 +586,7 @@ class UserPostPage extends StatelessWidget {
                           height: SizeConfig.calculateBlockVertical(8),
                         ),
                         Text(
-                          horizontalList.category!.name ?? '----',
+                          horizontalList.category!.name ?? '- - - -',
                           style: TextStyle(
                               fontSize: SizeConfig.calculateTextSize(12),
                               fontWeight: FontWeight.w400),
@@ -640,22 +640,22 @@ class UserPostPage extends StatelessWidget {
   getShopPage() {
     return GetBuilder(
         init: _controllerOffers,
-        id: _controllerOffers.offersId,
+        id: _controllerOffers.offersCatId,
         builder: (context) {
           return SmartRefresher(
-            controller: _controllerOffers.refreshControllerSearchPage,
+            controller: _controllerOffers.offersCatController,
             enablePullDown: true,
             enablePullUp: true,
             onLoading: () {
-              _controllerOffers.onLoadingForSearchPage();
+              _controllerOffers.loadingOffersCat();
             },
             onRefresh: () {
-              _controllerOffers.onRefreshForSearchPage();
+              _controllerOffers.refreshOffersCat();
             },
             child: ListView.builder(
-                itemCount: _controllerOffers.offersList.length,
+                itemCount: _controllerOffers.offersCatList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final data = _controllerOffers.offersList[index];
+                  final data = _controllerOffers.offersCatList[index];
                   Get.log("OffersPage list=> ${data.id}");
 
                   return InkWell(
@@ -679,7 +679,7 @@ class UserPostPage extends StatelessWidget {
                                   ),
                           ),
                           title: Text(
-                            data.name != null ? data.name! : "----",
+                            data.name != null ? data.name! : "- - - -",
                             style: TextStyle(
                               color: AppColors.BLACK,
                               fontSize: SizeConfig.calculateTextSize(16),
@@ -687,7 +687,9 @@ class UserPostPage extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            data.id != null ? "${data.id!} products" : "----",
+                            data.id != null
+                                ? "${data.id!} products"
+                                : "- - - -",
                             style: TextStyle(
                               color: AppColors.SHADOW_BLUE,
                               fontSize: SizeConfig.calculateTextSize(12),
@@ -710,7 +712,7 @@ class UserPostPage extends StatelessWidget {
   getGridItem(
     String title,
     int price,
-    OffersDetailsModel data,
+    OfferModel data,
     String? image,
   ) {
     return Padding(
@@ -728,7 +730,7 @@ class UserPostPage extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     width: SizeConfig.calculateBlockHorizontal(167),
                     height: SizeConfig.calculateBlockVertical(180),
                     child: Expanded(

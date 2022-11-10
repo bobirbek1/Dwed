@@ -1,10 +1,14 @@
-class OffersDetailsModel {
+// ignore_for_file: must_be_immutable
+
+import 'package:equatable/equatable.dart';
+
+class OfferModel extends Equatable {
   int? id;
   Org? org;
-  String? user;
+  dynamic user;
   String? name;
   int? cost;
-  double? discount;
+  dynamic discount;
   int? qty;
   int? measurement;
   String? image;
@@ -13,24 +17,24 @@ class OffersDetailsModel {
   String? ikpu;
   int? vat;
 
-  OffersDetailsModel(
+  OfferModel(
       {this.id,
-        this.org,
-        this.user,
-        this.name,
-        this.cost,
-        this.discount,
-        this.qty,
-        this.measurement,
-        this.image,
-        this.category,
-        this.isInCart,
-        this.ikpu,
-        this.vat});
+      this.org,
+      this.user,
+      this.name,
+      this.cost,
+      this.discount,
+      this.qty,
+      this.measurement,
+      this.image,
+      this.category,
+      this.isInCart,
+      this.ikpu,
+      this.vat});
 
-  OffersDetailsModel.fromJson(Map<String, dynamic> json) {
+  OfferModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    org = json['org'] != null ?  Org.fromJson(json['org']) : null;
+    org = json['org'] != null ? Org.fromJson(json['org']) : null;
     user = json['user'];
     name = json['name'];
     cost = json['cost'];
@@ -38,16 +42,15 @@ class OffersDetailsModel {
     qty = json['qty'];
     measurement = json['measurement'];
     image = json['image'];
-    category = json['category'] != null
-        ?  Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
     isInCart = json['is_in_cart'];
     ikpu = json['ikpu'];
     vat = json['vat'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     if (org != null) {
       data['org'] = org!.toJson();
@@ -67,23 +70,38 @@ class OffersDetailsModel {
     data['vat'] = vat;
     return data;
   }
+  
+  @override 
+  List<Object?> get props =>[id,
+      org,
+      user,
+      name,
+      cost,
+      discount,
+      qty,
+      measurement,
+      image,
+      category,
+      isInCart,
+      ikpu,
+      vat];
 }
 
-class Org {
+class Org extends Equatable {
   String? name;
   String? slugName;
   String? logo;
-  String? background;
+  dynamic background;
   bool? isOfficial;
   Rating? rating;
 
   Org(
       {this.name,
-        this.slugName,
-        this.logo,
-        this.background,
-        this.isOfficial,
-        this.rating});
+      this.slugName,
+      this.logo,
+      this.background,
+      this.isOfficial,
+      this.rating});
 
   Org.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -91,12 +109,11 @@ class Org {
     logo = json['logo'];
     background = json['background'];
     isOfficial = json['is_official'];
-    rating =
-    json['rating'] != null ?  Rating.fromJson(json['rating']) : null;
+    rating = json['rating'] != null ? Rating.fromJson(json['rating']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['slug_name'] = slugName;
     data['logo'] = logo;
@@ -107,6 +124,10 @@ class Org {
     }
     return data;
   }
+
+  @override
+  List<Object?> get props =>
+      [name, slugName, logo, background, isOfficial, rating];
 }
 
 class Rating {
@@ -118,18 +139,17 @@ class Rating {
 
   Rating.fromJson(Map<String, dynamic> json) {
     professional = json['professional'] != null
-        ?  Professional.fromJson(json['professional'])
+        ? Professional.fromJson(json['professional'])
         : null;
-    ethics = json['ethics'] != null
-        ?  Professional.fromJson(json['ethics'])
-        : null;
+    ethics =
+        json['ethics'] != null ? Professional.fromJson(json['ethics']) : null;
     aesthetics = json['aesthetics'] != null
-        ?  Professional.fromJson(json['aesthetics'])
+        ? Professional.fromJson(json['aesthetics'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (professional != null) {
       data['professional'] = professional!.toJson();
     }
@@ -143,7 +163,7 @@ class Rating {
   }
 }
 
-class Professional {
+class Professional extends Equatable {
   int? level;
   int? remainingScore;
   int? score;
@@ -157,15 +177,18 @@ class Professional {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['level'] = level;
     data['remaining_score'] = remainingScore;
     data['score'] = score;
     return data;
   }
+
+  @override
+  List<Object?> get props => [level, remainingScore, score];
 }
 
-class Category {
+class Category extends Equatable {
   int? id;
   String? name;
   String? description;
@@ -174,25 +197,19 @@ class Category {
   bool? hasSubs;
 
   Category(
-      {this.id,
-        this.name,
-        this.description,
-        this.parent,
-        this.image,
-        this.hasSubs});
+      {id, this.name, this.description, this.parent, this.image, this.hasSubs});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
-    parent =
-    json['parent'] != null ?  Parent.fromJson(json['parent']) : null;
+    parent = json['parent'] != null ? Parent.fromJson(json['parent']) : null;
     image = json['image'];
     hasSubs = json['has_subs'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['description'] = description;
@@ -203,9 +220,12 @@ class Category {
     data['has_subs'] = hasSubs;
     return data;
   }
+
+  @override
+  List<Object?> get props => [id, name, description, parent, image, hasSubs];
 }
 
-class Parent {
+class Parent extends Equatable {
   int? id;
   String? name;
   String? description;
@@ -223,7 +243,7 @@ class Parent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['description'] = description;
@@ -231,4 +251,7 @@ class Parent {
     data['image'] = image;
     return data;
   }
+
+  @override
+  List<Object?> get props => [id, name, description, parentId, image];
 }
