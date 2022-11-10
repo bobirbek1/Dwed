@@ -6,12 +6,15 @@ import 'package:flutter_template/core/platform/network_info.dart';
 import 'package:flutter_template/src/data/datasource/offers/offers_local_datasource.dart';
 import 'package:flutter_template/src/data/datasource/offers/offers_remote_datasource.dart';
 import 'package:flutter_template/src/data/datasource/organisations/organisations_remote_datasource.dart';
+import 'package:flutter_template/src/data/datasource/stream/stream_remote_datasource.dart';
 import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
 import 'package:flutter_template/src/data/repository/offers_repo_impl.dart';
 import 'package:flutter_template/src/data/repository/organisations_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/stream_repo_impl.dart';
 import 'package:flutter_template/src/domain/repository/login_repo.dart';
 import 'package:flutter_template/src/domain/repository/offers_repo.dart';
 import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
+import 'package:flutter_template/src/domain/repository/stream_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
 import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
@@ -26,11 +29,14 @@ import 'package:flutter_template/src/domain/usecase/get_organisation_user_post.d
 import 'package:flutter_template/src/domain/usecase/get_region.dart';
 import 'package:flutter_template/src/domain/usecase/get_sector.dart';
 import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
+import 'package:flutter_template/src/domain/usecase/get_stream_details.dart';
+import 'package:flutter_template/src/domain/usecase/get_stream_list.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/controller/splash/splash_controller.dart';
+import 'package:flutter_template/src/presentation/controller/stream_controller/stream_controller.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/local_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/remote_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/impl/local_datasource.dart';
@@ -99,6 +105,10 @@ Future<void> init() async {
     () => CardRemoteDataSourceImpl(client: Get.find()),
     fenix: true,
   );
+  Get.lazyPut<StreamRemoteDatasource>(
+    () => StreamRemoteDatasourceImpl(client: Get.find()),
+    fenix: true,
+  );
 
   // repository
   Get.lazyPut<LoginRepo>(
@@ -121,6 +131,10 @@ Future<void> init() async {
       fenix: true);
   Get.lazyPut<OrganisationsRepo>(
       () => OrganisationsRepoImpl(
+          remoteDatasource: Get.find(), networkInfo: Get.find()),
+      fenix: true);
+  Get.lazyPut<StreamRepo>(
+      () => StreamRepoImpl(
           remoteDatasource: Get.find(), networkInfo: Get.find()),
       fenix: true);
 
@@ -147,6 +161,8 @@ Future<void> init() async {
   Get.lazyPut(() => GetProductPageItem(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOrganisationDetails(loginRepo: Get.find()), fenix: true);
   Get.lazyPut(() => GetOfferGallery(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetStreamList(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetStreamDetails(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
@@ -183,4 +199,5 @@ Future<void> init() async {
           changeAmountUseCase: Get.find()),
       fenix: true);
   Get.lazyPut(() => CheckoutPageController(), fenix: true);
+  Get.lazyPut(() => StreamController(getStreams: Get.find(),getDetails: Get.find()), fenix: true);
 }

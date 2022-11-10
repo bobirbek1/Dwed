@@ -1,39 +1,59 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
-import 'package:flutter_template/app/app_images.dart';
-
-import '../../../../app/app_icons.dart';
-import '../../../../core/utils/size_config.dart';
+import 'package:flutter_template/app/app_icons.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/stream_controller/stream_controller.dart';
+import 'package:flutter_template/src/presentation/widgets/stream/stream_tag.dart';
+import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class StreamDetailsPage extends StatelessWidget {
   StreamDetailsPage({Key? key}) : super(key: key);
+
+  final _controller = Get.find<StreamController>();
 
   bool isMessagePressed = false;
 
   @override
   Widget build(BuildContext context) {
+    _controller.getStreamDetails();
+   
     return Scaffold(
       appBar: getAppBar(
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+              },
               icon: SvgPicture.asset(
                 AppIcons.ARROW_LEFT,
                 color: Colors.black,
               )),
           'Stream name'),
-      body: Column(
-        children: [
-          Container(
-            height: SizeConfig.calculateBlockVertical(240),
-            decoration: const BoxDecoration(color: AppColors.ROYAL_ORANGE),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          isMessagePressed ? getMessageScreen() : getStreamDetails()
-        ],
-      ),
+      body: GetBuilder(
+          init: _controller,
+          id: _controller.streamDetailsId,
+          builder: (ctrl) {
+            return Column(
+              children: [
+                Container(
+                  height: SizeConfig.calculateBlockVertical(240),
+                  decoration:
+                      const BoxDecoration(color: AppColors.ROYAL_ORANGE),
+                  child: Chewie(
+                    controller: _controller.chewieController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                isMessagePressed ? getMessageScreen() : getStreamDetails()
+              ],
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -81,165 +101,137 @@ class StreamDetailsPage extends StatelessWidget {
   }
 
   getStreamDetails() {
-    const String descText =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis magna orci, sit accumsan scelerisqe. Vehicula arcu, scelerisque id in. Velit, iaculis sem purus lobortis. Adipiscing quam egestas odio habitant eget massa. Suspendisse proin et diam tellus arcu...more";
-    bool flagText = false;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                  width: SizeConfig.calculateBlockHorizontal(48),
-                  height: SizeConfig.calculateBlockVertical(48),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(48)),
-                  child: Image.asset(AppImages.PHONES_PHONES)),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(
+    final data = _controller.streamDetails;
+    return _controller.streamDetailsState == StreamState.loading
+        ? const Center(child: CircularProgressIndicator.adaptive())
+        : _controller.streamDetailsState == StreamState.error
+            ? const Center(
+                child: Text("There is some problem while fetching data."),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: SizeConfig.calculateBlockHorizontal(48),
+                          height: SizeConfig.calculateBlockVertical(48),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            image: DecorationImage(
+                              image: NetworkImage(data?.thumbnail ?? ""),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data?.channelName ?? "- - - -",
+                                style: const TextStyle(
+                                    color: AppColors.BLACK,
+                                    fontSize: 16,
+                                    height: 1.2),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      data?.user?.fullName ?? "- - - -",
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.MAIN_TEXT_COLOR),
+                                    ),
+                                    // Expanded(child: Container()),
+                                    const Expanded(child: SizedBox()),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          SvgPicture.asset(AppIcons.ICON_EYE),
+                                          const SizedBox(
+                                            width: 2,
+                                          ),
+                                          Text(
+                                            data?.liveWatchers.toString() ??
+                                                "0",
+                                            style: const TextStyle(
+                                                color: AppColors.BLACK,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ]),
+                                  ]),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Wrap(children: const [
+                                StreamTag(tag: "Math"),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                StreamTag(tag: "Beginner"),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                StreamTag(tag: "Uzbek"),
+                              ])
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
                     const Text(
-                      "Lorem ipsum dolor sit amet, consec adipiscing elit Non",
+                      "Description",
                       style: TextStyle(
-                          color: AppColors.BLACK, fontSize: 16, height: 1.2),
+                          color: AppColors.BLACK,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      const Text(
-                        "T-MED",
-                        style: TextStyle(
-                            fontSize: 16, color: AppColors.MAIN_TEXT_COLOR),
-                      ),
-                      // Expanded(child: Container()),
-                      const Expanded(child: SizedBox()),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            SvgPicture.asset(AppIcons.ICON_EYE),
-                            const Text(
-                              "10.5K",
-                              style: TextStyle(
-                                  color: AppColors.BLACK,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ]),
-                    ]),
-                    const SizedBox(
-                      height: 10,
+                    Column(
+                      children: [
+                        Text(
+                          data?.channelDescription ??
+                              "There is no description for this channel!",
+                          // maxLines: flagText ? 8 : 5,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
                     ),
-                    Wrap(children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 4),
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 4, top: 4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.GRAY_X11),
-                        child: const Text(
-                          "Math",
-                          style: TextStyle(
-                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(right: 4),
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 4, top: 4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.GRAY_X11),
-                        child: const Text(
-                          "Beginner",
-                          style: TextStyle(
-                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(right: 4),
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 4, top: 4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.GRAY_X11),
-                        child: const Text(
-                          "Uzbek",
-                          style: TextStyle(
-                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
-                        ),
-                      ),
-                    ]),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    const Text(
+                      "Today Schedule",
+                      style: TextStyle(
+                          color: AppColors.BLACK,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          height: 1.2),
+                      maxLines: 1,
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Text(
-            "Description",
-            style: TextStyle(
-                color: AppColors.BLACK,
-                fontSize: 16,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Column(
-            children: [
-              Text(
-                descText,
-                maxLines: flagText ? 8 : 5,
-                textAlign: TextAlign.start,
-                overflow: TextOverflow.ellipsis,
-              ),
-              GestureDetector(
-                onTap: () {
-                  flagText = !flagText;
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    flagText
-                        ? const Text(
-                            "less",
-                            style: TextStyle(color: Colors.blue),
-                          )
-                        : const Text("more",
-                            style: TextStyle(color: Colors.blue))
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Text(
-            "Today Schedule",
-            style: TextStyle(
-                color: AppColors.BLACK,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                height: 1.2),
-            maxLines: 1,
-          ),
-        ],
-      ),
-    );
+              );
   }
 
   getMessageScreen() {

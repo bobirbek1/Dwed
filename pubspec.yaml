@@ -55,6 +55,8 @@ dependencies:
 
   # Pull to refresh or load
   pull_to_refresh: ^2.0.0
+  video_player: ^2.4.7
+  chewie: ^1.3.5
 
 
 dev_dependencies:
