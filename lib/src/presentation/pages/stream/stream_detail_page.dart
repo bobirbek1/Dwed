@@ -1,7 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_images.dart';
+import 'package:get/get.dart';
 
 import '../../../../app/app_icons.dart';
 import '../../../../core/utils/size_config.dart';
@@ -10,6 +13,7 @@ class StreamDetailsPage extends StatelessWidget {
   StreamDetailsPage({Key? key}) : super(key: key);
 
   bool isMessagePressed = false;
+  TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +32,19 @@ class StreamDetailsPage extends StatelessWidget {
             height: SizeConfig.calculateBlockVertical(240),
             decoration: const BoxDecoration(color: AppColors.ROYAL_ORANGE),
           ),
-          const SizedBox(
-            height: 12,
-          ),
           isMessagePressed ? getMessageScreen() : getStreamDetails()
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        onPressed: () {
-          isMessagePressed = !isMessagePressed;
-        },
-        child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
+      floatingActionButton: Visibility(
+        visible: isMessagePressed ? false : true,
+        child: FloatingActionButton(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          onPressed: () {
+            isMessagePressed = !isMessagePressed;
+          },
+          child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
+        ),
       ),
     );
   }
@@ -90,6 +94,9 @@ class StreamDetailsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 12,
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -243,40 +250,43 @@ class StreamDetailsPage extends StatelessWidget {
   }
 
   getMessageScreen() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Expanded(
       child: Column(
         children: [
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(56),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Live Chat",
-                  style: TextStyle(
-                      color: AppColors.BLACK, fontSize: 16, height: 1.2),
-                ),
-                Transform.scale(
-                  scale: 0.5,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppIcons.ARROW_DOWN,
-                        color: Colors.black,
-                      )),
-                ),
-              ],
+          AppBar(
+            backgroundColor: AppColors.WHITE,
+            automaticallyImplyLeading: false,
+            title: const Text(
+              "Live Chat",
+              style: TextStyle(
+                  color: AppColors.BLACK,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: SvgPicture.asset(
+                    AppIcons.ARROW_DOWN,
+                    color: Colors.black,
+                  )),
+            ],
           ),
-          ListView.builder(itemBuilder: (_, int index) {
-            return getStreamChatList(
-                "https://www.google.com/imgres?imgurl=https%3A%2F%2Foecdenvironmentfocusblog.files.wordpress.com%2F2020%2F06%2Fwed-blog-shutterstock_1703194387_low_nwm.jpg&imgrefurl=https%3A%2F%2Foecd-environment-focus.blog%2F2020%2F06%2F05%2Ftime-for-nature-is-a-global-public-health-crisis-what-it-takes-to-protect-the-planets-biodiversity%2F&tbnid=mxmAv-yoofVX-M&vet=12ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ..i&docid=Dtq-qGkM6AowdM&w=500&h=262&q=nature&ved=2ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ",
-                "name",
-                "message",
-                4);
-          })
+          Expanded(
+            child: ListView.builder(
+                itemCount: 12,
+                itemBuilder: (_, int index) {
+                  return getStreamChatList(
+                      "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef",
+                      "Ashlynn Lubin",
+                      "If we program the program, we can get to the AI monitor through the online THX interface!",
+                      4);
+                }),
+          ),
+          // const SizedBox(height: 64,),
+          buildBottomMessageBar()
         ],
       ),
     );
@@ -284,17 +294,100 @@ class StreamDetailsPage extends StatelessWidget {
 
   getStreamChatList(
       String profileImage, String name, String message, int time) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: SizeConfig.calculateBlockHorizontal(48),
-          height: SizeConfig.calculateBlockVertical(48),
-          alignment: Alignment.topCenter,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
-          child: Image.network(profileImage),
-        )
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: SizeConfig.calculateBlockHorizontal(48),
+            height: SizeConfig.calculateBlockVertical(48),
+            alignment: Alignment.topCenter,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                image: DecorationImage(
+                    image: NetworkImage(profileImage), fit: BoxFit.cover)),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                          color: AppColors.BLACK,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text("${time}m")
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  message,
+                  style: const TextStyle(
+                      color: AppColors.BLACK,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  buildBottomMessageBar() {
+    return Material(
+      elevation: 8,
+      child: SizedBox(
+        height: SizeConfig.calculateBlockVertical(64),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 8),
+          child: Container(
+            decoration: BoxDecoration(
+                color: AppColors.BACKGROUND,
+                borderRadius: BorderRadius.circular(8)),
+            child: TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                prefixIcon: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SvgPicture.asset(AppIcons.ICON_SMILE)),
+                suffixIcon: Padding(
+                    padding:  EdgeInsets.all( _textEditingController.text.isNotEmpty ? 4:10),
+                    child: _textEditingController.text.isEmpty
+                        ? SvgPicture.asset(AppIcons.ICON_DOLLOR)
+                        : InkWell(
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      onTap: (){
+                        Get.log("message is sended");
+                      },
+                        splashColor: Colors.blue,
+                        child:const Icon(Icons.send)
+                )),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -221,83 +221,82 @@ class StreamPage extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: SizeConfig.calculateBlockHorizontal(48),
-                        height: SizeConfig.calculateBlockVertical(48),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(48)),
-                        child: Image.asset(AppImages.PHONES_PHONES)),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Math for kids",
-                            style: TextStyle(color: AppColors.BLACK, fontSize: 14),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      width: SizeConfig.calculateBlockHorizontal(48),
+                      height: SizeConfig.calculateBlockVertical(48),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(48)),
+                      child: Image.asset(AppImages.PHONES_PHONES)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Math for kids",
+                          style: TextStyle(color: AppColors.BLACK, fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Text(
+                          "MATH WARS",
+                          style: TextStyle(
+                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Wrap(
+                          children:[
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 4, top: 4),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: AppColors.GRAY_X11),
+                            child: const Text(
+                              "Math",
+                              style: TextStyle(
+                                  color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                            ),
                           ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          const Text(
-                            "MATH WARS",
-                            style: TextStyle(
-                                color: AppColors.MAIN_TEXT_COLOR, fontSize: 14),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Wrap(
-                            children:[
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
                               padding: const EdgeInsets.only(
                                   left: 8, right: 8, bottom: 4, top: 4),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   color: AppColors.GRAY_X11),
                               child: const Text(
-                                "Math",
+                                "Beginner",
                                 style: TextStyle(
                                     color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
                               ),
                             ),
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, bottom: 4, top: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: AppColors.GRAY_X11),
-                                child: const Text(
-                                  "Beginner",
-                                  style: TextStyle(
-                                      color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
-                                ),
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, bottom: 4, top: 4),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: AppColors.GRAY_X11),
+                              child: const Text(
+                                "Uzbek",
+                                style: TextStyle(
+                                    color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, bottom: 4, top: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: AppColors.GRAY_X11),
-                                child: const Text(
-                                  "Uzbek",
-                                  style: TextStyle(
-                                      color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
-                                ),
-                              ),
-                          ])
-                        ],
-                      ),
+                            ),
+                        ])
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             ],
           ),
