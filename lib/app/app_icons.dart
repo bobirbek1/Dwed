@@ -36,4 +36,8 @@ class AppIcons {
   static const String PLACE_HOLDER = "assets/icons/placeholder3.svg";
 
   static const String BRO = "assets/icons/bro.svg";
+  static const String ICON_MORE = "assets/icons/icon_more.svg";
+  static const String ICON_EYE = "assets/icons/icon_eye.svg";
+  static const String ICON_MESSAGE = "assets/icons/message.svg";
+  static const String ARROW_DOWN = "assets/icons/arrow_down.svg";
 }
