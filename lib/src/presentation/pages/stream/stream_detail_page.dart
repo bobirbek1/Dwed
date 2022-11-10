@@ -26,7 +26,7 @@ class StreamDetailsPage extends StatelessWidget {
         children: [
           Container(
             height: SizeConfig.calculateBlockVertical(240),
-            decoration: BoxDecoration(color: AppColors.ROYAL_ORANGE),
+            decoration: const BoxDecoration(color: AppColors.ROYAL_ORANGE),
           ),
           const SizedBox(
             height: 12,
@@ -81,175 +81,161 @@ class StreamDetailsPage extends StatelessWidget {
   }
 
   getStreamDetails() {
-    final String descText =
+    const String descText =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis magna orci, sit accumsan scelerisqe. Vehicula arcu, scelerisque id in. Velit, iaculis sem purus lobortis. Adipiscing quam egestas odio habitant eget massa. Suspendisse proin et diam tellus arcu...more";
     bool flagText = false;
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    width: SizeConfig.calculateBlockHorizontal(48),
-                    height: SizeConfig.calculateBlockVertical(48),
-                    decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(48)),
-                    child: Image.asset(AppImages.PHONES_PHONES)),
-                Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Container(
-                    height: SizeConfig.calculateBlockVertical(120),
-                    child: Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              "Lorem ipsum dolor sit amet,\n consec adipiscing elit Non",
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                  width: SizeConfig.calculateBlockHorizontal(48),
+                  height: SizeConfig.calculateBlockVertical(48),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(48)),
+                  child: Image.asset(AppImages.PHONES_PHONES)),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Lorem ipsum dolor sit amet, consec adipiscing elit Non",
+                      style: TextStyle(
+                          color: AppColors.BLACK, fontSize: 16, height: 1.2),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      const Text(
+                        "T-MED",
+                        style: TextStyle(
+                            fontSize: 16, color: AppColors.MAIN_TEXT_COLOR),
+                      ),
+                      // Expanded(child: Container()),
+                      const Expanded(child: SizedBox()),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            SvgPicture.asset(AppIcons.ICON_EYE),
+                            const Text(
+                              "10.5K",
                               style: TextStyle(
                                   color: AppColors.BLACK,
                                   fontSize: 16,
-                                  height: 1.2),
-                            ),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "T-MED",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.MAIN_TEXT_COLOR),
-                                ),
-                                // Expanded(child: Container()),
-                                SizedBox(
-                                  width:
-                                  SizeConfig.calculateBlockHorizontal(200),
-                                ),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      SvgPicture.asset(AppIcons.ICON_EYE),
-                                      Text("10.5K")
-                                    ]),
-                              ]),
-                          Container(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Wrap(children: [
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, bottom: 4, top: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: AppColors.GRAY_X11),
-                                child: const Text(
-                                  "Math",
-                                  style: TextStyle(
-                                      color: AppColors.MAIN_TEXT_COLOR,
-                                      fontSize: 12),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, bottom: 4, top: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: AppColors.GRAY_X11),
-                                child: const Text(
-                                  "Beginner",
-                                  style: TextStyle(
-                                      color: AppColors.MAIN_TEXT_COLOR,
-                                      fontSize: 12),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 4),
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, bottom: 4, top: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: AppColors.GRAY_X11),
-                                child: const Text(
-                                  "Uzbek",
-                                  style: TextStyle(
-                                      color: AppColors.MAIN_TEXT_COLOR,
-                                      fontSize: 12),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ],
-                      ),
+                                  fontWeight: FontWeight.w400),
+                            )
+                          ]),
+                    ]),
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
+                    Wrap(children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 4, top: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.GRAY_X11),
+                        child: const Text(
+                          "Math",
+                          style: TextStyle(
+                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 4, top: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.GRAY_X11),
+                        child: const Text(
+                          "Beginner",
+                          style: TextStyle(
+                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 4, top: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.GRAY_X11),
+                        child: const Text(
+                          "Uzbek",
+                          style: TextStyle(
+                              color: AppColors.MAIN_TEXT_COLOR, fontSize: 12),
+                        ),
+                      ),
+                    ]),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 24,
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 16),
-            child: Text(
-              "Description",
-              style: TextStyle(
-                  color: AppColors.BLACK,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-            ),
+          const Text(
+            "Description",
+            style: TextStyle(
+                color: AppColors.BLACK,
+                fontSize: 16,
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(
-            height: 24,
+            height: 8,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Expanded(
-                child: Column(
-                  children: [
-                    Text(descText,
-                        maxLines: flagText ? 8 : 5, textAlign: TextAlign.start),
-                    GestureDetector(
-                      onTap: () {
-                        flagText = !flagText;
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          flagText
-                              ? Text(
-                            "Show Less",
+          Column(
+            children: [
+              Text(
+                descText,
+                maxLines: flagText ? 8 : 5,
+                textAlign: TextAlign.start,
+                overflow: TextOverflow.ellipsis,
+              ),
+              GestureDetector(
+                onTap: () {
+                  flagText = !flagText;
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    flagText
+                        ? const Text(
+                            "less",
                             style: TextStyle(color: Colors.blue),
                           )
-                              : Text("Show More",
-                              style: TextStyle(color: Colors.blue))
-                        ],
-                      ),
-                    ),
+                        : const Text("more",
+                            style: TextStyle(color: Colors.blue))
                   ],
-                )),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Expanded(
-              child: Text(
-                "Today Schedule",
-                style: TextStyle(
-                    color: AppColors.BLACK,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    height: 1.2),
-                maxLines: 1,
+                ),
               ),
-            ),
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          const Text(
+            "Today Schedule",
+            style: TextStyle(
+                color: AppColors.BLACK,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                height: 1.2),
+            maxLines: 1,
           ),
         ],
       ),
@@ -258,16 +244,16 @@ class StreamDetailsPage extends StatelessWidget {
 
   getMessageScreen() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: SizeConfig.calculateBlockVertical(56),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Live Chat",
                   style: TextStyle(
                       color: AppColors.BLACK, fontSize: 16, height: 1.2),
@@ -296,8 +282,8 @@ class StreamDetailsPage extends StatelessWidget {
     );
   }
 
-  getStreamChatList(String profileImage, String name, String message,
-      int time) {
+  getStreamChatList(
+      String profileImage, String name, String message, int time) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -305,9 +291,7 @@ class StreamDetailsPage extends StatelessWidget {
           width: SizeConfig.calculateBlockHorizontal(48),
           height: SizeConfig.calculateBlockVertical(48),
           alignment: Alignment.topCenter,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24)
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
           child: Image.network(profileImage),
         )
       ],
