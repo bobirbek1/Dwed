@@ -45,7 +45,9 @@ class StreamPage extends StatelessWidget {
                       right: SizeConfig.calculateBlockHorizontal(6),
                     ),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.back();
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                           vertical: SizeConfig.calculateBlockVertical(12.5),
@@ -66,7 +68,7 @@ class StreamPage extends StatelessWidget {
         _controller.typing
             ? const SizedBox()
             : TextField(
-                controller: _controller.textController,
+                controller: _controller.searchTextController,
                 cursorHeight: 24,
                 onChanged: (val) {},
                 decoration: const InputDecoration(
@@ -85,12 +87,12 @@ class StreamPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          getStreamCategoriesList(),
+          buildStreamCategoriesList(),
           GetBuilder(
             init: _controller,
             id: _controller.streamListId,
             builder: (ctrl) {
-              return getStreamList();
+              return buildStreamList();
             },
           ),
           SizedBox(
@@ -119,7 +121,7 @@ class StreamPage extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(AppIcons.SEARCH_NORMAL)),
               )
-            : _controller.textController.text.isEmpty
+            : _controller.searchTextController.text.isEmpty
                 ? const SizedBox()
                 : InkWell(
                     onTap: () {},
@@ -140,19 +142,19 @@ class StreamPage extends StatelessWidget {
     );
   }
 
-  getStreamCategoriesList() {
+  buildStreamCategoriesList() {
     return SizedBox(
       height: 56,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: 12,
           itemBuilder: (_, int index) {
-            return getCategoriesList();
+            return buildCategoriesList();
           }),
     );
   }
 
-  getCategoriesList() {
+  buildCategoriesList() {
     return InkWell(
       onTap: () {},
       child: Center(
@@ -172,7 +174,7 @@ class StreamPage extends StatelessWidget {
     );
   }
 
-  getStreamList() {
+  buildStreamList() {
     if (_controller.streamListState == StreamState.loaded ||
         _controller.streamListState == StreamState.loading &&
             _controller.streamList.isNotEmpty) {
@@ -191,6 +193,8 @@ class StreamPage extends StatelessWidget {
                 stream: data,
                 onPressed: () {
                   _controller.selectedStream = _controller.streamList[index];
+                  _controller.initializeVideo();
+                  _controller.getChatMessages();
                   Get.toNamed(AppRoutes.STREAM_DETAIL_PAGE);
                 },
               );

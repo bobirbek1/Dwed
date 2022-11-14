@@ -1,67 +1,79 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:chewie/chewie.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
+import 'package:get/get.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/stream_controller/stream_controller.dart';
 import 'package:flutter_template/src/presentation/widgets/stream/stream_tag.dart';
-import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
+import 'package:intl/intl.dart';
 
 class StreamDetailsPage extends StatelessWidget {
   StreamDetailsPage({Key? key}) : super(key: key);
 
   final _controller = Get.find<StreamController>();
 
-  bool isMessagePressed = false;
-
   @override
   Widget build(BuildContext context) {
     _controller.getStreamDetails();
-   
-    return Scaffold(
-      appBar: getAppBar(
-          IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: SvgPicture.asset(
-                AppIcons.ARROW_LEFT,
-                color: Colors.black,
-              )),
-          'Stream name'),
-      body: GetBuilder(
+    if (_controller.videoController != null) {
+      _controller.videoController?.play();
+    }
+    return WillPopScope(
+      onWillPop: () async {
+        await _controller.videoController?.pause();
+        return true;
+      },
+      child: GetBuilder(
           init: _controller,
           id: _controller.streamDetailsId,
-          builder: (ctrl) {
-            return Column(
-              children: [
-                Container(
-                  height: SizeConfig.calculateBlockVertical(240),
-                  decoration:
-                      const BoxDecoration(color: AppColors.ROYAL_ORANGE),
-                  child: Chewie(
-                    controller: _controller.chewieController,
+          builder: (context) {
+            return Scaffold(
+              appBar: getAppBar(
+                  IconButton(
+                      onPressed: () {
+                        _controller.videoController?.pause();
+                        Get.back();
+                      },
+                      icon: SvgPicture.asset(
+                        AppIcons.ARROW_LEFT,
+                        color: Colors.black,
+                      )),
+                  'Stream name'),
+              body: Column(
+                children: [
+                  Container(
+                    height: SizeConfig.calculateBlockVertical(240),
+                    decoration:
+                        const BoxDecoration(color: AppColors.ROYAL_ORANGE),
+                    child: Chewie(
+                      controller: _controller.chewieController!,
+                    ),
                   ),
+                  _controller.isMessagePressed
+                      ? getMessageScreen()
+                      : getStreamDetails()
+                ],
+              ),
+              floatingActionButton: Visibility(
+                visible: !_controller.isMessagePressed,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  onPressed: () {
+                    _controller.isMessagePressed =
+                        !_controller.isMessagePressed;
+                  },
+                  child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-                isMessagePressed ? getMessageScreen() : getStreamDetails()
-              ],
+              ),
             );
           }),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        onPressed: () {
-          isMessagePressed = !isMessagePressed;
-        },
-        child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
-      ),
     );
   }
 
@@ -114,6 +126,9 @@ class StreamDetailsPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 16,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -144,7 +159,7 @@ class StreamDetailsPage extends StatelessWidget {
                                     height: 1.2),
                               ),
                               const SizedBox(
-                                height: 8,
+                                height: 6,
                               ),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -235,58 +250,270 @@ class StreamDetailsPage extends StatelessWidget {
   }
 
   getMessageScreen() {
+    return GetBuilder(
+        init: _controller,
+        id: _controller.chatId,
+        builder: (context) {
+          return Expanded(
+            child: Column(
+              children: [
+                AppBar(
+                  backgroundColor: AppColors.WHITE,
+                  automaticallyImplyLeading: false,
+                  title: const Text(
+                    "Live Chat",
+                    style: TextStyle(
+                        color: AppColors.BLACK,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          _controller.isMessagePressed =
+                              !_controller.isMessagePressed;
+                        },
+                        icon: SvgPicture.asset(
+                          AppIcons.ARROW_DOWN,
+                          color: Colors.black,
+                        )),
+                  ],
+                ),
+                if (_controller.chatState == StreamState.loading)
+                  const Expanded(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
+                if (_controller.chatState == StreamState.loaded &&
+                    _controller.chatMessages.isNotEmpty)
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: _controller.chatMessages.length,
+                        itemBuilder: (_, int index) {
+                          final message = _controller.chatMessages[index];
+                          return getStreamChatList(
+                              message.user?.avatar,
+                              message.user?.fullName,
+                              message.text,
+                              message.date);
+                        }),
+                  ),
+                if (_controller.chatState == StreamState.loaded &&
+                    _controller.chatMessages.isEmpty)
+                  const Expanded(child: Text("No messages yet!")),
+                if (_controller.chatState == StreamState.loaded)
+                  buildBottomMessageBar()
+              ],
+            ),
+          );
+        });
+  }
+
+  getStreamChatList(
+      String? profileImage, String? name, String? message, String? time) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(56),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Container(
+            width: SizeConfig.calculateBlockHorizontal(48),
+            height: SizeConfig.calculateBlockVertical(48),
+            alignment: Alignment.topCenter,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              image: profileImage != null
+                  ? DecorationImage(
+                      image: NetworkImage(profileImage), fit: BoxFit.cover)
+                  : null,
+            ),
+            child: profileImage == null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      60,
+                    ),
+                    child: SvgPicture.asset(
+                      AppIcons.PLACE_HOLDER,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Live Chat",
-                  style: TextStyle(
-                      color: AppColors.BLACK, fontSize: 16, height: 1.2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      name ?? "- - - -",
+                      style: const TextStyle(
+                          color: AppColors.BLACK,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      getTime(time),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.SHADOW_BLUE,
+                      ),
+                    )
+                  ],
                 ),
-                Transform.scale(
-                  scale: 0.5,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppIcons.ARROW_DOWN,
-                        color: Colors.black,
-                      )),
+                const SizedBox(
+                  height: 4,
                 ),
+                Text(
+                  message ?? "- - - -",
+                  style: const TextStyle(
+                      color: AppColors.BLACK,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14),
+                )
               ],
             ),
           ),
-          ListView.builder(itemBuilder: (_, int index) {
-            return getStreamChatList(
-                "https://www.google.com/imgres?imgurl=https%3A%2F%2Foecdenvironmentfocusblog.files.wordpress.com%2F2020%2F06%2Fwed-blog-shutterstock_1703194387_low_nwm.jpg&imgrefurl=https%3A%2F%2Foecd-environment-focus.blog%2F2020%2F06%2F05%2Ftime-for-nature-is-a-global-public-health-crisis-what-it-takes-to-protect-the-planets-biodiversity%2F&tbnid=mxmAv-yoofVX-M&vet=12ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ..i&docid=Dtq-qGkM6AowdM&w=500&h=262&q=nature&ved=2ahUKEwiwkuOboaD7AhU50LsIHRMqCbkQMyhlegUIARDZAQ",
-                "name",
-                "message",
-                4);
-          })
         ],
       ),
     );
   }
 
-  getStreamChatList(
-      String profileImage, String name, String message, int time) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: SizeConfig.calculateBlockHorizontal(48),
-          height: SizeConfig.calculateBlockVertical(48),
-          alignment: Alignment.topCenter,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
-          child: Image.network(profileImage),
-        )
-      ],
+  // getStreamChatList(
+  //     String profileImage, String name, String message, int time) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 16),
+  //     margin: const EdgeInsets.only(top: 12),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Container(
+  //           width: SizeConfig.calculateBlockHorizontal(48),
+  //           height: SizeConfig.calculateBlockVertical(48),
+  //           alignment: Alignment.topCenter,
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(24),
+  //               image: DecorationImage(
+  //                   image: NetworkImage(profileImage), fit: BoxFit.cover)),
+  //         ),
+  //         const SizedBox(
+  //           width: 8,
+  //         ),
+  //         Expanded(
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     name,
+  //                     style: const TextStyle(
+  //                         color: AppColors.BLACK,
+  //                         fontWeight: FontWeight.w700,
+  //                         fontSize: 14),
+  //                   ),
+  //                   const SizedBox(
+  //                     width: 5,
+  //                   ),
+  //                   Text("${time}m")
+  //                 ],
+  //               ),
+  //               const SizedBox(
+  //                 height: 4,
+  //               ),
+  //               Text(
+  //                 message,
+  //                 style: const TextStyle(
+  //                     color: AppColors.BLACK,
+  //                     fontWeight: FontWeight.w400,
+  //                     fontSize: 14),
+  //               )
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  buildBottomMessageBar() {
+    return Material(
+      elevation: 8,
+      child: Container(
+        height: SizeConfig.calculateBlockVertical(64),
+        padding: const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 8),
+        margin: const EdgeInsets.only(bottom: 16),
+        child: Container(
+          decoration: BoxDecoration(
+              color: AppColors.BACKGROUND,
+              borderRadius: BorderRadius.circular(8)),
+          child: TextField(
+            controller: _controller.messageTextController,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.zero,
+              isDense: false,
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: SvgPicture.asset(AppIcons.ICON_SMILE)),
+              suffixIcon: GetBuilder(
+                init: _controller,
+                id: _controller.messageSendId,
+                builder: (ctrl) {
+                  return Padding(
+                    padding: EdgeInsets.all(
+                        _controller.messageTextController.text.isNotEmpty
+                            ? 4
+                            : 10),
+                    child: !_controller.hasText
+                        ? SvgPicture.asset(AppIcons.ICON_DOLLOR)
+                        : InkWell(
+                            customBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            onTap: () {
+                              Get.log("message is sended");
+                              _controller.sendChatMessage();
+                            },
+                            splashColor: Colors.blue,
+                            child: const Icon(Icons.send),
+                          ),
+                  );
+                },
+              ),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      ),
     );
+  }
+
+  getTime(String? time) {
+    if (time == null) {
+      return "-";
+    }
+    final date = DateTime.parse(time).toLocal();
+    Get.log("time => $date");
+    final today = DateTime.now();
+    if (date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day) {
+      if (date.hour == today.hour && date.minute == today.minute) {
+        return "less than 1 min";
+      } else if (date.hour == today.hour) {
+        return "${today.minute - date.minute} min";
+      } else {
+        return "${today.hour - date.hour} hour";
+      }
+    } else {
+      return DateFormat("dd.MM.yyyy").format(date);
+    }
   }
 }

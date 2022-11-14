@@ -16,6 +16,7 @@ import 'package:flutter_template/src/domain/repository/offers_repo.dart';
 import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
 import 'package:flutter_template/src/domain/repository/stream_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
+import 'package:flutter_template/src/domain/usecase/get_chat_messages.dart';
 import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
 import 'package:flutter_template/src/domain/usecase/get_product_page_item.dart';
@@ -32,6 +33,7 @@ import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
 import 'package:flutter_template/src/domain/usecase/get_stream_details.dart';
 import 'package:flutter_template/src/domain/usecase/get_stream_list.dart';
 import 'package:flutter_template/src/domain/usecase/login.dart';
+import 'package:flutter_template/src/domain/usecase/send_message.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
@@ -163,6 +165,8 @@ Future<void> init() async {
   Get.lazyPut(() => GetOfferGallery(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetStreamList(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetStreamDetails(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetChatMessages(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => SendMessage(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
@@ -199,5 +203,5 @@ Future<void> init() async {
           changeAmountUseCase: Get.find()),
       fenix: true);
   Get.lazyPut(() => CheckoutPageController(), fenix: true);
-  Get.lazyPut(() => StreamController(getStreams: Get.find(),getDetails: Get.find()), fenix: true);
+  Get.lazyPut(() => StreamController(getStreams: Get.find(),getDetails: Get.find(),getMessages: Get.find(),sendMessage: Get.find(),), fenix: true);
 }
