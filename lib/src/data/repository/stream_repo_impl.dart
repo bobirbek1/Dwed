@@ -51,11 +51,11 @@ class StreamRepoImpl extends StreamRepo {
   }
   
   @override
-  Future<Either<Failure, List<MessageModel>>> getChatMessages(String slugName) async {
+  Future<Either<Failure, List<MessageModel>>> getChatMessages(String slugName,int offset) async {
       if (await networkInfo.isConnected) {
       Get.log("get getChatMessages is connected");
       try {
-        final res = await remoteDatasource.fetchChatMessages(slugName);
+        final res = await remoteDatasource.fetchChatMessages(slugName,offset);
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);
@@ -73,6 +73,23 @@ class StreamRepoImpl extends StreamRepo {
       Get.log("get sendMessage is connected");
       try {
         final res = await remoteDatasource.sendMessage(text,slugName);
+        return Right(res);
+      } catch (e) {
+        final failure = handleException(e as Exception);
+        return Left(failure);
+      }
+    } else {
+      Get.log("get sendMessage disconnected");
+      return const Left(NetworkFailure());
+    }
+  }
+  
+  @override
+  Future<Either<Failure, String>> getCentrifugeToken() async {
+     if (await networkInfo.isConnected) {
+      Get.log("get sendMessage is connected");
+      try {
+        final res = await remoteDatasource.fetchCentrifugeToken();
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);

@@ -195,6 +195,8 @@ class StreamPage extends StatelessWidget {
                   _controller.selectedStream = _controller.streamList[index];
                   _controller.initializeVideo();
                   _controller.getChatMessages();
+                  _controller.subscribeToChannel(
+                      _controller.selectedStream?.channelSlug ?? "tmeduz");
                   Get.toNamed(AppRoutes.STREAM_DETAIL_PAGE);
                 },
               );

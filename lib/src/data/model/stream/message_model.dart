@@ -6,8 +6,9 @@ class MessageModel extends Equatable {
   User? user;
   String? text;
   String? date;
+  String? next;
 
-  MessageModel({this.user, this.text, this.date});
+  MessageModel({this.user, this.text, this.date,this.next});
 
   MessageModel.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? User.fromJson(json['user']) : null;
@@ -24,9 +25,9 @@ class MessageModel extends Equatable {
     data['date'] = date;
     return data;
   }
-  
-  @override 
-  List<Object?> get props => [user,text,date];
+
+  @override
+  List<Object?> get props => [user, text, date];
 }
 
 class User extends Equatable {

@@ -11,14 +11,15 @@ class GetChatMessages extends Usecase<List<MessageModel>, MessageParams> {
 
   @override
   Future<Either<Failure, List<MessageModel>>> call(MessageParams params) {
-    return repo.getChatMessages(params.slugName);
+    return repo.getChatMessages(params.slugName,params.offset);
   }
 }
 
 class MessageParams extends Params {
   final String slugName;
+  final int offset;
 
-  MessageParams({required this.slugName});
+  MessageParams({required this.slugName,required this.offset});
 
   @override
   List<Object?> get props => [slugName];

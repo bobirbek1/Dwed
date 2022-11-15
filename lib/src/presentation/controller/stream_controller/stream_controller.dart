@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/core/error/failure.dart';
+import 'package:flutter_template/core/network/chat_client.dart';
+import 'package:flutter_template/core/usecases/usecase.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/data/model/stream/message_model.dart';
 import 'package:flutter_template/src/data/model/stream/stream_details_model.dart';
 import 'package:flutter_template/src/data/model/stream/stream_model.dart';
+import 'package:flutter_template/src/domain/usecase/get_centrifuge_token.dart';
 import 'package:flutter_template/src/domain/usecase/get_chat_messages.dart';
 import 'package:flutter_template/src/domain/usecase/get_stream_details.dart';
 import 'package:flutter_template/src/domain/usecase/get_stream_list.dart';
@@ -19,15 +24,23 @@ class StreamController extends GetxController {
   final GetStreamDetails getDetails;
   final GetChatMessages getMessages;
   final SendMessage sendMessage;
+  final GetCentrifugeToken getToken;
+  final ChatClient chatClient;
 
-  StreamController(
-      {required this.getMessages,
-      required this.sendMessage,
-      required this.getDetails,
-      required this.getStreams});
+  StreamController({
+    required this.getMessages,
+    required this.sendMessage,
+    required this.getDetails,
+    required this.getStreams,
+    required this.getToken,
+    required this.chatClient,
+  });
 
   // refresh controllers
   final streamController = RefreshController();
+
+  // scroll controller
+  final scrollController = ScrollController();
 
   // video player controllers
   VideoPlayerController? videoController;
@@ -55,6 +68,8 @@ class StreamController extends GetxController {
 
   // offsets for pagination
   int streamListOffset = 0;
+  int? chatOffset = 0;
+  bool shouldCall = true;
 
 // typing variable which means search is active or not
   bool typing = true;
@@ -81,6 +96,7 @@ class StreamController extends GetxController {
   @override
   void onInit() {
     _getStreamList();
+    // _getCentrifugeToken();
     messageTextController.addListener(() {
       if (messageTextController.text.isNotEmpty && !hasText) {
         hasText = !hasText;
@@ -90,11 +106,23 @@ class StreamController extends GetxController {
         update([messageSendId]);
       }
     });
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent - 100 <
+              scrollController.offset &&
+          shouldCall &&
+          chatOffset != null) {
+        shouldCall = false;
+        getChatMessages();
+      }
+    });
+    initChatClient();
     super.onInit();
   }
 
   @override
   void onClose() {
+    chatClient.dispose();
+    scrollController.dispose();
     messageTextController.dispose();
     streamController.dispose();
     videoController?.dispose();
@@ -102,21 +130,41 @@ class StreamController extends GetxController {
     super.onClose();
   }
 
+  Future<void> onBackFromDetails() async {
+    await videoController?.dispose();
+    chewieController?.dispose();
+  }
+
+  initChatClient() {
+    _getCentrifugeToken();
+  }
+
   initializeVideo() {
-    if (videoController != null) {
-      videoController?.dispose();
-    }
-    if (chewieController != null) {
-      chewieController?.dispose();
-    }
     videoController = VideoPlayerController.network(
         "https://m.dwed.biz/v1.0/api/streaming/${selectedStream?.channelSlug}/live.m3u8");
+
     chewieController = ChewieController(
       videoPlayerController: videoController!,
       aspectRatio:
           SizeConfig.screenWidth! / SizeConfig.calculateBlockVertical(240),
       isLive: true,
+      autoPlay: true
     );
+  }
+
+  void subscribeToChannel(String slugName) async {
+    await chatClient.subscribe("stream_chat.$slugName");
+  }
+
+  void _initChatClient(
+    String token,
+  ) async {
+    chatClient.init(token);
+    await chatClient.connect(() {});
+    chatClient.messages.listen((event) {
+      chatMessages.add(event);
+      update([chatId]);
+    });
   }
 
   void refreshStreamList() {
@@ -145,7 +193,7 @@ class StreamController extends GetxController {
       } else if (failure is ServerTimeOutFailure) {
         Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {
-        Get.log("OffersChild Error");
+        Get.log("GetStreamList Error");
       }
       updateStreamListState(StreamState.error);
     }, (response) {
@@ -167,7 +215,7 @@ class StreamController extends GetxController {
       } else if (failure is ServerTimeOutFailure) {
         Get.log("tarmoq_ulanishingizni_tekshiring".tr);
       } else {
-        Get.log("OffersChild Error");
+        Get.log("getStreamDetails Error");
       }
       updateStreamDetailsState(StreamState.error);
     }, (response) {
@@ -177,38 +225,60 @@ class StreamController extends GetxController {
   }
 
   void getChatMessages() async {
-    updateChatState(StreamState.loading);
-    final result = await getMessages
-        .call(MessageParams(slugName: selectedStream?.channelSlug ?? "tmeduz"));
-    result.fold((failure) {
-      if (failure is NetworkFailure) {
-        Get.log(
-            "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring"
-                .tr);
-      } else if (failure is ServerTimeOutFailure) {
-        Get.log("tarmoq_ulanishingizni_tekshiring".tr);
-      } else {
-        Get.log("OffersChild Error");
-      }
-      updateChatState(StreamState.error);
-    }, (response) {
-      chatMessages = response.reversed.toList();
-      updateChatState(StreamState.loaded);
-    });
+    if (chatOffset != null) {
+      updateChatState(StreamState.loading);
+
+      final result = await getMessages.call(MessageParams(
+          slugName: selectedStream?.channelSlug ?? "tmeduz",
+          offset: chatOffset!));
+      result.fold((failure) {
+        if (failure is NetworkFailure) {
+          Get.log(
+              "internetga_ulanish_muvaffaqiyatsiz_tugadi_iltimos_yana_bir_bor_urinib_koring"
+                  .tr);
+        } else if (failure is ServerTimeOutFailure) {
+          Get.log("tarmoq_ulanishingizni_tekshiring".tr);
+        } else {
+          Get.log("getChatMessages Error");
+        }
+        updateChatState(StreamState.error);
+      }, (response) {
+        chatMessages.insertAll(0, response.reversed.toList());
+        chatOffset = response.first.next != null
+            ? int.tryParse(response.first.next?.split("=").last ?? "")
+            : null;
+        shouldCall = true;
+        updateChatState(StreamState.loaded);
+      });
+    }
   }
 
   void sendChatMessage() async {
+    final text = messageTextController.text;
+    messageTextController.clear();
     final result = await sendMessage.call(
       SendMessageParams(
         slugName: selectedStream?.channelSlug ?? "tmeduz",
-        text: messageTextController.text,
+        text: text,
       ),
     );
-    messageTextController.clear();
+
     result.fold((failure) {
       Get.log("send message return error: $failure");
     }, (response) {
       Get.log("send message success: $response");
+    });
+  }
+
+  void _getCentrifugeToken() async {
+    final result = await getToken.call(NoParams());
+    result.fold((failure) {
+      Get.log("get centrifuge token return error: $failure");
+    }, (response) {
+      Get.log("get centrifuge token success: $response");
+      _initChatClient(
+        response,
+      );
     });
   }
 

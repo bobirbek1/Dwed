@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_template/app/app_constants.dart';
+import 'package:flutter_template/core/network/chat_client.dart';
 import 'package:flutter_template/core/network/dio_interceptors.dart';
 import 'package:flutter_template/core/platform/network_info.dart';
 import 'package:flutter_template/src/data/datasource/offers/offers_local_datasource.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_template/src/domain/repository/offers_repo.dart';
 import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
 import 'package:flutter_template/src/domain/repository/stream_repo.dart';
 import 'package:flutter_template/src/domain/usecase/create_account.dart';
+import 'package:flutter_template/src/domain/usecase/get_centrifuge_token.dart';
 import 'package:flutter_template/src/domain/usecase/get_chat_messages.dart';
 import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
 import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
@@ -81,6 +83,7 @@ Future<void> init() async {
     connectivity: Get.find(),
     dataChecker: Get.find(),
   ));
+  Get.put(ChatClient(),permanent: true);
 
   //  Datasource
   Get.lazyPut<LoginLocalDatasource>(
@@ -136,8 +139,8 @@ Future<void> init() async {
           remoteDatasource: Get.find(), networkInfo: Get.find()),
       fenix: true);
   Get.lazyPut<StreamRepo>(
-      () => StreamRepoImpl(
-          remoteDatasource: Get.find(), networkInfo: Get.find()),
+      () =>
+          StreamRepoImpl(remoteDatasource: Get.find(), networkInfo: Get.find()),
       fenix: true);
 
   // usecase
@@ -167,6 +170,7 @@ Future<void> init() async {
   Get.lazyPut(() => GetStreamDetails(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetChatMessages(repo: Get.find()), fenix: true);
   Get.lazyPut(() => SendMessage(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => GetCentrifugeToken(repo: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
@@ -203,5 +207,14 @@ Future<void> init() async {
           changeAmountUseCase: Get.find()),
       fenix: true);
   Get.lazyPut(() => CheckoutPageController(), fenix: true);
-  Get.lazyPut(() => StreamController(getStreams: Get.find(),getDetails: Get.find(),getMessages: Get.find(),sendMessage: Get.find(),), fenix: true);
+  Get.lazyPut(
+      () => StreamController(
+            getStreams: Get.find(),
+            getDetails: Get.find(),
+            getMessages: Get.find(),
+            sendMessage: Get.find(),
+            getToken: Get.find(),
+            chatClient: Get.find(),
+          ),
+      fenix: true);
 }

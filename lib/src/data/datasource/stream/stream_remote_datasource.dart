@@ -8,8 +8,9 @@ import 'package:get/get.dart';
 abstract class StreamRemoteDatasource {
   Future<List<StreamModel>> fetchStreamList(int offset);
   Future<StreamDetailsModel> fetchStreamDetails(String orgSlugName);
-  Future<List<MessageModel>> fetchChatMessages(String slugName);
+  Future<List<MessageModel>> fetchChatMessages(String slugName, int offset);
   Future<bool> sendMessage(String text, String slugName);
+  Future<String> fetchCentrifugeToken();
 }
 
 class StreamRemoteDatasourceImpl extends StreamRemoteDatasource {
@@ -62,14 +63,14 @@ class StreamRemoteDatasourceImpl extends StreamRemoteDatasource {
   }
 
   @override
-  Future<List<MessageModel>> fetchChatMessages(String slugName) async {
+  Future<List<MessageModel>> fetchChatMessages(String slugName,int offset) async {
     try {
-      final result = await client.get("v1.0/api/streaming/$slugName/chat/");
+      final result = await client.get("v1.0/api/streaming/$slugName/chat/?limit=20&offset=$offset");
       final data = result.data;
       if (data != null) {
         Get.log("chatMessages result ==> $data");
         return data["results"].map<MessageModel>((e) {
-          return MessageModel.fromJson(e);
+          return MessageModel.fromJson(e)..next = data["next"];
         }).toList();
       }
       throw ServerUnknownException();
@@ -94,6 +95,25 @@ class StreamRemoteDatasourceImpl extends StreamRemoteDatasource {
         return true;
       }
       return false;
+    } catch (e) {
+      Get.log(e.toString(), isError: true);
+      if (e is! DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> fetchCentrifugeToken() async {
+    try {
+      final result = await client.get("v1.0/api/account/cent_token/");
+      final data = result.data;
+      if (data != null) {
+        Get.log("sendMessage result ==> $data");
+        return data["individual_token"];
+      }
+      return "";
     } catch (e) {
       Get.log(e.toString(), isError: true);
       if (e is! DioError) {

@@ -3,7 +3,6 @@
 import 'package:chewie/chewie.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
@@ -21,60 +20,69 @@ class StreamDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _controller.getStreamDetails();
-    if (_controller.videoController != null) {
-      _controller.videoController?.play();
-    }
-    return WillPopScope(
-      onWillPop: () async {
-        await _controller.videoController?.pause();
-        return true;
-      },
-      child: GetBuilder(
-          init: _controller,
-          id: _controller.streamDetailsId,
-          builder: (context) {
-            return Scaffold(
-              appBar: getAppBar(
-                  IconButton(
-                      onPressed: () {
-                        _controller.videoController?.pause();
-                        Get.back();
-                      },
-                      icon: SvgPicture.asset(
-                        AppIcons.ARROW_LEFT,
-                        color: Colors.black,
-                      )),
-                  'Stream name'),
-              body: Column(
-                children: [
-                  Container(
-                    height: SizeConfig.calculateBlockVertical(240),
-                    decoration:
-                        const BoxDecoration(color: AppColors.ROYAL_ORANGE),
-                    child: Chewie(
-                      controller: _controller.chewieController!,
-                    ),
+    Get.routing.route?.popped.then((value) {
+      _controller.onBackFromDetails();
+    });
+    Get.log("${Get.routing.route}");
+    return GetBuilder(
+        init: _controller,
+        id: _controller.streamDetailsId,
+        builder: (context) {
+          return Scaffold(
+            appBar: getAppBar(
+                IconButton(
+                    onPressed: () {
+                      _controller.videoController?.pause();
+                      Get.back();
+                    },
+                    icon: SvgPicture.asset(
+                      AppIcons.ARROW_LEFT,
+                      color: Colors.black,
+                    )),
+                _controller.selectedStream?.channelName ?? "Stream"),
+            body: Column(
+              children: [
+                Container(
+                  height: SizeConfig.calculateBlockVertical(240),
+                  decoration:
+                      const BoxDecoration(color: AppColors.ROYAL_ORANGE),
+                  child: Chewie(
+                    controller: _controller.chewieController!,
                   ),
-                  _controller.isMessagePressed
-                      ? getMessageScreen()
-                      : getStreamDetails()
-                ],
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      getStreamDetails(),
+                      getMessageScreen(),
+                    ],
+                  ),
+                ),
+                // _controller.isMessagePressed
+                //     ? getMessageScreen()
+                //     : getStreamDetails()
+              ],
+            ),
+            floatingActionButton: AnimatedOpacity(
+              duration: const Duration(
+                milliseconds: 1000,
               ),
-              floatingActionButton: Visibility(
-                visible: !_controller.isMessagePressed,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  onPressed: () {
+              curve: Curves.fastOutSlowIn,
+              opacity: _controller.isMessagePressed ? 0 : 1,
+              child: FloatingActionButton(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                onPressed: () {
+                  if (!_controller.isMessagePressed) {
                     _controller.isMessagePressed =
                         !_controller.isMessagePressed;
-                  },
-                  child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
-                ),
+                  }
+                },
+                child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 
   getAppBar(Widget leading, String title) {
@@ -254,55 +262,66 @@ class StreamDetailsPage extends StatelessWidget {
         init: _controller,
         id: _controller.chatId,
         builder: (context) {
-          return Expanded(
-            child: Column(
-              children: [
-                AppBar(
-                  backgroundColor: AppColors.WHITE,
-                  automaticallyImplyLeading: false,
-                  title: const Text(
-                    "Live Chat",
-                    style: TextStyle(
-                        color: AppColors.BLACK,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
+          return AnimatedScale(
+            duration: const Duration(milliseconds: 1000),
+            curve: Curves.fastOutSlowIn,
+            scale: _controller.isMessagePressed ? 1 : 0,
+            alignment: Alignment.bottomRight,
+            child: Container(
+              color: AppColors.WHITE,
+              child: Column(
+                children: [
+                  AppBar(
+                    backgroundColor: AppColors.WHITE,
+                    automaticallyImplyLeading: false,
+                    title: const Text(
+                      "Live Chat",
+                      style: TextStyle(
+                          color: AppColors.BLACK,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    actions: [
+                      IconButton(
+                          onPressed: () {
+                            _controller.isMessagePressed =
+                                !_controller.isMessagePressed;
+                          },
+                          icon: SvgPicture.asset(
+                            AppIcons.ARROW_DOWN,
+                            color: Colors.black,
+                          )),
+                    ],
                   ),
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          _controller.isMessagePressed =
-                              !_controller.isMessagePressed;
-                        },
-                        icon: SvgPicture.asset(
-                          AppIcons.ARROW_DOWN,
-                          color: Colors.black,
-                        )),
-                  ],
-                ),
-                if (_controller.chatState == StreamState.loading)
-                  const Expanded(
-                    child: CircularProgressIndicator.adaptive(),
-                  ),
-                if (_controller.chatState == StreamState.loaded &&
-                    _controller.chatMessages.isNotEmpty)
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: _controller.chatMessages.length,
-                        itemBuilder: (_, int index) {
-                          final message = _controller.chatMessages[index];
-                          return getStreamChatList(
-                              message.user?.avatar,
-                              message.user?.fullName,
-                              message.text,
-                              message.date);
-                        }),
-                  ),
-                if (_controller.chatState == StreamState.loaded &&
-                    _controller.chatMessages.isEmpty)
-                  const Expanded(child: Text("No messages yet!")),
-                if (_controller.chatState == StreamState.loaded)
-                  buildBottomMessageBar()
-              ],
+                  if (_controller.chatState == StreamState.loading &&
+                      _controller.chatMessages.isEmpty)
+                    const Expanded(
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                  if (_controller.chatState == StreamState.loaded ||
+                      _controller.chatMessages.isNotEmpty)
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: _controller.chatMessages.length,
+                          reverse: true,
+                          controller: _controller.scrollController,
+                          itemBuilder: (_, int index) {
+                            final message = _controller.chatMessages[
+                                _controller.chatMessages.length - 1 - index];
+                            return getStreamChatList(
+                                message.user?.avatar,
+                                message.user?.fullName,
+                                message.text,
+                                message.date);
+                          }),
+                    ),
+                  if (_controller.chatState == StreamState.loaded &&
+                      _controller.chatMessages.isEmpty)
+                    const Expanded(child: Text("No messages yet!")),
+                  if (_controller.chatState == StreamState.loaded)
+                    buildBottomMessageBar()
+                ],
+              ),
             ),
           );
         });
@@ -500,7 +519,6 @@ class StreamDetailsPage extends StatelessWidget {
       return "-";
     }
     final date = DateTime.parse(time).toLocal();
-    Get.log("time => $date");
     final today = DateTime.now();
     if (date.year == today.year &&
         date.month == today.month &&
