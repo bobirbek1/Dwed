@@ -44,8 +44,7 @@ class StreamDetailsPage extends StatelessWidget {
               children: [
                 Container(
                   height: SizeConfig.calculateBlockVertical(240),
-                  decoration:
-                      const BoxDecoration(color: AppColors.ROYAL_ORANGE),
+                  color: AppColors.BLACK,
                   child: Chewie(
                     controller: _controller.chewieController!,
                   ),
@@ -63,21 +62,21 @@ class StreamDetailsPage extends StatelessWidget {
                 //     : getStreamDetails()
               ],
             ),
-            floatingActionButton: AnimatedOpacity(
+            floatingActionButton: AnimatedScale(
               duration: const Duration(
-                milliseconds: 1000,
+                milliseconds: 500,
               ),
               curve: Curves.fastOutSlowIn,
-              opacity: _controller.isMessagePressed ? 0 : 1,
+              scale: _controller.isMessagePressed ? 0 : 1,
               child: FloatingActionButton(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                onPressed: () {
-                  if (!_controller.isMessagePressed) {
-                    _controller.isMessagePressed =
-                        !_controller.isMessagePressed;
-                  }
-                },
+                onPressed: !_controller.isMessagePressed
+                    ? () {
+                        _controller.isMessagePressed =
+                            !_controller.isMessagePressed;
+                      }
+                    : null,
                 child: SvgPicture.asset(AppIcons.ICON_MESSAGE),
               ),
             ),
@@ -263,10 +262,10 @@ class StreamDetailsPage extends StatelessWidget {
         id: _controller.chatId,
         builder: (context) {
           return AnimatedScale(
-            duration: const Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
             scale: _controller.isMessagePressed ? 1 : 0,
-            alignment: Alignment.bottomRight,
+            alignment: Alignment.bottomCenter,
             child: Container(
               color: AppColors.WHITE,
               child: Column(
@@ -501,7 +500,10 @@ class StreamDetailsPage extends StatelessWidget {
                               _controller.sendChatMessage();
                             },
                             splashColor: Colors.blue,
-                            child: const Icon(Icons.send),
+                            child: const Icon(
+                              Icons.send,
+                              color: AppColors.BUTTON_BLUE,
+                            ),
                           ),
                   );
                 },
