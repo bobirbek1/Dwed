@@ -33,5 +33,15 @@ class AppRoutes {
   static const CHECKOUTORDEREDPAGE = "/checkout_ordered_page";
   static const INFORMATIONPAGE = "/information_page";
   static const STREAM_DETAIL_PAGE = "/stream_detail_page";
+  static const CONNECTION_ERROR_PAGE = "/connection_error_page";
+  static const MY_PROFILE = "/my_profile";
+  static const RESET_PASSWORD_FOUR = "/reset_password_4";
+  static const SIGN_IN_FOR_TEST_PAGE = "/sign_in_room";
+  static const QUESTIONING_PAGE = "/questioning";
+  static const CREATE_QUIZ = "/create_quiz";
+  static const CREATE_VARIANTS = "/create_variants";
+  static const RESULT = "/result";
+  static const OVERALL_RESULT = "/overall_result";
+  static const TOTAL_RESULTS = "/total_results";
 
 }
