@@ -92,6 +92,7 @@ class ChatClient {
     await _errorSub?.cancel();
     await _msgSub.cancel();
     await _chatMsgController.close();
+    await unsubscribe();
   }
 
   Future<void> sendMsg(String text) async {
