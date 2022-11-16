@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.TOTAL_RESULTS,
+      initialRoute: AppRoutes.SPLASH,
       getPages: AppPages.getPages,
     );
   }

@@ -197,9 +197,10 @@ class StreamPage extends StatelessWidget {
                           _controller.selectedStream?.channelSlug] ==
                       null) {
                     _controller.chatMessages[
-                        _controller.selectedStream?.channelSlug ?? "- - -"] = [];
+                        _controller.selectedStream?.channelSlug ??
+                            "- - -"] = [];
                   }
-                  _controller.initializeVideo();
+                  _controller.initializeVideo(buildOverlay());
                   _controller.getChatMessages();
                   _controller.subscribeToChannel(
                       _controller.selectedStream?.channelSlug ?? "tmeduz");
@@ -217,5 +218,29 @@ class StreamPage extends StatelessWidget {
         child: Text("Something went wrong, please try again!"),
       );
     }
+  }
+
+  Widget buildOverlay() {
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            onTap: () {
+              _controller.chewieController?.play();
+            },
+            child: Container(
+              width: 64,
+              height: 64,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  color: AppColors.BLACK.withOpacity(0.1),
+                  shape: BoxShape.circle),
+              child: SvgPicture.asset(AppIcons.PLAY),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

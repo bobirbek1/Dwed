@@ -13,11 +13,17 @@ class ChatClient {
   StreamSubscription<ConnectEvent>? _connectSub;
   StreamSubscription<DisconnectEvent>? _disconnSub;
   StreamSubscription<ErrorEvent>? _errorSub;
+  StreamSubscription<String>? _publish;
+  StreamSubscription<JoinEvent>? _join;
+  StreamSubscription<LeaveEvent>? _leave;
+  StreamSubscription<SubscribeSuccessEvent>? _subscribeSuccess;
+  StreamSubscription<SubscribeErrorEvent>? _subscribeError;
+  StreamSubscription<UnsubscribeEvent>? _unsubscribe;
 
   late StreamSubscription<MessageEvent> _msgSub;
 
-  late Subscription? subscription;
-  var _chatMsgController = StreamController<MessageModel>();
+  Subscription? subscription;
+  final _chatMsgController = StreamController<MessageModel>();
 
   Stream<MessageModel> get messages => _chatMsgController.stream;
 
@@ -25,7 +31,9 @@ class ChatClient {
     String token,
   ) {
     const url = 'ws://py.dwed.biz/centrifugo/connection/websocket';
-    _client = createClient(url,);
+    _client = createClient(
+      url,
+    );
     _client.setToken(token);
     _msgSub = _client.messageStream.listen((event) {
       Get.log("Msg: $event");
@@ -43,14 +51,6 @@ class ChatClient {
           textColor: Colors.white);
       onConnect();
     });
-    // _connectingSub = _client.connecting.listen((event) {
-    //   Get.log("Connecting to server");
-    //   Fluttertoast.showToast(
-    //       msg: "Connecting to Centrifugo server",
-    //       backgroundColor: Colors.green,
-    //       textColor: Colors.white);
-    //   onConnect();
-    // });
     _disconnSub = _client.disconnectStream.listen((event) {
       Get.log("Disconnected from server");
       Fluttertoast.showToast(
@@ -66,21 +66,24 @@ class ChatClient {
 
   Future<void> subscribe(String channel) async {
     Get.log("Subscribing to channel $channel");
-    final subscription = _client.getSubscription(channel);
-    subscription.publishStream
+    if (subscription != null && subscription!.channel == channel) {
+      return;
+    }
+    await unsubscribe();
+    subscription = _client.getSubscription(channel);
+    _publish = subscription?.publishStream
         .map<String>((e) => utf8.decode(e.data))
         .listen((data) {
       final d = json.decode(data) as Map<String, dynamic>;
       _chatMsgController.sink.add(MessageModel.fromJson(d));
       Get.log("subscription publication: data => $d");
     });
-    subscription.joinStream.listen(print);
-    subscription.leaveStream.listen(print);
-    subscription.subscribeSuccessStream.listen(print);
-    subscription.subscribeErrorStream.listen(print);
-    subscription.unsubscribeStream.listen(print);
-    this.subscription = subscription;
-    await subscription.subscribe();
+    _join = subscription?.joinStream.listen(print);
+    _leave = subscription?.leaveStream.listen(print);
+    _subscribeSuccess = subscription?.subscribeSuccessStream.listen(print);
+    _subscribeError = subscription?.subscribeErrorStream.listen(print);
+    _unsubscribe = subscription?.unsubscribeStream.listen(print);
+    await subscription?.subscribe();
   }
 
   Future<void> dispose() async {
@@ -102,5 +105,15 @@ class ChatClient {
     } on Exception {
       rethrow;
     }
+  }
+
+  Future<void> unsubscribe() async {
+    await subscription?.unsubscribe();
+    await _join?.cancel();
+    await _leave?.cancel();
+    await _publish?.cancel();
+    await _subscribeError?.cancel();
+    await _subscribeSuccess?.cancel();
+    await _unsubscribe?.cancel();
   }
 }
