@@ -17,6 +17,15 @@ import 'package:flutter_template/src/presentation/pages/login/login/reset_passwo
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/connection_error_page.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/create_quiz.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/create_variants.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/my_profile.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/overall_result.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/questioning.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/result.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/sign_inf_for_test_page.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/total_results.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_cat_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_sub_cat_page.dart';
@@ -103,5 +112,16 @@ class AppPages {
     GetPage(name: AppRoutes.CHECKOUTORDEREDPAGE, page: () =>  CheckoutOrdered()),
     GetPage(name: AppRoutes.INFORMATIONPAGE, page: () =>  InformationPage()),
     GetPage(name: AppRoutes.STREAM_DETAIL_PAGE, page: () =>  StreamDetailsPage()),
+    GetPage(name: AppRoutes.CONNECTION_ERROR_PAGE, page: () =>  ConnectionErrorPage()),
+    GetPage(name: AppRoutes.MY_PROFILE, page: () =>  MyProfilePage()),
+    GetPage(name: AppRoutes.RESET_PASSWORD_FOUR, page: () =>  SignInForTestPage()),
+    GetPage(name: AppRoutes.SIGN_IN_FOR_TEST_PAGE, page: () =>  SignInForTestPage()),
+    GetPage(name: AppRoutes.QUESTIONING_PAGE, page: () =>  QuestioningPage()),
+    GetPage(name: AppRoutes.CREATE_QUIZ, page: () =>  CreateQuiz()),
+    GetPage(name: AppRoutes.CREATE_VARIANTS, page: () =>  CreateVariants()),
+    GetPage(name: AppRoutes.RESULT, page: () =>  ResultPage()),
+    GetPage(name: AppRoutes.OVERALL_RESULT, page: () =>  OverallResult()),
+    GetPage(name: AppRoutes.TOTAL_RESULTS, page: () =>  TotalResults()),
+
   ];
 }

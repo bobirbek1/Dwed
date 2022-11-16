@@ -57,6 +57,18 @@ class AppImages {
   static const String ICON_PAY_ME = "assets/images/icon_payme.png";
   static const String ICON_TERMINAL = "assets/images/icon_terminalnew.png";
   static const String PLACE_HOLDER = "assets/images/placeholder2.png";
+  static const String LOGO_DWED = "assets/images/logo_dwed.png";
+  static const String THREE_SQUARE = "assets/images/three_square.png";
+  static const String ERROR_IMAGE = "assets/images/error_image.png";
+  static const String LEFT = "assets/images/left.png";
+  static const String ARROW_LEFT = "assets/images/Right.png";
+  static const String PHONE = "assets/images/phone.png";
+  static const String LEFT_ARROW = "assets/images/image_right_arrow.png";
+  static const String BEAUTY = "assets/images/image_beauty_icon.png";
+  static const String CALENDAR = "assets/images/calendar.png";
+  static const String PREVIOUS = "assets/images/previous.png";
+  static const String NEXT = "assets/images/next.png";
+  static const String APP_BAR_LEFT = "assets/images/appbar_left.png";
 
 
 }
