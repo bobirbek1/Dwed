@@ -20,9 +20,9 @@ class SplashController extends GetxController {
       ),
     );
     if (token != null) {
-      Get.toNamed(AppRoutes.BOTTOM_BAR_VIEW);
+      Get.offNamed(AppRoutes.BOTTOM_BAR_VIEW);
     } else {
-      Get.toNamed(AppRoutes.LOGIN);
+      Get.offNamed(AppRoutes.LOGIN);
     }
   }
 }

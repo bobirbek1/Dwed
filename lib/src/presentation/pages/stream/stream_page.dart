@@ -193,6 +193,12 @@ class StreamPage extends StatelessWidget {
                 stream: data,
                 onPressed: () {
                   _controller.selectedStream = _controller.streamList[index];
+                  if (_controller.chatMessages[
+                          _controller.selectedStream?.channelSlug] ==
+                      null) {
+                    _controller.chatMessages[
+                        _controller.selectedStream?.channelSlug ?? "- - -"] = [];
+                  }
                   _controller.initializeVideo();
                   _controller.getChatMessages();
                   _controller.subscribeToChannel(

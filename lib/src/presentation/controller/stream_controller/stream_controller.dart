@@ -52,7 +52,7 @@ class StreamController extends GetxController {
 
   // data
   final List<StreamModel> streamList = [];
-  List<MessageModel> chatMessages = [];
+  Map<String, List<MessageModel>> chatMessages = {};
   StreamDetailsModel? streamDetails;
 
   // getBuilder's ids
@@ -81,6 +81,9 @@ class StreamController extends GetxController {
   // selected stream
   StreamModel? _selectedStream;
 
+  // message stream subscription
+  StreamSubscription? subscription;
+
   // ignore: unnecessary_getters_setters
   StreamModel? get selectedStream => _selectedStream;
 
@@ -96,7 +99,6 @@ class StreamController extends GetxController {
   @override
   void onInit() {
     _getStreamList();
-    // _getCentrifugeToken();
     messageTextController.addListener(() {
       if (messageTextController.text.isNotEmpty && !hasText) {
         hasText = !hasText;
@@ -115,7 +117,7 @@ class StreamController extends GetxController {
         getChatMessages();
       }
     });
-    initChatClient();
+    _getCentrifugeToken();
     super.onInit();
   }
 
@@ -135,21 +137,21 @@ class StreamController extends GetxController {
     chewieController?.dispose();
   }
 
-  initChatClient() {
-    _getCentrifugeToken();
-  }
-
   initializeVideo() {
     videoController = VideoPlayerController.network(
         "https://m.dwed.biz/v1.0/api/streaming/${selectedStream?.channelSlug}/live.m3u8");
 
     chewieController = ChewieController(
-      videoPlayerController: videoController!,
-      aspectRatio:
-          SizeConfig.screenWidth! / SizeConfig.calculateBlockVertical(240),
-      isLive: true,
-      autoPlay: true
-    );
+        videoPlayerController: videoController!,
+        aspectRatio:
+            SizeConfig.screenWidth! / SizeConfig.calculateBlockVertical(240),
+        isLive: true,
+        allowMuting: false,
+        allowPlaybackSpeedChanging: false,
+        showControls: false,
+        showControlsOnInitialize: false,
+        autoPlay: true);
+    
   }
 
   void subscribeToChannel(String slugName) async {
@@ -161,8 +163,11 @@ class StreamController extends GetxController {
   ) async {
     chatClient.init(token);
     await chatClient.connect(() {});
-    chatClient.messages.listen((event) {
-      chatMessages.add(event);
+    if (subscription == null) {
+      await subscription!.cancel();
+    }
+    subscription = chatClient.messages.listen((event) {
+      chatMessages[selectedStream?.channelSlug]?.add(event);
       update([chatId]);
     });
   }
@@ -243,10 +248,13 @@ class StreamController extends GetxController {
         }
         updateChatState(StreamState.error);
       }, (response) {
-        chatMessages.insertAll(0, response.reversed.toList());
-        chatOffset = response.first.next != null
-            ? int.tryParse(response.first.next?.split("=").last ?? "")
-            : null;
+        chatMessages[selectedStream?.channelSlug]
+            ?.insertAll(0, response.reversed.toList());
+        if (response.isNotEmpty) {
+          chatOffset = response.first.next != null
+              ? int.tryParse(response.first.next?.split("=").last ?? "")
+              : null;
+        }
         shouldCall = true;
         updateChatState(StreamState.loaded);
       });

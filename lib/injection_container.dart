@@ -75,15 +75,16 @@ Future<void> init() async {
   final prefs = await SharedPreferences.getInstance();
 
   // External
-  Get.put(addInterceptor(Dio(options)));
-  Get.put(InternetConnectionChecker());
-  Get.put(Connectivity());
-  Get.put(prefs);
+  Get.put(RefreshTokenHelper(),permanent: true);
+  Get.put(addInterceptor(Dio(options)),permanent: true);
+  Get.put(InternetConnectionChecker(),permanent: true);
+  Get.put(Connectivity(),permanent: true);
+  Get.put(prefs,permanent: true);
   Get.put<NetworkInfo>(NetworkInfoImpl(
     connectivity: Get.find(),
     dataChecker: Get.find(),
-  ));
-  Get.put(ChatClient(),permanent: true);
+  ),permanent: true);
+  Get.put(ChatClient(), permanent: true);
 
   //  Datasource
   Get.lazyPut<LoginLocalDatasource>(

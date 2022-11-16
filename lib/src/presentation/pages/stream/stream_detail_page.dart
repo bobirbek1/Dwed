@@ -47,6 +47,7 @@ class StreamDetailsPage extends StatelessWidget {
                   color: AppColors.BLACK,
                   child: Chewie(
                     controller: _controller.chewieController!,
+                    
                   ),
                 ),
                 Expanded(
@@ -301,17 +302,25 @@ class StreamDetailsPage extends StatelessWidget {
                       _controller.chatMessages.isNotEmpty)
                     Expanded(
                       child: ListView.builder(
-                          itemCount: _controller.chatMessages.length,
+                          itemCount: _controller
+                              .chatMessages[
+                                  _controller.selectedStream?.channelSlug]
+                              ?.length,
                           reverse: true,
                           controller: _controller.scrollController,
                           itemBuilder: (_, int index) {
+                            final length = _controller
+                                .chatMessages[
+                                    _controller.selectedStream?.channelSlug]
+                                ?.length ?? 0;
                             final message = _controller.chatMessages[
-                                _controller.chatMessages.length - 1 - index];
+                                    _controller.selectedStream?.channelSlug]
+                                ?[length - 1 - index];
                             return getStreamChatList(
-                                message.user?.avatar,
-                                message.user?.fullName,
-                                message.text,
-                                message.date);
+                                message?.user?.avatar,
+                                message?.user?.fullName,
+                                message?.text,
+                                message?.date);
                           }),
                     ),
                   if (_controller.chatState == StreamState.loaded &&

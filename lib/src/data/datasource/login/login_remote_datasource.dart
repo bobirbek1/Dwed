@@ -12,6 +12,8 @@ import 'package:get/get_core/src/get_main.dart';
 abstract class LoginRemoteDatasource {
   Future<TokenModel> login(String username, String password);
 
+  Future<TokenModel> refreshToken(String refreshToken);
+
   Future<bool> reset(String newPassword, String confirmPassword);
 
   Future<bool> sendPhone(String sendPhone);
@@ -238,6 +240,26 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
       if (data != null) {
         Get.log("DetailsModelForProductPageItem remotedata result$data");
         return OfferDetailsModel.fromJson(data);
+      }
+      throw ServerUnknownException();
+    } catch (e) {
+      Get.log(e.toString(), isError: true);
+      if (e is DioError) {
+        throw ServerUnknownException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TokenModel> refreshToken(String refreshToken) async {
+    try {
+      final sendData = FormData.fromMap({"refresh": refreshToken});
+      final result = await client.post('/v1.0/api/account/token-refresh/',data: sendData);
+      final data = result.data;
+      if (data != null) {
+        Get.log("DetailsModelForProductPageItem remotedata result $data");
+        return TokenModel.fromJson(data);
       }
       throw ServerUnknownException();
     } catch (e) {
