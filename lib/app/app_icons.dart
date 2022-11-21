@@ -32,4 +32,6 @@ class AppIcons {
   static const String EYE = "assets/icons/eye.svg";
   static const String COMMENT = "assets/icons/comment.svg";
   static const String ARROW_DOWN = "assets/icons/arrow_down.svg";
+  static const String EMOJI = "assets/icons/Emoji.svg";
+  static const String CARBON_DOLLAR = "assets/icons/carbon_dollar.svg";
 }

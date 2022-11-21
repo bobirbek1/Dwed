@@ -76,33 +76,34 @@ class _StreamDetailsPageState extends State<StreamDetailsPage> {
           ),
         ],
       ),
-      floatingActionButton: !isComment ? SizedBox(
-        width: SizeConfig.calculateBlockHorizontal(48),
-        height: SizeConfig.calculateBlockVertical(48),
-        child: ElevatedButton(
-          onPressed: () {
-            setState(
-              () {
-                isComment ? (isComment = false) : (isComment = true);
-                print(isComment);
-              },
-            );
-          },
-          child: Center(
-            child: SvgPicture.asset(
-              AppIcons.COMMENT,
-              width: SizeConfig.calculateBlockHorizontal(24),
-              height: SizeConfig.calculateBlockVertical(24),
-            ),
-          ),
-          style: ElevatedButton.styleFrom(
-            alignment: Alignment.bottomRight,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(120),
-            ),
-          ),
-        ),
-      ): const SizedBox(),
+      floatingActionButton: !isComment
+          ? SizedBox(
+              width: SizeConfig.calculateBlockHorizontal(48),
+              height: SizeConfig.calculateBlockVertical(48),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(
+                    () {
+                      isComment ? (isComment = false) : (isComment = true);
+                    },
+                  );
+                },
+                child: Center(
+                  child: SvgPicture.asset(
+                    AppIcons.COMMENT,
+                    width: SizeConfig.calculateBlockHorizontal(24),
+                    height: SizeConfig.calculateBlockVertical(24),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  alignment: Alignment.bottomRight,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(120),
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox(),
       body: Column(
         children: [
           Image.asset(
@@ -257,14 +258,20 @@ class _StreamDetailsPageState extends State<StreamDetailsPage> {
   }
 
   getCommentPart() {
-    return Padding(
-      padding: EdgeInsets.all(
-        SizeConfig.calculateTextSize(16),
-      ),
+    return Expanded(
       child: Column(
         children: [
-          SizedBox(
+          Container(
             width: double.infinity,
+            padding: EdgeInsets.all(
+              SizeConfig.calculateTextSize(16),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: AppColors.SHADOW_BLUE.withOpacity(0.4),
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -275,74 +282,136 @@ class _StreamDetailsPageState extends State<StreamDetailsPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SvgPicture.asset(
-                  AppIcons.ARROW_DOWN,
+                InkWell(
+                  onTap: () {
+                    setState(
+                      () {
+                        isComment ? (isComment = false) : (isComment = true);
+                      },
+                    );
+                  },
+                  child: SvgPicture.asset(
+                    AppIcons.ARROW_DOWN,
+                  ),
                 )
               ],
             ),
           ),
           getCommentAvatar(),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(
+              SizeConfig.calculateTextSize(16),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: AppColors.SHADOW_BLUE.withOpacity(0.4),
+              ),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: AppColors.SHADOW_BLUE.withOpacity(0.4),
+                ),
+                color: AppColors.DIVIDER,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(12),
+                  ),
+                  SvgPicture.asset(
+                    AppIcons.EMOJI,
+                    width: SizeConfig.calculateBlockHorizontal(24),
+                    height: SizeConfig.calculateBlockVertical(24),
+                  ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(8),
+                  ),
+                  const Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none, hintText: "Say something"),
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppIcons.CARBON_DOLLAR,
+                  ),
+                  SizedBox(
+                    width: SizeConfig.calculateBlockHorizontal(12),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
   getCommentAvatar() {
-    return Padding(
-      padding: EdgeInsets.all(
-        SizeConfig.calculateTextSize(16),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            AppImages.COMMENT_AVATAR,
-            width: SizeConfig.calculateBlockHorizontal(48),
-            height: SizeConfig.calculateBlockVertical(48),
-            fit: BoxFit.cover,
-          ),
-          SizedBox(
-            width: SizeConfig.calculateBlockHorizontal(8),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Ashlynn Lubin",
-                    style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(14),
-                      fontWeight: FontWeight.w700,
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(
+          SizeConfig.calculateTextSize(16),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              AppImages.COMMENT_AVATAR,
+              width: SizeConfig.calculateBlockHorizontal(48),
+              height: SizeConfig.calculateBlockVertical(48),
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              width: SizeConfig.calculateBlockHorizontal(8),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "Ashlynn Lubin",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(14),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.calculateBlockHorizontal(5),
-                  ),
-                  Text(
-                    "4m",
-                    style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(12),
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.SHADOW_BLUE,
+                    SizedBox(
+                      width: SizeConfig.calculateBlockHorizontal(5),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(4),
-              ),
-              Text(
-                "If we program the program, we can get to\nthe AI monitor through the online THX\ninterface!",
-                style: TextStyle(
-                  fontSize: SizeConfig.calculateTextSize(14),
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.BLACK,
+                    Text(
+                      "4m",
+                      style: TextStyle(
+                        fontSize: SizeConfig.calculateTextSize(12),
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.SHADOW_BLUE,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          )
-        ],
+                SizedBox(
+                  height: SizeConfig.calculateBlockVertical(4),
+                ),
+                Text(
+                  "If we program the program, we can get to\nthe AI monitor through the online THX\ninterface!",
+                  style: TextStyle(
+                    fontSize: SizeConfig.calculateTextSize(14),
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.BLACK,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
