@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_pages.dart';
 import 'package:flutter_template/app/app_routes.dart';
-//ignore:unused_import 
-import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
+import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'core/utils/locale_string.dart';
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.TOTAL_RESULTS,
+      initialRoute: AppRoutes.USER_QUIZZES_PAGE,
       getPages: AppPages.getPages,
     );
   }

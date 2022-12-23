@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
-import 'package:flutter_template/src/data/model/create_account_token_model.dart';
-import 'package:flutter_template/src/data/model/token_model.dart';
+import 'package:flutter_template/src/data/model/others/create_account_token_model.dart';
+import 'package:flutter_template/src/data/model/others/token_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

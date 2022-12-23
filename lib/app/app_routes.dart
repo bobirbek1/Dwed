@@ -43,5 +43,14 @@ class AppRoutes {
   static const RESULT = "/result";
   static const OVERALL_RESULT = "/overall_result";
   static const TOTAL_RESULTS = "/total_results";
+  static const NO_QUIZ = "/no_quiz";
+  static const GAME_NOT_FOUND = "/game_not_found";
+  static const PLAYER_INFORMATION = "/player_information";
+  static const REQUIRMENTS_QUIZ = "/requirments";
+  static const CREATE_QUIZ_IMAGE_ON_TOP= "/create_quiz_image_on_the_top";
+  static const QUIZ_TIME_FINISHED= "/time_finished";
+  static const QUIZ_STREAM= "/quiz_stream_page";
+  static const USER_QUIZZES_PAGE= "/user_quizzes_page";
+  static const CREATE_QUESTION_PAGE= "/create_question_page";
 
 }

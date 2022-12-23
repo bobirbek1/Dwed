@@ -4,41 +4,56 @@ import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/core/network/chat_client.dart';
 import 'package:flutter_template/core/network/dio_interceptors.dart';
 import 'package:flutter_template/core/platform/network_info.dart';
-import 'package:flutter_template/src/data/datasource/offers/offers_local_datasource.dart';
 import 'package:flutter_template/src/data/datasource/offers/offers_remote_datasource.dart';
 import 'package:flutter_template/src/data/datasource/organisations/organisations_remote_datasource.dart';
+import 'package:flutter_template/src/data/datasource/quiz/remote/quiz_remote_data_source.dart';
+import 'package:flutter_template/src/data/datasource/quiz/remote/quiz_remote_data_source_impl.dart';
 import 'package:flutter_template/src/data/datasource/stream/stream_remote_datasource.dart';
-import 'package:flutter_template/src/data/repository/login_repo_impl.dart';
-import 'package:flutter_template/src/data/repository/offers_repo_impl.dart';
-import 'package:flutter_template/src/data/repository/organisations_repo_impl.dart';
-import 'package:flutter_template/src/data/repository/stream_repo_impl.dart';
-import 'package:flutter_template/src/domain/repository/login_repo.dart';
-import 'package:flutter_template/src/domain/repository/offers_repo.dart';
-import 'package:flutter_template/src/domain/repository/organisations_repo.dart';
-import 'package:flutter_template/src/domain/repository/stream_repo.dart';
-import 'package:flutter_template/src/domain/usecase/create_account.dart';
-import 'package:flutter_template/src/domain/usecase/get_centrifuge_token.dart';
-import 'package:flutter_template/src/domain/usecase/get_chat_messages.dart';
-import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
-import 'package:flutter_template/src/domain/usecase/get_product_page_item.dart';
-import 'package:flutter_template/src/domain/usecase/get_country.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_details.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_sub.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_user_post.dart';
-import 'package:flutter_template/src/domain/usecase/get_region.dart';
-import 'package:flutter_template/src/domain/usecase/get_sector.dart';
-import 'package:flutter_template/src/domain/usecase/get_speciality.dart';
-import 'package:flutter_template/src/domain/usecase/get_stream_details.dart';
-import 'package:flutter_template/src/domain/usecase/get_stream_list.dart';
-import 'package:flutter_template/src/domain/usecase/login.dart';
-import 'package:flutter_template/src/domain/usecase/send_message.dart';
+import 'package:flutter_template/src/data/repository/others/login_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/others/offers_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/others/organisations_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/quiz/get_quiz_rep_impl.dart';
+import 'package:flutter_template/src/data/repository/others/stream_repo_impl.dart';
+import 'package:flutter_template/src/data/repository/quiz/post_quiz_rep_impl.dart';
+import 'package:flutter_template/src/domain/repository/others/login_repo.dart';
+import 'package:flutter_template/src/domain/repository/others/offers_repo.dart';
+import 'package:flutter_template/src/domain/repository/others/organisations_repo.dart';
+import 'package:flutter_template/src/domain/repository/quiz/get_quiz_rep.dart';
+import 'package:flutter_template/src/domain/repository/others/stream_repo.dart';
+import 'package:flutter_template/src/domain/repository/quiz/post_quiz_rep.dart';
+import 'package:flutter_template/src/domain/usecase/others/create_account.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_centrifuge_token.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_chat_messages.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offer_gallery.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers_child.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_product_page_item.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_country.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers_detail.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_details.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_sub.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_user_post.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_region.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_sector.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_speciality.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_stream_details.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_stream_list.dart';
+import 'package:flutter_template/src/domain/usecase/others/login.dart';
+import 'package:flutter_template/src/domain/usecase/others/send_message.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/active_sessions_usecase.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_available_quiz_categories.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/get_available_quiz_cat_impl.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/post/abstract/create_quiz_usecase.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_quiz_category_list_usecase.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/active_sessions_usecase_impl.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/post/create_quiz_usecase_impl.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/get_quiz_catgegory_list_usecase.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/sessions_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/user_quiz_controller.dart';
 import 'package:flutter_template/src/presentation/controller/splash/splash_controller.dart';
 import 'package:flutter_template/src/presentation/controller/stream_controller/stream_controller.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/local_datasource.dart';
@@ -60,6 +75,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/data/datasource/login/login_local_datasource.dart';
 import 'src/data/datasource/login/login_remote_datasource.dart';
+import 'src/presentation/controller/quiz/quiz_category_controller.dart';
 
 // Dependency injection file
 
@@ -75,15 +91,17 @@ Future<void> init() async {
   final prefs = await SharedPreferences.getInstance();
 
   // External
-  Get.put(RefreshTokenHelper(),permanent: true);
-  Get.put(addInterceptor(Dio(options)),permanent: true);
-  Get.put(InternetConnectionChecker(),permanent: true);
-  Get.put(Connectivity(),permanent: true);
-  Get.put(prefs,permanent: true);
-  Get.put<NetworkInfo>(NetworkInfoImpl(
-    connectivity: Get.find(),
-    dataChecker: Get.find(),
-  ),permanent: true);
+  Get.put(RefreshTokenHelper(), permanent: true);
+  Get.put(addInterceptor(Dio(options)), permanent: true);
+  Get.put(InternetConnectionChecker(), permanent: true);
+  Get.put(Connectivity(), permanent: true);
+  Get.put(prefs, permanent: true);
+  Get.put<NetworkInfo>(
+      NetworkInfoImpl(
+        connectivity: Get.find(),
+        dataChecker: Get.find(),
+      ),
+      permanent: true);
   Get.put(ChatClient(), permanent: true);
 
   //  Datasource
@@ -115,6 +133,9 @@ Future<void> init() async {
     () => StreamRemoteDatasourceImpl(client: Get.find()),
     fenix: true,
   );
+  Get.lazyPut<QuizRemoteDataSource>(
+      () => QuizRemoteDataSourceImpl(client: Get.find()),
+      fenix: true);
 
   // repository
   Get.lazyPut<LoginRepo>(
@@ -143,6 +164,12 @@ Future<void> init() async {
       () =>
           StreamRepoImpl(remoteDatasource: Get.find(), networkInfo: Get.find()),
       fenix: true);
+  Get.lazyPut<GetQuizRep>(
+      () => GetQuizRepImpl(
+          quizRemoteDataSource: Get.find(), networkInfo: Get.find()),
+      fenix: true);
+  Get.lazyPut<PostQuizRep>(() => PostQuizRepImpl(
+      networkInfo: Get.find(), quizRemoteDataSource: Get.find()));
 
   // usecase
   Get.lazyPut(() => Login(repo: Get.find()), fenix: true);
@@ -172,6 +199,15 @@ Future<void> init() async {
   Get.lazyPut(() => GetChatMessages(repo: Get.find()), fenix: true);
   Get.lazyPut(() => SendMessage(repo: Get.find()), fenix: true);
   Get.lazyPut(() => GetCentrifugeToken(repo: Get.find()), fenix: true);
+  Get.lazyPut<CreateQuizUseCase>(
+      () => CreateQuizUseCaseImpl(postQuizRep: Get.find()),
+      fenix: true);
+  Get.lazyPut<GetUserQuizzesUseCase>(
+      () => GetUserQuizzesUseCaseImpl(getQuizRep: Get.find()));
+  Get.lazyPut<ActiveSessionsUseCase>(
+      () => ActiveSessionsUseCaseImpl(getQuizRep: Get.find()));
+  Get.lazyPut<GetAvailableQuizCatUseCase>(
+      () => GetAvailableQuizCatUseCaseImpl(getQuizRep: Get.find()));
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
@@ -217,5 +253,15 @@ Future<void> init() async {
             getToken: Get.find(),
             chatClient: Get.find(),
           ),
+      fenix: true);
+  Get.lazyPut(() => QuizCategoryController(activeSessionsUseCase: Get.find()),
+      fenix: true);
+  Get.lazyPut(() => SessionsController(activeSessionsUseCase: Get.find()),
+      fenix: true);
+  Get.lazyPut(
+      () => UserQuizController(
+          getUserQuizzesUseCase: Get.find(),
+          getAvailableQuizCatUseCase: Get.find(),
+          createQuizUseCase: Get.find()),
       fenix: true);
 }

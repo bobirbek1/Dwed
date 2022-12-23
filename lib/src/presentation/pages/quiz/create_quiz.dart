@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_images.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/user_quiz_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../app/app_icons.dart';
 import '../../../../core/utils/size_config.dart';
 
 class CreateQuiz extends StatelessWidget {
   TextEditingController _textController = TextEditingController();
+  final _controller = Get.find<UserQuizController>();
 
   bool isSwitched = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -24,117 +30,102 @@ class CreateQuiz extends StatelessWidget {
           'Create Quiz',
           style: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: SizeConfig.calculateTextSize(16)),
+              fontSize: SizeConfig.calculateTextSize(16),
+              color: Colors.black),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
+        padding: const EdgeInsets.only(left: 16.0, right: 16),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'Название',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(10),
-                      fontWeight: FontWeight.w400,
-                      color: Colors.blueAccent),
+          child: Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    getCategory(),
+
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+
+                    ///Text Filed
+                    getTextField(),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+
+                    getDescription(),
+
+                    ///List
+                    getListOfPic(),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+
+                    getTime(),
+
+                    ///
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Призовых мест',
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(10),
+                            fontWeight: FontWeight.w400,
+                            color: Colors.blueAccent),
+                      ),
+                    ),
+                    const TextField(keyboardType: TextInputType.number,),
+
+                    ///
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Платный UZS',
+                        style: TextStyle(
+                            fontSize: SizeConfig.calculateTextSize(10),
+                            fontWeight: FontWeight.w400,
+                            color: Colors.blueAccent),
+                      ),
+                    ),
+                    const TextField(keyboardType: TextInputType.number,),
+
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(20),
+                    ),
+
+                    getSwitch(),
+
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(20),
+                    ),
+
+                    buildBottomButton(),
+
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(16),
+                    ),
+
+                    ///switch and calendar
+                    //  getSwitch(),
+
+                    ///Calendar
+                    //  getCalendar(),
+
+                    // SizedBox(
+                    //   height: SizeConfig.calculateBlockVertical(40),
+                    // ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(8),
-              ),
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Какой то там Quiz ',
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-
-              ///Text Filed
-              getTextField(),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-
-              ///List
-              getListOfPic(),
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'Время на ответ/сек.',
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(10),
-                      fontWeight: FontWeight.w400,
-                      color: Colors.blueAccent),
-                ),
-              ),
-              const TextField(),
-
-              ///
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  'Призовых мест',
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(10),
-                      fontWeight: FontWeight.w400,
-                      color: Colors.blueAccent),
-                ),
-              ),
-              const TextField(),
-
-              ///
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(16),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  ' ',
-                  style: TextStyle(
-                      fontSize: SizeConfig.calculateTextSize(10),
-                      fontWeight: FontWeight.w400,
-                      color: Colors.blueAccent),
-                ),
-              ),
-              const TextField(),
-
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(20),
-              ),
-
-              ///switch and calendar
-              getSwitch(),
-
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(20),
-              ),
-
-              ///Calendar
-              getCalendar(),
-
-              SizedBox(
-                height: SizeConfig.calculateBlockVertical(40),
-              ),
-
-              buildBottomButton()
-
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -147,7 +138,8 @@ class CreateQuiz extends StatelessWidget {
         SizedBox(
           width: SizeConfig.calculateBlockHorizontal(16),
         ),
-        SizedBox(child: Image.asset(AppImages.APP_BAR_LEFT),
+        SizedBox(
+          child: Image.asset(AppImages.APP_BAR_LEFT),
           height: SizeConfig.calculateBlockHorizontal(16),
           width: SizeConfig.calculateBlockHorizontal(24),
         )
@@ -155,21 +147,111 @@ class CreateQuiz extends StatelessWidget {
     );
   }
 
-  getTextField() {
-    return SizedBox(
-      height: SizeConfig.calculateBlockVertical(100),
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 12),
-        child: TextField(
-          maxLines: 3,
-          controller: _textController,
-          decoration: InputDecoration(
-            labelText: 'Название',
-            border: myInputBorder(),
+  getCategory() {
+    return Column(
+      children: [
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            "Category",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontSize: SizeConfig.calculateTextSize(10),
+                fontWeight: FontWeight.w400,
+                color: Colors.blueAccent),
           ),
         ),
-      ),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(8),
+        ),
+        InkWell(
+          onTap: () {
+            _controller.categoryPressed();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Quiz for money',
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: AppColors.GRAY_X11),
+              ),
+              SizedBox(
+                  width: SizeConfig.calculateBlockHorizontal(16),
+                  height: SizeConfig.calculateBlockVertical(7),
+                  child: Image.asset(AppImages.VECTOR_BOTTOM)),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(8),
+        ),
+        Container(
+          width: double.infinity,
+          height: 1,
+          color: AppColors.GRAY_X11,
+        ),
+      ],
+    );
+  }
+
+  getTime() {
+    return Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            'Время на ответ/сек.',
+            style: TextStyle(
+                fontSize: SizeConfig.calculateTextSize(10),
+                fontWeight: FontWeight.w400,
+                color: Colors.blueAccent),
+          ),
+        ),
+        TextField(
+          keyboardType: TextInputType.number,
+          controller: _controller.quizTimeLimitController,
+        ),
+      ],
+    );
+  }
+
+  getTextField() {
+    return Column(
+      children: [
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            "Название",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontSize: SizeConfig.calculateTextSize(10),
+                fontWeight: FontWeight.w400,
+                color: Colors.blueAccent),
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(8),
+        ),
+        TextField(
+          controller: _controller.quizNameController,
+          decoration: const InputDecoration(
+              hintText: 'Xoчешь выиграть айфон?', border: InputBorder.none),
+        ),
+        Container(
+          width: double.infinity,
+          height: 1,
+          color: AppColors.GRAY_X11,
+        ),
+      ],
     );
   }
 
@@ -179,22 +261,125 @@ class CreateQuiz extends StatelessWidget {
         borderSide: BorderSide(color: Colors.black26, width: 1));
   }
 
-  getListOfPic() {
-    return Container(
-      height: 110,
-      child: ListView.builder(
-        itemBuilder: (_, index) {
-          return Container(
-            child: Image.asset(AppImages.PLACE_HOLDER),
-            height: 104,
-            width: 104,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          );
-        },
-        scrollDirection: Axis.horizontal,
-        itemCount: 1,
-      ),
+  getDescription() {
+    return Column(
+      children: [
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(100),
+          width: double.infinity,
+          child:  TextField(
+            controller: _controller.quizDescriptionController,
+              maxLines: 4,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(4),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: AppColors.GRAY_X11),
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                labelText: 'Описание',
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: AppColors.GRAY_X11),
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+              )),
+        ),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(20),
+        )
+      ],
     );
+  }
+
+  getListOfPic() {
+    return GetBuilder(
+        id: _controller.loadedImagesId,
+        init: _controller,
+        builder: (context) {
+          return Container(
+            alignment: Alignment.center,
+            height: 110,
+            child: ListView.builder(
+              itemBuilder: (_, index) {
+                if (index == 0) {
+                  return InkWell(
+                    onTap: () {
+                      _controller.loadImageFromGallery();
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: SizeConfig.calculateBlockVertical(104),
+                          width: SizeConfig.calculateBlockHorizontal(104),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border:
+                                Border.all(width: 1, color: AppColors.GRAY_X11),
+                            // image: const DecorationImage(
+                            //   image: AssetImage(
+                            //     AppImages.PLACE_HOLDER_SECOND,
+                            //   ),
+                            // )
+                          ),
+                          child: SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(80),
+                            height: SizeConfig.calculateBlockVertical(80),
+                            child: Image.asset(AppImages.PLACE_HOLDER_SECOND),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        )
+                      ],
+                    ),
+                  );
+                } else {
+                  return Row(
+                    children: [
+                      Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Container(
+                              height: 104,
+                              width: 104,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    width: 1, color: AppColors.GRAY_X11),
+                                image: DecorationImage(
+                                    image: FileImage(File(_controller
+                                        .imageFiles[index - 1].path)),
+                                    fit: BoxFit.cover),
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: InkWell(
+                              onTap: () {
+                                _controller.deleteImageFile(index - 1);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: SizeConfig.calculateBlockVertical(25),
+                                width: SizeConfig.calculateBlockHorizontal(25),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.GRAY_X11),
+                                child: const Icon(Icons.delete),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      )
+                    ],
+                  );
+                }
+              },
+              scrollDirection: Axis.horizontal,
+              itemCount: _controller.imageFiles.length + 1,
+            ),
+          );
+        });
   }
 
   getSwitch() {
@@ -202,11 +387,9 @@ class CreateQuiz extends StatelessWidget {
       height: SizeConfig.calculateBlockVertical(24),
       width: double.infinity,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Начинать синхронно'),
-          const Expanded(
-            child: SizedBox(),
-          ),
+          const Text('Использовать код'),
           Switch(
             value: isSwitched,
             onChanged: (bool value) {
@@ -230,39 +413,57 @@ class CreateQuiz extends StatelessWidget {
           ),
           InkWell(
             child: Image.asset(AppImages.CALENDAR),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
-          SizedBox(width: SizeConfig.calculateBlockHorizontal(8),)
+          SizedBox(
+            width: SizeConfig.calculateBlockHorizontal(8),
+          )
         ],
       ),
     );
   }
 
   buildBottomButton() {
-    return Container(
-        width: double.infinity,
-        height: 56,
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.white, blurRadius: 10, offset: Offset(4, 8)),
-          ],
-        ),
-        child: SizedBox(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Продолжить'),
-          ),
-          width: double.infinity,
-        ));
+    return GetBuilder(
+        id: _controller.bottomButtonId,
+        init: _controller,
+        builder: (context) {
+          return Container(
+              width: double.infinity,
+              height: 56,
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.white,
+                      blurRadius: 10,
+                      offset: Offset(4, 8)),
+                ],
+              ),
+              child: SizedBox(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        _controller.notNull() ? Colors.blue : Colors.black12,
+                  ),
+                  onPressed: () {
+                    if (_controller.notNull()) {
+                      _controller.bottomButtonPressed();
+                    }
+                  },
+                  child: const Text('Продолжить'),
+                ),
+                width: double.infinity,
+              ));
+        });
   }
 
   showDataPicker(BuildContext context) async {
-    DateTime? dateTime = await showDatePicker(context: context,
+    DateTime? dateTime = await showDatePicker(
+        context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2022),
         lastDate: DateTime(2023));
   }
+
+
 }

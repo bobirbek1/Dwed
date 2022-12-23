@@ -8,11 +8,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_template/app/app_constants.dart';
 import 'package:flutter_template/src/data/datasource/login/login_local_datasource.dart';
 import 'package:flutter_template/src/data/datasource/login/login_remote_datasource.dart';
-import 'package:flutter_template/src/data/model/token_model.dart';
+import 'package:flutter_template/src/data/model/others/token_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Dio addInterceptor(Dio dio) {
+  final token1 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcxNzAxNjU3LCJqdGkiOiJmYTdhNDE5MmRhMWQ0MzU5ODQ2YTdhOGE2YmU5NjMyMSIsInVzZXJuYW1lIjoiYm9iaXJiZWsifQ.fJYjV6m7K1X8T3cPXTZZZ-jLrq6TaS3O0U3oHYkgWJY';
   final tokenHelper = Get.find<RefreshTokenHelper>();
   dio.interceptors.add(LogInterceptor(
     requestBody: true,
@@ -20,12 +21,15 @@ Dio addInterceptor(Dio dio) {
   ));
   dio.interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) {
-      final token = tokenHelper.getToken();
-      if (token != null) {
-        options.headers['Authorization'] = "Bearer ${token.access}";
-        Get.log("options  headers is ${options.headers}");
-        return handler.next(options);
-      }
+      options.headers['Authorization'] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNDE0OTMwLCJqdGkiOiJjNzBiNmY5NTVmY2I0ODQ5YmQyNzQyOTU5MjRjNGNiZCIsInVzZXJuYW1lIjoiYm9iaXJiZWsifQ.VrVvHefUw0n2wDV7rk0ggHi1tyQhG61g9srI9QmQ3gE";
+      Get.log("options  headers is ${options.headers}");
+      return handler.next(options);
+      // final token = tokenHelper.getToken();
+      // if (token != null) {
+      //   options.headers['Authorization'] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyMDc1NzYzLCJqdGkiOiJiMzQ1ZWQ1NDQ2N2Y0ZDBmOWFhMmI2ZjAwOGE3Yzg2NiIsInVzZXJuYW1lIjoiYm9iaXJiZWsifQ.cqwygUciaBHbYXk8FiuOF__pLoNCyJE-D3HTmo4mmfg";
+      //   Get.log("options  headers is ${options.headers}");
+      //   return handler.next(options);
+      // }
       return handler.next(options);
     },
     onError: (e, handler) async {

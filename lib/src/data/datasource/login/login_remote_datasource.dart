@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
-import 'package:flutter_template/src/data/model/country_model.dart';
-import 'package:flutter_template/src/data/model/create_account_token_model.dart';
+import 'package:flutter_template/src/data/model/others/country_model.dart';
+import 'package:flutter_template/src/data/model/others/create_account_token_model.dart';
 import 'package:flutter_template/src/data/model/offers/offer_details_model.dart';
-import 'package:flutter_template/src/data/model/region_model.dart';
-import 'package:flutter_template/src/data/model/sector_model.dart';
-import 'package:flutter_template/src/data/model/specialty_model.dart';
-import 'package:flutter_template/src/data/model/token_model.dart';
+import 'package:flutter_template/src/data/model/others/region_model.dart';
+import 'package:flutter_template/src/data/model/others/sector_model.dart';
+import 'package:flutter_template/src/data/model/others/specialty_model.dart';
+import 'package:flutter_template/src/data/model/others/token_model.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 abstract class LoginRemoteDatasource {
@@ -231,7 +231,7 @@ class LoginRemoteDatasourceImpl extends LoginRemoteDatasource {
     }
   }
 
-  ///is called to get item for product page item by slug_name and id
+  ///is called to get item for product page by slug_name and id
   @override
   Future<OfferDetailsModel> getProductPageItem(String type, int id) async {
     try {
