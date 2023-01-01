@@ -9,6 +9,7 @@ import 'package:flutter_template/src/presentation/controller/quiz/quiz_category_
 import 'package:flutter_template/src/presentation/pages/quiz/my_profile.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/widgets/lost.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/widgets/quiz_widget.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/widgets/tab_bar_view.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -36,12 +37,9 @@ class QuizStreamPageState extends State<QuizStreamPage>
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 1,
+        elevation: 0,
         backgroundColor: AppColors.WHITE,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset(AppImages.LOGO_DWED),
-        ),
+        leading: Image.asset(AppImages.LOGO_DWED),
         actions: [
           SizedBox(
               width: SizeConfig.calculateBlockHorizontal(24),
@@ -52,7 +50,7 @@ class QuizStreamPageState extends State<QuizStreamPage>
           )
         ],
       ),
-      body:_bottomSelectedPage == 0 ? SizedBox() : MyProfilePage(),
+      body:_bottomSelectedPage == 0 ? QuizTabBar() : MyProfilePage(),
       bottomNavigationBar: getBottomNavigation(),
     );
   }

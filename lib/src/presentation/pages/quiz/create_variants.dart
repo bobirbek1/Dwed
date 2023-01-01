@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-
-import '../../../../app/app_icons.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/create_question_controller.dart';
+import 'package:get/get.dart';
 
 class CreateVariants extends StatelessWidget {
-  TextEditingController textEditingController = TextEditingController();
+  final _controller = Get.find<CreateQuestionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,49 +20,130 @@ class CreateVariants extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
+      body: SingleChildScrollView(
+        child: GetBuilder(
+            init: _controller,
+            id: _controller.rebuildAll,
+            builder: (context) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(12),
+                  ),
 
-          ///Next and Prev Buttons
-          getPrevButtons(),
+                  ///Next and Prev Buttons
+                  getPrevButtons(),
 
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(12),
+                  ),
 
-          ///Question Box
-          getQuesTextField(),
+                  ///Question Box
+                  getQuesTextField(),
 
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
+                  SizedBox(
+                    height: SizeConfig.calculateBlockVertical(12),
+                  ),
 
-          ///all variants from a to b
-          createVariantA(),
+                  GetBuilder(
+                      id: _controller.radioBtnId,
+                      init: _controller,
+                      builder: (context) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height:
+                                        SizeConfig.calculateBlockVertical(
+                                            24),
+                                    width:
+                                        SizeConfig.calculateBlockHorizontal(
+                                            24),
+                                    child: Checkbox(
+                                      value: _controller.type == 1
+                                          ? true
+                                          : false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(4),
+                                      ),
+                                      onChanged: (val) {
+                                        _controller.setTypeVale(val);
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  const Text(
+                                    '4 variants',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            _controller.type == 1
+                                ? Column(
+                                    children: [
+                                      ///all variants from a to b
+                                      createVariantA(),
+                                      SizedBox(
+                                        height: SizeConfig
+                                            .calculateBlockVertical(12),
+                                      ),
 
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
+                                      createVariantB(),
+                                      SizedBox(
+                                        height: SizeConfig
+                                            .calculateBlockVertical(12),
+                                      ),
+                                      createVariantC(),
+                                      SizedBox(
+                                        height: SizeConfig
+                                            .calculateBlockVertical(12),
+                                      ),
+                                      createVariantD(),
+                                      SizedBox(
+                                        height: SizeConfig.calculateBlockVertical(120),
+                                      ),
+                                    ],
+                                  )
+                                : Padding(
+                                  padding: const EdgeInsets.only(left: 16.0, right: 16),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: SizeConfig.calculateBlockVertical(50),),
+                                      SizedBox(
+                                          child: TextField(
+                                            controller:
+                                                _controller.oneVariantController,
+                                            decoration: const InputDecoration(
+                                                hintText: "Введите ответ"),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      SizedBox(
+                                        height: SizeConfig.calculateBlockVertical(295),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          ],
+                        );
+                      }),
 
-          createVariantB(),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
-          createVariantC(),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(12),
-          ),
-          createVariantD(),
-
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(108),
-          ),
-
-          buildBottomButton()
-        ],
+                  buildBottomButton()
+                ],
+              );
+            }),
       ),
     );
   }
@@ -89,28 +168,39 @@ class CreateVariants extends StatelessWidget {
         height: SizeConfig.calculateBlockVertical(24),
         width: double.infinity,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Expanded(child: SizedBox()),
+            const SizedBox(),
+            const SizedBox(),
 
             ///Previous
-            InkWell(
-              child: Image.asset(AppImages.PREVIOUS),
-              onTap: () {},
-            ),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(16),
-            ),
-            const Text('Question'),
-            SizedBox(
-              width: SizeConfig.calculateBlockHorizontal(16),
-            ),
+            _controller.currentQuestionIndex > 0
+                ? InkWell(
+                    child: Image.asset(AppImages.PREVIOUS),
+                    onTap: () {
+                      _controller.prevBtbPressed();
+                    },
+                  )
+                : const SizedBox(),
+
+            Text('Question ${_controller.currentQuestionIndex + 1}'),
+
+            // SizedBox(
+            //   width: SizeConfig.calculateBlockHorizontal(16),
+            // ),
 
             ///Next
-            InkWell(
-              child: Image.asset(AppImages.NEXT),
-              onTap: () {},
-            ),
-            const Expanded(child: SizedBox()),
+            _controller.currentQuestionIndex < _controller.list.length - 1
+                ? InkWell(
+                    child: Image.asset(AppImages.NEXT),
+                    onTap: () {
+                      _controller.nextBtnPressed();
+                    },
+                  )
+                : const SizedBox(),
+            // const Expanded(child: SizedBox()),
+            const SizedBox(),
+            const SizedBox(),
           ],
         ));
   }
@@ -118,14 +208,17 @@ class CreateVariants extends StatelessWidget {
   getQuesTextField() {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16),
-      child: SizedBox(
+      child: Container(
+        alignment: Alignment.topLeft,
         width: double.infinity,
         height: SizeConfig.calculateBlockVertical(240),
         child: TextField(
           maxLines: 20,
-          controller: textEditingController,
-          decoration:
-              InputDecoration(labelText: 'Вопрос..', border: myInputBorder()),
+          controller: _controller.questionController,
+          decoration: InputDecoration(
+            labelText: 'Вопрос..',
+            border: myInputBorder(),
+          ),
         ),
       ),
     );
@@ -146,13 +239,26 @@ class CreateVariants extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'A:',
-                  style: TextStyle(fontSize: SizeConfig.calculateTextSize(16), fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w400),
                 ),
-                const Expanded(child: TextField(decoration: InputDecoration(border: InputBorder.none),)),
-                Radio(value: false, groupValue: false, onChanged: (v) {})
+                Expanded(
+                  child: TextField(
+                    controller: _controller.variantAController,
+                    decoration: const InputDecoration(border: InputBorder.none),
+                  ),
+                ),
+                Radio(
+                    value: _controller.chosenIndex == 0 ? true : false,
+                    groupValue: true,
+                    onChanged: (v) {
+                      _controller.radioBtnPressed(0);
+                    })
               ],
             ),
             Container(
@@ -174,13 +280,26 @@ class CreateVariants extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'B:',
-                  style: TextStyle(fontSize: SizeConfig.calculateTextSize(16), fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w400),
                 ),
-                const Expanded(child: TextField(decoration: InputDecoration(border: InputBorder.none),)),
-                Radio(value: false, groupValue: false, onChanged: (v) {})
+                Expanded(
+                  child: TextField(
+                    controller: _controller.variantBController,
+                    decoration: const InputDecoration(border: InputBorder.none),
+                  ),
+                ),
+                Radio(
+                    value: _controller.chosenIndex == 1 ? true : false,
+                    groupValue: true,
+                    onChanged: (v) {
+                      _controller.radioBtnPressed(1);
+                    })
               ],
             ),
             Container(
@@ -202,13 +321,26 @@ class CreateVariants extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'C:',
-                  style: TextStyle(fontSize: SizeConfig.calculateTextSize(16), fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w400),
                 ),
-                const Expanded(child: TextField(decoration: InputDecoration(border: InputBorder.none),)),
-                Radio(value: false, groupValue: false, onChanged: (v) {})
+                Expanded(
+                  child: TextField(
+                    controller: _controller.variantCController,
+                    decoration: const InputDecoration(border: InputBorder.none),
+                  ),
+                ),
+                Radio(
+                    value: _controller.chosenIndex == 2 ? true : false,
+                    groupValue: true,
+                    onChanged: (v) {
+                      _controller.radioBtnPressed(2);
+                    })
               ],
             ),
             Container(
@@ -230,13 +362,26 @@ class CreateVariants extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'D:',
-                  style: TextStyle(fontSize: SizeConfig.calculateTextSize(16), fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: SizeConfig.calculateTextSize(16),
+                      fontWeight: FontWeight.w400),
                 ),
-                const Expanded(child: TextField(decoration: InputDecoration(border: InputBorder.none),)),
-                Radio(value: false, groupValue: false, onChanged: (v) {})
+                Expanded(
+                  child: TextField(
+                    controller: _controller.variantDController,
+                    decoration: const InputDecoration(border: InputBorder.none),
+                  ),
+                ),
+                Radio(
+                    value: _controller.chosenIndex == 3 ? true : false,
+                    groupValue: true,
+                    onChanged: (v) {
+                      _controller.radioBtnPressed(3);
+                    })
               ],
             ),
             Container(
@@ -250,23 +395,61 @@ class CreateVariants extends StatelessWidget {
   }
 
   buildBottomButton() {
-    return Container(
-        width: double.infinity,
-        height: 56,
-        margin: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.white, blurRadius: 10, offset: Offset(4, 8)),
-          ],
+    return Column(
+      children: [
+        GetBuilder(
+            id: _controller.bottomBtnId,
+            init: _controller,
+            builder: (context) {
+              return Container(
+                  width: double.infinity,
+                  height: SizeConfig.calculateBlockVertical(56),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.white,
+                          blurRadius: 10,
+                          offset: Offset(4, 8)),
+                    ],
+                  ),
+                  child: SizedBox(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _controller.addBtnPressed();
+                      },
+                      child: const Text('ADD QUESTION'),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: _controller.notNull()
+                              ? Colors.teal
+                              : Colors.white24),
+                    ),
+                    width: double.infinity,
+                  ));
+            }),
+        SizedBox(
+          height: SizeConfig.calculateBlockVertical(16),
         ),
-        child: SizedBox(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('еще вопрос'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-          ),
-          width: double.infinity,
-        ));
+        // Container(
+        //     width: double.infinity,
+        //     height: 56,
+        //     padding: const EdgeInsets.only(left: 16, right: 16),
+        //     decoration: const BoxDecoration(
+        //       boxShadow: [
+        //         BoxShadow(
+        //             color: Colors.white, blurRadius: 10, offset: Offset(4, 8)),
+        //       ],
+        //     ),
+        //     child: SizedBox(
+        //       child: ElevatedButton(
+        //         onPressed: () {},
+        //         child: const Text('START', style: TextStyle(color: Colors.white),),
+        //         style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+        //       ),
+        //       width: double.infinity,
+        //     )),
+        // SizedBox(height: SizeConfig.calculateBlockVertical(16),),
+      ],
+    );
   }
 }

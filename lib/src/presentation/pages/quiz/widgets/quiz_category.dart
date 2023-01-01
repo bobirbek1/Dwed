@@ -51,14 +51,26 @@ class _QuizCategoryState extends State<QuizCategory> {
                 border: InputBorder.none,
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(width:12, height:12,child: Image.asset(AppImages.CROSS)),
+                  child: SizedBox(
+                      width: 12,
+                      height: 12,
+                      child: InkWell(
+                          onTap: () {
+                            widget._controller
+                                .crossButtonInBottomSheetPressed();
+                          },
+                          child: Image.asset(AppImages.CROSS))),
                 ),
                 hintText: "search...",
               ),
             ),
           ),
 
-          Container(width: double.infinity,height: 1,color: AppColors.GRAY_X11,),
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: AppColors.GRAY_X11,
+          ),
 
           Expanded(
             child: GetBuilder(
@@ -81,72 +93,83 @@ class _QuizCategoryState extends State<QuizCategory> {
                     },
                     child: widget._controller.catState == UserQuizState.loading
                         ? const Center(
-                            child: SizedBox(
-                                height: 30,
-                                width: 30,
-                                child: CircularProgressIndicator()),
-                          )
+                      child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator()),
+                    )
                         : ListView.builder(
-                            itemCount:
-                                widget._controller.availableCategories.length,
-                            itemBuilder: (_, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16),
-                                child: SizedBox(
-                                  height: SizeConfig.calculateBlockVertical(56),
-                                  child: Column(
+                        itemCount:
+                        widget._controller.availableCategories.length,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16.0, right: 16),
+                            child: SizedBox(
+                              height: SizeConfig.calculateBlockVertical(56),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  index == 0
+                                      ? const SizedBox(
+                                    height: 8,
+                                  )
+                                      : const SizedBox(),
+                                  Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
-                                      index == 0 ? const SizedBox(height: 8,): const SizedBox(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(widget
+                                      Text(widget
+                                          ._controller
+                                          .availableCategories[index]
+                                          .name ??
+                                          "no name"),
+                                      SizedBox(
+                                          height: SizeConfig
+                                              .calculateBlockVertical(24),
+                                          width: SizeConfig
+                                              .calculateBlockHorizontal(24),
+                                          child: Radio(
+                                              value: widget
                                                   ._controller
-                                                  .availableCategories[index]
-                                                  .name ??
-                                              "no name"),
-                                          SizedBox(
-                                              height: SizeConfig
-                                                  .calculateBlockVertical(24),
-                                              width: SizeConfig
-                                                  .calculateBlockHorizontal(24),
-                                              child: Radio(
-                                                  value: widget
-                                                      ._controller
-                                                      .availableCategories[
-                                                          index]
-                                                      .currentValue,
-                                                  groupValue: true,
-                                                  onChanged: (val) {
-                                                    setState(() {
-                                                      /// if last pressed index differs from current it means new radio button is pressed
-                                                      if (widget.pressed !=
-                                                          index) {
-                                                        widget._controller
-                                                            .catRadioPressed(
-                                                                index,
-                                                                widget.pressed);
+                                                  .availableCategories[
+                                              index]
+                                                  .currentValue,
+                                              groupValue: true,
+                                              onChanged: (val) {
+                                                setState(() {
 
-                                                        ///new chosen category is set
-                                                        widget.pressed = index;
-                                                      }
-                                                    });
-                                                  }))
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 1,
-                                        color: Colors.black45,
-                                      )
+                                                  widget._controller
+                                                      .setValueToCategoryText(
+                                                      widget._controller
+                                                          .availableCategories[index]
+                                                          .name ?? "Categories");
+
+                                                  /// if last pressed index differs from current it means new radio button is pressed
+                                                  if (widget.pressed !=
+                                                      index) {
+                                                    widget._controller
+                                                        .catRadioPressed(
+                                                        index,
+                                                        widget.pressed);
+
+                                                    ///new chosen category is set
+                                                    widget.pressed = index;
+                                                  }
+                                                });
+                                              }))
                                     ],
                                   ),
-                                ),
-                              );
-                            }),
+                                  Container(
+                                    height: 1,
+                                    color: Colors.black45,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
                   );
                 }),
           ),
@@ -160,8 +183,8 @@ class _QuizCategoryState extends State<QuizCategory> {
           buildBottomButton(),
 
           const SizedBox(
-                 height: 16,
-              )
+            height: 16,
+          )
         ],
       ),
     );

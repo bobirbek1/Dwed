@@ -5,12 +5,15 @@ import 'package:flutter_template/core/platform/network_info.dart';
 import 'package:flutter_template/src/data/datasource/quiz/remote/quiz_remote_data_source.dart';
 import 'package:flutter_template/src/data/model/quiz/new/user_created_quiz_category.dart';
 import 'package:flutter_template/src/data/model/quiz/new/user_created_quiz_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/user_quizzes_model.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_category.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_question_model.dart';
-import 'package:flutter_template/src/data/model/quiz/session_data_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/session_data_model.dart';
 import 'package:flutter_template/src/data/model/quiz/session_detail_model.dart';
 import 'package:flutter_template/src/domain/repository/quiz/get_quiz_rep.dart';
 import 'package:get/get_core/src/get_main.dart';
+
+import '../../model/quiz/new/question_list_model.dart';
 
 class GetQuizRepImpl extends GetQuizRep {
   final QuizRemoteDataSource quizRemoteDataSource;
@@ -21,7 +24,7 @@ class GetQuizRepImpl extends GetQuizRep {
 
   ///list or user quizzes
   @override
-  Future<Either<Failure, List<UserCreatedQuizModel>>> getUserQuizzes(
+  Future<Either<Failure, List<UserQuizzesModel>>> getUserQuizzes(
       int offset) async {
     if (await networkInfo.isConnected) {
       Get.log("GET_QUIZ_REP getUserQuizzes NET CONNECTED");
@@ -62,7 +65,7 @@ class GetQuizRepImpl extends GetQuizRep {
 
   ///question list for quiz
   @override
-  Future<Either<Failure, List<QuizQuestionModel>>> getQuestionList(
+  Future<Either<Failure, List<QuestionListModel>>> getQuestionList(
       int quizId, int offset) async {
     if (await networkInfo.isConnected) {
       Get.log("GET_QUIZ_REP getQuestionList NET CONNECTED");
@@ -161,6 +164,26 @@ class GetQuizRepImpl extends GetQuizRep {
     } else {
       Get.log("GET_QUIZ_REP getAvailableCategories FAILURE => NetworkFailure");
       throw const NetworkFailure();
+    }
+  }
+
+  ///list of active sessions by category
+  @override
+  Future<Either<Failure, List<SessionDataModel>>> getActiveSessionByCat(int offset, int cat) async {
+    if (await networkInfo.isConnected) {
+      Get.log('GET_QUIZ_REP getActiveSessionByCat NET CONNECTED');
+      try {
+        final res = await quizRemoteDataSource.getActiveSessionByCat(offset, cat);
+        Get.log('GET_QUIZ_REP getActiveSessionByCat DATA => $res');
+        return Right(res);
+      } catch (e) {
+        Failure failure = handleException(e as Exception);
+        Get.log('GET_QUIZ_REP getActiveSessionByCat FAILURE => ${failure.message}');
+        return Left(failure);
+      }
+    } else {
+      Get.log('GET_QUIZ_REP getActiveSessionByCat FAILURE => NetworkFailure');
+      return const Left(NetworkFailure());
     }
   }
 }

@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/src/data/model/quiz/new/new_session_response.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/about_quiz_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../app/app_images.dart';
 import '../../../../core/utils/size_config.dart';
 
-class RequirmentsPage extends StatelessWidget {
+//this page is opened after pressing start button
+class AboutQuizPage extends StatelessWidget {
+  final _controller = Get.find<AboutQuizController>();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -14,7 +21,7 @@ class RequirmentsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          'Xoчешь выиграть айфон?',
+          _controller.argument.name ?? "NO NAME",
           style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: SizeConfig.calculateTextSize(16),
@@ -66,7 +73,7 @@ class RequirmentsPage extends StatelessWidget {
                       border: Border.all(width: 1, color: Colors.blue),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   child: Text(
-                    'Код комнаты: 444 553',
+                    'Код комнаты: ${_controller.argument.id ?? "0000"}',
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: SizeConfig.calculateTextSize(16),
@@ -92,7 +99,7 @@ class RequirmentsPage extends StatelessWidget {
               height: SizeConfig.calculateBlockVertical(24),
               width: double.infinity,
               child: Text(
-                'chsb hsa cx sa xsahx',
+                'Количество участников: ${_controller.argument.expectedParticipants}',
                 style: TextStyle(
                     fontSize: SizeConfig.calculateTextSize(16),
                     fontWeight: FontWeight.w400,
@@ -106,7 +113,7 @@ class RequirmentsPage extends StatelessWidget {
               height: SizeConfig.calculateBlockVertical(24),
               width: double.infinity,
               child: Text(
-                'chsb hsa cx sa xsahx',
+                'Время на ответ: ${_controller.argument.questionTime ?? "30"}',
                 style: TextStyle(
                     fontSize: SizeConfig.calculateTextSize(16),
                     fontWeight: FontWeight.w400,
@@ -120,7 +127,7 @@ class RequirmentsPage extends StatelessWidget {
               height: SizeConfig.calculateBlockVertical(24),
               width: double.infinity,
               child: Text(
-                'chsb hsa cx sa xsahx',
+                'Мест: ${_controller.argument.winnerNumber ?? "no winner"}',
                 style: TextStyle(
                     fontSize: SizeConfig.calculateTextSize(16),
                     fontWeight: FontWeight.w400,
@@ -134,7 +141,7 @@ class RequirmentsPage extends StatelessWidget {
               height: SizeConfig.calculateBlockVertical(24),
               width: double.infinity,
               child: Text(
-                'chsb hsa cx sa xsahx',
+                'Вход: ${_controller.argument.reward ?? "no reward"}',
                 style: TextStyle(
                     fontSize: SizeConfig.calculateTextSize(16),
                     fontWeight: FontWeight.w400,
@@ -148,13 +155,12 @@ class RequirmentsPage extends StatelessWidget {
               height: SizeConfig.calculateBlockVertical(24),
               width: double.infinity,
               child: Text(
-                'chsb hsa cx sa xsahx',
+                "Количество перезапусков Квиза: ${_controller.argument.questionNumber ?? "no"}",
                 style: TextStyle(
                     fontSize: SizeConfig.calculateTextSize(16),
                     fontWeight: FontWeight.w400,
                     color: Colors.black),
               )),
-
         ],
       ),
     );
@@ -165,35 +171,42 @@ class RequirmentsPage extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Container(
-              width: double.infinity,
-              height: 56,
-              alignment: Alignment.center,
-              decoration:  BoxDecoration(
-                border: Border.all(width: 1, color: Colors.blue),
-              ),
-              child: const SizedBox(
-                child: Text('Istoriya', textAlign: TextAlign.center,style: TextStyle(color: Colors.blue),),
-                width: double.infinity,
-              )),
-          SizedBox(height: SizeConfig.calculateBlockVertical(16),),
+          InkWell(
+            onTap: (){
 
+            },
+            child: Container(
+                width: double.infinity,
+                height: 56,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.blue),
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: const SizedBox(
+                  child: Text(
+                    'История Квиза',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  width: double.infinity,
+                )),
+          ),
+          SizedBox(
+            height: SizeConfig.calculateBlockVertical(16),
+          ),
           Container(
+              alignment: Alignment.center,
               width: double.infinity,
               height: 56,
               decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.white, blurRadius: 10, offset: Offset(4, 8)),
-                ],
-              ),
-              child: SizedBox(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('nachat'),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                ),
-                width: double.infinity,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  color: Colors.blue),
+              child: const Text(
+                "НАчать",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Colors.white),
               )),
         ],
       ),

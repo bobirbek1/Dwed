@@ -1,12 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/my_profile_controller.dart';
+import 'package:get/get.dart';
 
 import '../../../../app/app_images.dart';
 
 class MyProfilePage extends StatelessWidget {
+  final _controller = Get.find<MyProfileController>();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -300,46 +303,51 @@ class MyProfilePage extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: SizeConfig.calculateBlockVertical(16),),
-          SizedBox(
-            height: SizeConfig.calculateBlockVertical(64),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Quiz",
-                      style: TextStyle(
-                          fontSize: SizeConfig.calculateTextSize(16),
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.calculateBlockVertical(6),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'You can change notification, payment detail and, more',
-                        overflow: TextOverflow.ellipsis,
+          InkWell(
+            onTap: () {
+              _controller.quizPressed();
+            },
+            child: SizedBox(
+              height: SizeConfig.calculateBlockVertical(64),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Quiz",
                         style: TextStyle(
-                            fontSize: SizeConfig.calculateTextSize(12),
-                            fontWeight: FontWeight.w300),
+                            fontSize: SizeConfig.calculateTextSize(16),
+                            fontWeight: FontWeight.w500),
                       ),
-                    ),
-                    SizedBox(height: SizeConfig.calculateBlockVertical(5.5),)
-                  ],
-                ),
+                      SizedBox(
+                        height: SizeConfig.calculateBlockVertical(6),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'You can change notification, payment detail and, more',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: SizeConfig.calculateTextSize(12),
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.calculateBlockVertical(5.5),)
+                    ],
+                  ),
 
-                const Expanded(child: SizedBox(),),
+                  const Expanded(child: SizedBox(),),
 
-                SizedBox(width: SizeConfig.calculateBlockHorizontal(24.16),),
+                  SizedBox(width: SizeConfig.calculateBlockHorizontal(24.16),),
 
-                /// Arrow Left
-                SizedBox(
-                    height: SizeConfig.calculateBlockVertical(17.34),
-                    width: SizeConfig.calculateBlockHorizontal(8.6),
-                    child: InkWell(onTap: () {}, child: Image.asset(AppImages.LEFT))),
+                  /// Arrow Left
+                  SizedBox(
+                      height: SizeConfig.calculateBlockVertical(17.34),
+                      width: SizeConfig.calculateBlockHorizontal(8.6),
+                      child: InkWell(onTap: () {}, child: Image.asset(AppImages.LEFT))),
 
-              ],
+                ],
+              ),
             ),
           ),
 

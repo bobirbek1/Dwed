@@ -1,95 +1,111 @@
 class SessionDataModel {
   int? id;
   int? participantNumber;
-  int? questionNumber;
   int? participantFinishNumber;
   Quiz? quiz;
+  int? participantWithoutPlace;
   String? createDate;
-  String? startDate;
-  String? finishDate;
-  String? code;
   int? questionTime;
   bool? sendQuestion;
   bool? sendAnswer;
-  int? passedQuestion;
+  dynamic finishDate;
+  dynamic winner;
   bool? isOpened;
   String? creator;
   int? type;
   String? expectedDate;
-  int? expectedParticipants;
-  int? expectedEndDate;
+  dynamic expectedParticipants;
+  dynamic timeSpend;
+  String? expectedEndDate;
   int? winnerNumber;
-  int? offSet;
+  int? questionNumber;
+  dynamic isCode;
+  String? reward;
+  dynamic myPlace;
+  String? status;
+  int? offset;
 
   SessionDataModel(
       {id,
         participantNumber,
-        questionNumber,
         participantFinishNumber,
         quiz,
+        participantWithoutPlace,
         createDate,
-        startDate,
-        finishDate,
-        code,
         questionTime,
         sendQuestion,
         sendAnswer,
-        passedQuestion,
+        finishDate,
+        winner,
         isOpened,
         creator,
         type,
         expectedDate,
         expectedParticipants,
+        timeSpend,
         expectedEndDate,
-        winnerNumber});
+        winnerNumber,
+        questionNumber,
+        isCode,
+        reward,
+        myPlace,
+        status});
 
   SessionDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     participantNumber = json['participant_number'];
-    questionNumber = json['question_number'];
     participantFinishNumber = json['participant_finish_number'];
     quiz = json['quiz'] != null ?  Quiz.fromJson(json['quiz']) : null;
+    participantWithoutPlace = json['participant_without_place'];
     createDate = json['create_date'];
-    startDate = json['start_date'];
-    finishDate = json['finish_date'];
-    code = json['code'];
     questionTime = json['question_time'];
     sendQuestion = json['send_question'];
     sendAnswer = json['send_answer'];
-    passedQuestion = json['passed_question'];
+    finishDate = json['finish_date'];
+    winner = json['winner'];
     isOpened = json['is_opened'];
     creator = json['creator'];
     type = json['type'];
     expectedDate = json['expected_date'];
     expectedParticipants = json['expected_participants'];
+    timeSpend = json['time_spend'];
     expectedEndDate = json['expected_end_date'];
     winnerNumber = json['winner_number'];
+    questionNumber = json['question_number'];
+    isCode = json['is_code'];
+    reward = json['reward'];
+    myPlace = json['my_place'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['id'] = id;
     data['participant_number'] = participantNumber;
-    data['question_number'] = questionNumber;
     data['participant_finish_number'] = participantFinishNumber;
     if (quiz != null) {
       data['quiz'] = quiz!.toJson();
     }
+    data['participant_without_place'] = participantWithoutPlace;
     data['create_date'] = createDate;
-    data['start_date'] = startDate;
-    data['finish_date'] = finishDate;
-    data['code'] = code;
     data['question_time'] = questionTime;
     data['send_question'] = sendQuestion;
     data['send_answer'] = sendAnswer;
-    data['passed_question'] = passedQuestion;
+    data['finish_date'] = finishDate;
+    data['winner'] = winner;
     data['is_opened'] = isOpened;
     data['creator'] = creator;
     data['type'] = type;
     data['expected_date'] = expectedDate;
     data['expected_participants'] = expectedParticipants;
+    data['time_spend'] = timeSpend;
     data['expected_end_date'] = expectedEndDate;
     data['winner_number'] = winnerNumber;
+    data['question_number'] = questionNumber;
+    data['is_code'] = isCode;
+    data['reward'] = reward;
+    data['my_place'] = myPlace;
+    data['status'] = status;
     return data;
   }
 }
@@ -98,20 +114,30 @@ class Quiz {
   int? id;
   String? name;
   String? description;
+  List<dynamic>? images;
 
-  Quiz({id, name, description});
+  Quiz({id, name, description, images});
 
   Quiz.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    if (json['images'] != null) {
+      images = <dynamic>[];
+      json['images'].forEach((v) {
+        images!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['description'] = description;
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

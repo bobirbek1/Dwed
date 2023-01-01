@@ -1,7 +1,7 @@
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_category.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_category.dart';
-import 'package:flutter_template/src/data/model/quiz/session_data_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/session_data_model.dart';
 import 'package:flutter_template/src/domain/repository/quiz/get_quiz_rep.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_quiz_category_list_usecase.dart';
 import 'package:get/get.dart';
@@ -69,7 +69,7 @@ class QuizCategoryController extends GetxController {
       updateSessionPage();
       }, (result) {
       Get.log("QUIZ_CATEGORY_CONTROLLER  getQuizSessionList RESULT => $result");
-      _catPageOffSet = result[0].offSet!;
+      _catPageOffSet = result[0].offset!;
       quizSessionList.addAll(result);
       sessionPageController?.refreshCompleted();
       sessionPageController?.loadComplete();

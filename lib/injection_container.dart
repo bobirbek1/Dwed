@@ -43,16 +43,25 @@ import 'package:flutter_template/src/domain/usecase/others/login.dart';
 import 'package:flutter_template/src/domain/usecase/others/send_message.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/active_sessions_usecase.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_available_quiz_categories.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_question_list.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/get/get_question_list_impl.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/get_available_quiz_cat_impl.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/post/abstract/create_quiz_usecase.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/get_quiz_category_list_usecase.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/active_sessions_usecase_impl.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/post/abstract/post_add_question_usecase.dart';
+import 'package:flutter_template/src/domain/usecase/quiz/post/add_question_usecase_impl.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/post/create_quiz_usecase_impl.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/get_quiz_catgegory_list_usecase.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/sessions_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/about_quiz_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/create_question_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/main_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/my_profile_controller.dart';
+import 'package:flutter_template/src/presentation/controller/quiz/user_profile/quiz_history_controller.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/user_profile/user_quiz_controller.dart';
 import 'package:flutter_template/src/presentation/controller/splash/splash_controller.dart';
 import 'package:flutter_template/src/presentation/controller/stream_controller/stream_controller.dart';
@@ -203,11 +212,13 @@ Future<void> init() async {
       () => CreateQuizUseCaseImpl(postQuizRep: Get.find()),
       fenix: true);
   Get.lazyPut<GetUserQuizzesUseCase>(
-      () => GetUserQuizzesUseCaseImpl(getQuizRep: Get.find()));
+      () => GetUserQuizzesUseCaseImpl(getQuizRep: Get.find()), fenix: true);
   Get.lazyPut<ActiveSessionsUseCase>(
-      () => ActiveSessionsUseCaseImpl(getQuizRep: Get.find()));
+      () => ActiveSessionsUseCaseImpl(getQuizRep: Get.find()), fenix: true);
   Get.lazyPut<GetAvailableQuizCatUseCase>(
-      () => GetAvailableQuizCatUseCaseImpl(getQuizRep: Get.find()));
+      () => GetAvailableQuizCatUseCaseImpl(getQuizRep: Get.find()), fenix: true);
+  Get.lazyPut<GetQuestionListUseCase>(() => GetQuestionListImpl(getQuizRep: Get.find()), fenix: true);
+  Get.lazyPut<AddQuestionUseCase>(() => AddQuestionUseCaseImpl(postQuizRep: Get.find()), fenix: true);
 
   // Controller
   Get.lazyPut(() => SplashController(), fenix: true);
@@ -264,4 +275,9 @@ Future<void> init() async {
           getAvailableQuizCatUseCase: Get.find(),
           createQuizUseCase: Get.find()),
       fenix: true);
+  Get.lazyPut(() => CreateQuestionController(getQuestionListUseCase:Get.find(), addQuestionUseCase: Get.find(), postQuizRep: Get.find()), fenix: true);
+  Get.lazyPut(() => QuizHistoryController(activeSessionsUseCase: Get.find()), fenix: true);
+  Get.lazyPut(() => MyProfileController(), fenix: true);
+  Get.lazyPut(() => MainController(availableQuizCatUseCase: Get.find(), getQuizRep: Get.find()), fenix: true);
+  Get.lazyPut(() => AboutQuizController(),fenix: true);
 }

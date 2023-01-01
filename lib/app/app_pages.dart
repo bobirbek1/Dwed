@@ -17,18 +17,19 @@ import 'package:flutter_template/src/presentation/pages/login/login/reset_passwo
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/all_quiz_page.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/connection_error_page.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_questions.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_quiz.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_quiz_image_on_the_top.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_variants.dart';
-import 'package:flutter_template/src/presentation/pages/quiz/game_not_found.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/widgets/game_not_found.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/my_profile.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/no_quiz.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/overall_result.dart';
-import 'package:flutter_template/src/presentation/pages/quiz/player_informatin.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/user_quiz_history.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/questioning.dart';
-import 'package:flutter_template/src/presentation/pages/quiz/requirments.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/about_quiz.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/result.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/sign_inf_for_test_page.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/time_finished.dart';
@@ -134,12 +135,13 @@ class AppPages {
     GetPage(name: AppRoutes.NO_QUIZ, page: () =>  NoQuizPage()),
     GetPage(name: AppRoutes.GAME_NOT_FOUND, page: () =>  GameNotFoundPage()),
     GetPage(name: AppRoutes.PLAYER_INFORMATION, page: () =>  PlayerInformationPage()),
-    GetPage(name: AppRoutes.REQUIRMENTS_QUIZ, page: () =>  RequirmentsPage()),
+    GetPage(name: AppRoutes.ABOUT_QUIZ, page: () =>  AboutQuizPage()),
     GetPage(name: AppRoutes.CREATE_QUIZ_IMAGE_ON_TOP, page: () =>  CreateQuizImageOnTheTop()),
     GetPage(name: AppRoutes.QUIZ_TIME_FINISHED, page: () =>  TimeFinishedPage()),
     GetPage(name: AppRoutes.QUIZ_STREAM, page: () =>  QuizStreamPage()),
     GetPage(name: AppRoutes.USER_QUIZZES_PAGE, page: () =>  UserQuizzesPage()),
     GetPage(name: AppRoutes.CREATE_QUESTION_PAGE, page: () =>  CreateQuestionsPage()),
+    GetPage(name: AppRoutes.ALL_QUIZ_PAGE, page: () =>  AllQuizPage()),
 
 
   ];

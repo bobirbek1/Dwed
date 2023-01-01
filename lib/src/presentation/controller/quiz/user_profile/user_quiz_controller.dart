@@ -1,19 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_routes.dart';
-import 'package:flutter_template/src/data/model/quiz/new/user_created_quiz_model.dart';
-import 'package:flutter_template/src/data/model/quiz/user_quiz_model.dart';
-import 'package:flutter_template/src/domain/repository/quiz/get_quiz_rep.dart';
-import 'package:flutter_template/src/domain/usecase/quiz/get/abstract/show_user_quiz_usecase.dart';
+import 'package:flutter_template/src/data/model/quiz/new/user_quiz_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/user_quizzes_model.dart' ;
 import 'package:flutter_template/src/presentation/pages/quiz/widgets/quiz_category.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../data/model/quiz/new/user_created_quiz_category.dart';
-import '../../../../data/model/quiz/new/user_quiz_response_model.dart';
-import '../../../../data/model/quiz/quiz_category.dart';
+import '../../../../data/model/quiz/new/user_quiz_response_model.dart' hide AddImages;
 import '../../../../domain/usecase/quiz/get/abstract/get_available_quiz_categories.dart';
 import '../../../../domain/usecase/quiz/get/abstract/get_quiz_category_list_usecase.dart';
 import '../../../../domain/usecase/quiz/post/abstract/create_quiz_usecase.dart';
@@ -34,21 +32,21 @@ class UserQuizController extends GetxController {
 
   final ImagePicker _imagePicker = ImagePicker();
 
-  ///all images
-  List<XFile> imageFiles = [];
-
   ///Id
   final quizListId = "quiz_list_id";
   final loadedImagesId = "loaded_images_id";
   final bottomButtonId = "bottom_button_id";
   final availableCatsId = "available_categories_id";
+  final quizCatID = "quiz_cat_id_user_controller";
+
+  ///values
+  String category = "Category*";
 
   ///to know the state of pagination at current time
   UserQuizState catState = UserQuizState.initial; // is used for categories
   UserQuizState userQuizState = UserQuizState.initial; // for user's own quizzes
-
-  ///data
-  UserQuizResponseModel userQuizResponse = UserQuizResponseModel(); // result of creating new quiz will be set here
+  UserQuizState bottomButtonState =
+      UserQuizState.initial; // for bottom button in
 
   ///Text field controllers
   final quizNameController = TextEditingController();
@@ -72,8 +70,11 @@ class UserQuizController extends GetxController {
       RefreshController(); //for categories available while creating new quiz by user
 
   ///list for user quizzes
-  List<UserCreatedQuizModel> list = [];
+  List<UserQuizzesModel> list = [];
   List<UserCreatedQuizCategoryModel> availableCategories = [];
+
+  ///all images
+  List<File> imageFiles = [];
 
   @override
   void onInit() {
@@ -121,20 +122,35 @@ class UserQuizController extends GetxController {
     updateBottomButton();
   }
 
+  ///navigating to CREATE_QUESTION_PAGE by pressing add question button
   void bottomButtonPressed() async {
+    bottomButtonState = UserQuizState.loading;
+    updateBottomButton();
     if (notNull()) {
       _newQuiz.sendAnswer = true;
       _newQuiz.sendQuestion = true;
+      encodeImages();
       final res = await createQuizUseCase.call(_newQuiz);
       res.fold((failure) {
-        Get.log("UserQuizController bottomButtonPressed FAILURE => ${failure.message}");
-
+        Get.log(
+            "UserQuizController bottomButtonPressed FAILURE => ${failure.message}");
+        bottomButtonState = UserQuizState.error;
+        updateBottomButton();
       }, (response) {
-        Get.log("UserQuizController bottomButtonPressed RESPONSE => $response}");
-        userQuizResponse = response;
-        Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE);
+        Get.log(
+            "UserQuizController bottomButtonPressed RESPONSE => $response}");
+        bottomButtonState = UserQuizState.loaded;
+        updateBottomButton();
+        setAllNull();
+        response.timeLimit = _newQuiz.questionTime;
+        Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE, arguments: response,
+        );
       });
     }
+  }
+
+  void historyBtnPressed() {
+    Get.toNamed(AppRoutes.PLAYER_INFORMATION);
   }
 
   ///is used for bottom button to know whether allowed or not by checking the fields
@@ -148,7 +164,7 @@ class UserQuizController extends GetxController {
   void loadImageFromGallery() async {
     var file = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (file != null) {
-      imageFiles.add(file);
+      imageFiles.add(File(file.path));
       loadedImagesId;
       updateLoadedImages();
       Get.log("IMAGE INDEX ${imageFiles.length}");
@@ -163,40 +179,54 @@ class UserQuizController extends GetxController {
 
   ///is used for pagination of user quizzes
   void onLoading() async {
+    userQuizState = UserQuizState.loading;
     final res = await getUserQuizzesUseCase.call(_offset);
     res.fold((failure) {
       Get.log("UserQuizController onLoading failure => ${failure.message}");
       refreshController.loadFailed();
+      userQuizState = UserQuizState.error;
       updateList();
     }, (response) {
       Get.log("UserQuizController onLoading response => $response");
       list.addAll(response);
-      _offset = response[0].nextOffset!;
+      if(response.isNotEmpty) {
+      _offset = response[0].nextOffset ?? _offset;
       refreshController.loadComplete();
+      }else {
+        refreshController.loadNoData();
+      }
+      userQuizState = UserQuizState.loaded;
       updateList();
     });
   }
 
   ///is used for pagination of user quizzes
   void onRefresh() async {
-    list.clear();
+    userQuizState = UserQuizState.loading;
     _offset = 0;
     final res = await getUserQuizzesUseCase.call(_offset);
     res.fold((failure) {
       Get.log("UserQuizController onRefresh failure => ${failure.message}");
       refreshController.refreshFailed();
+      userQuizState = UserQuizState.error;
+      list.clear();
+      _offset = 0;
       updateList();
     }, (response) {
       Get.log("UserQuizController onRefresh response => $response");
+      list.clear();
       list.addAll(response);
       _offset = response[0].nextOffset ?? 0;
       refreshController.refreshCompleted();
+      userQuizState = UserQuizState.loaded;
       updateList();
     });
   }
 
   ///is used for pagination of categories in bottom sheet
   void onLoadingForCats() async {
+    setValueToCategoryText("Category*");
+    updateCatValue();
     catState = UserQuizState.loading;
     final res = await getAvailableQuizCatUseCase.call(_offsetAvailableCat,
         catSearchController.text.isNotEmpty ? catSearchController.text : "");
@@ -222,6 +252,10 @@ class UserQuizController extends GetxController {
 
   ///is used for pagination of categories in bottom sheet
   void onRefreshForCats() async {
+    setValueToCategoryText("Category*");
+    updateCatValue();
+    _offsetAvailableCat = 0;
+    _newQuiz.category = null;
     catState = UserQuizState.loading;
     final res = await getAvailableQuizCatUseCase.call(_offsetAvailableCat,
         catSearchController.text.isNotEmpty ? catSearchController.text : "");
@@ -229,20 +263,13 @@ class UserQuizController extends GetxController {
       Get.log(
           "UserQuizController onRefreshForCats failure => ${failure.message}");
       refreshControllerCategories.refreshFailed();
-
-      availableCategories.clear();
-      _offsetAvailableCat = 0;
-      _newQuiz.category = null;
-
       catState = UserQuizState.error;
+      availableCategories.clear();
       updateCats();
     }, (response) {
       Get.log("UserQuizController onRefreshForCats RESPONSE => $response}");
 
       availableCategories.clear();
-      _offsetAvailableCat = 0;
-      _newQuiz.category = null;
-
       availableCategories.addAll(response);
       _offsetAvailableCat = response[0].nextOffset ?? 0;
       if (response.isEmpty) {
@@ -257,12 +284,18 @@ class UserQuizController extends GetxController {
 
   ///is called when user press create and this method starts to encode files into string to
   ///change the file into string for posting new quiz
-  void encodeImages() async {
-    // imageFiles.map((e) async {
-    //   final fileName = e.path.split('/').last;
-    //   final data = await MultipartFile.fromFile(e.path, fileName: fileName);
-    //   _newQuiz.addImages?.add(data);
-    // });
+  void encodeImages() {
+    imageFiles.map((e) async {
+      final bytes = await  e.readAsBytes();
+      String image = base64Encode(bytes);
+      _newQuiz.addImages?.add(AddImages(file: image));
+    });
+    imageFiles.clear();
+  }
+
+  void crossButtonInBottomSheetPressed() {
+    catSearchController.text = "";
+    onRefreshForCats();
   }
 
   ///radio button pressed in bottom sheet
@@ -281,14 +314,60 @@ class UserQuizController extends GetxController {
     }
   }
 
+
+  ///navigating to CREATE_QUESTION_PAGE by pressing quiz item in the list
+  void userQuizItemPresses(UserQuizzesModel item) {
+
+    var res = UserQuizResponseModel(
+        id: item.id,
+        questionNumber: item.questionNumber,
+        sendQuestion: true,
+        sendAnswer: true,
+        name: item.name,
+        description: item.description,
+        questionTime: item.questionTime,
+        reward: item.reward,
+        creator: item.creator,
+        category: item.category?.id);
+    Get.log("Arguments $res");
+    res.timeLimit = item.questionTime;
+    Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE, arguments:res
+    );
+  }
+
+  void backButtonPressed() {
+    setAllNull();
+    _newQuiz = UserQuizModel();
+  }
+
+  void setAllNull() {
+    quizNameController.clear();
+    quizDescriptionController.clear();
+    quizTimeLimitController.clear();
+    quizNumberLimitController.clear();
+    quizPrizeMoneyController.clear();
+  }
+
+
   ///bottom button in bottom sheet of categories pressed
   void catBottomPressed() {
     Get.back();
   }
 
+  void setValueToCategoryText(String category) {
+    this.category =  category;
+    updateCatValue();
+  }
+
   ///is called category word is pressed and then bottom
   void categoryPressed() {
+    onRefreshForCats();
     Get.bottomSheet(QuizCategory());
+  }
+
+  ///only text on categories will be updated
+  void updateCatValue() {
+    update([quizCatID]);
   }
 
   void createPressed() {

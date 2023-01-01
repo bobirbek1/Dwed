@@ -81,6 +81,8 @@ class AppImages {
   static const String VECTOR = "assets/images/Vector.png";
   static const String VECTOR_BOTTOM = "assets/images/Vector_bottom.png";
   static const String CROSS = "assets/images/cross.png";
+  static const String PLACE_HOLDER_AKHROR = "assets/images/placeHolder.jpg";
+  static const String TOWARDS_BOTTOM = "assets/images/towards_botton.png";
 
 
 }

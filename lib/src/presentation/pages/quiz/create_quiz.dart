@@ -1,25 +1,24 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/user_profile/user_quiz_controller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../../../../app/app_icons.dart';
 import '../../../../core/utils/size_config.dart';
 
 class CreateQuiz extends StatelessWidget {
-  TextEditingController _textController = TextEditingController();
   final _controller = Get.find<UserQuizController>();
 
   bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
+    onWillPop: () async {
+      _controller.backButtonPressed();
+      return false;
+    };
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +78,9 @@ class CreateQuiz extends StatelessWidget {
                             color: Colors.blueAccent),
                       ),
                     ),
-                    const TextField(keyboardType: TextInputType.number,),
+                    const TextField(
+                      keyboardType: TextInputType.number,
+                    ),
 
                     ///
                     SizedBox(
@@ -95,13 +96,15 @@ class CreateQuiz extends StatelessWidget {
                             color: Colors.blueAccent),
                       ),
                     ),
-                    const TextField(keyboardType: TextInputType.number,),
-
-                    SizedBox(
-                      height: SizeConfig.calculateBlockVertical(20),
+                    const TextField(
+                      keyboardType: TextInputType.number,
                     ),
 
-                    getSwitch(),
+                    SizedBox(
+                      height: SizeConfig.calculateBlockVertical(24),
+                    ),
+
+                   // getSwitch(),
 
                     SizedBox(
                       height: SizeConfig.calculateBlockVertical(20),
@@ -138,10 +141,15 @@ class CreateQuiz extends StatelessWidget {
         SizedBox(
           width: SizeConfig.calculateBlockHorizontal(16),
         ),
-        SizedBox(
-          child: Image.asset(AppImages.APP_BAR_LEFT),
-          height: SizeConfig.calculateBlockHorizontal(16),
-          width: SizeConfig.calculateBlockHorizontal(24),
+        InkWell(
+          onTap: () {
+            _controller.backButtonPressed();
+          },
+          child: SizedBox(
+            child: Image.asset(AppImages.APP_BAR_LEFT),
+            height: SizeConfig.calculateBlockHorizontal(16),
+            width: SizeConfig.calculateBlockHorizontal(24),
+          ),
         )
       ],
     );
@@ -174,13 +182,18 @@ class CreateQuiz extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Quiz for money',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: AppColors.GRAY_X11),
-              ),
+              GetBuilder(
+                  id: _controller.quizCatID,
+                  init: _controller,
+                  builder: (context) {
+                    return Text(
+                      _controller.category ?? "Category*",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: AppColors.GRAY_X11),
+                    );
+                  }),
               SizedBox(
                   width: SizeConfig.calculateBlockHorizontal(16),
                   height: SizeConfig.calculateBlockVertical(7),
@@ -267,8 +280,8 @@ class CreateQuiz extends StatelessWidget {
         SizedBox(
           height: SizeConfig.calculateBlockVertical(100),
           width: double.infinity,
-          child:  TextField(
-            controller: _controller.quizDescriptionController,
+          child: TextField(
+              controller: _controller.quizDescriptionController,
               maxLines: 4,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.all(4),
@@ -450,20 +463,28 @@ class CreateQuiz extends StatelessWidget {
                       _controller.bottomButtonPressed();
                     }
                   },
-                  child: const Text('Продолжить'),
+                  child: _controller.bottomButtonState == UserQuizState.loading
+                      ? Center(
+                          child: SizedBox(
+                            width: SizeConfig.calculateBlockHorizontal(20),
+                            height: SizeConfig.calculateBlockVertical(20),
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : const Text('Продолжить'),
                 ),
                 width: double.infinity,
               ));
         });
   }
 
-  showDataPicker(BuildContext context) async {
-    DateTime? dateTime = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime(2023));
-  }
-
-
+// showDataPicker(BuildContext context) async {
+//   DateTime? dateTime = await showDatePicker(
+//       context: context,
+//       initialDate: DateTime.now(),
+//       firstDate: DateTime(2022),
+//       lastDate: DateTime(2023));
+// }
 }

@@ -1,4 +1,6 @@
-class UserQuizResponseModel {
+import 'package:equatable/equatable.dart';
+
+class UserQuizResponseModel extends Equatable{
   int? id;
   int? questionNumber;
   bool? sendQuestion;
@@ -9,19 +11,26 @@ class UserQuizResponseModel {
   String? reward;
   String? creator;
   int? category;
+  int? nextOffset;
+  int? type;
+
+  ///added
+  int? expectedParticipant;
+  int? timeLimit;
+
 
   UserQuizResponseModel(
-      {id,
+      {this.id,
         addImages,
-        questionNumber,
-        name,
-        description,
-        questionTime,
-        sendQuestion,
-        sendAnswer,
-        reward,
-        creator,
-        category});
+        this.questionNumber,
+        this.name,
+        this.description,
+        this.questionTime,
+        this.sendQuestion,
+        this.sendAnswer,
+        this.reward,
+        this.creator,
+        this.category});
 
   UserQuizResponseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -35,6 +44,7 @@ class UserQuizResponseModel {
     creator = json['creator'];
     category = json['category'];
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  Map<String, dynamic>();
@@ -50,6 +60,18 @@ class UserQuizResponseModel {
     data['category'] = category;
     return data;
   }
+
+  @override
+  List<Object?> get props => [id,
+    questionNumber,
+    name,
+    description,
+    questionTime,
+    sendQuestion,
+    sendAnswer,
+    reward,
+    creator,
+    category];
 }
 
 class AddImages {
@@ -57,7 +79,7 @@ class AddImages {
   String? file;
   int? quiz;
 
-  AddImages({id, file, quiz});
+  AddImages({this.id, this.file, this.quiz});
 
   AddImages.fromJson(Map<String, dynamic> json) {
     id = json['id'];

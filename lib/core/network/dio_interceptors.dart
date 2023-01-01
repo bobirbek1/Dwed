@@ -21,7 +21,7 @@ Dio addInterceptor(Dio dio) {
   ));
   dio.interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) {
-      options.headers['Authorization'] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNDE0OTMwLCJqdGkiOiJjNzBiNmY5NTVmY2I0ODQ5YmQyNzQyOTU5MjRjNGNiZCIsInVzZXJuYW1lIjoiYm9iaXJiZWsifQ.VrVvHefUw0n2wDV7rk0ggHi1tyQhG61g9srI9QmQ3gE";
+      options.headers['Authorization'] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNzI0MTU2LCJqdGkiOiJiNzYxYzYxYzYzZWU0OTExOGIxOTBhNDc1ZTRkYzFhOCIsInVzZXJuYW1lIjoiYm9iaXJiZWsifQ.rMujyf6hzvIORRh2yvbKoJZOk-LOzjCcBoQNpMVdq2M";
       Get.log("options  headers is ${options.headers}");
       return handler.next(options);
       // final token = tokenHelper.getToken();

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/failure.dart';
 
-import '../../../../../data/model/quiz/session_data_model.dart';
+import '../../../../../data/model/quiz/new/session_data_model.dart';
 
 abstract class ActiveSessionsUseCase {
   ///list of active sessions

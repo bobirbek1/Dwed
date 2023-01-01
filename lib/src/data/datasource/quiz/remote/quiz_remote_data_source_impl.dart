@@ -1,20 +1,23 @@
-
-
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_template/core/error/exception_handler.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
-import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/src/data/datasource/quiz/remote/quiz_remote_data_source.dart';
+import 'package:flutter_template/src/data/model/quiz/new/new_question_post_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/new_question_post_response_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/new_session_response.dart';
+import 'package:flutter_template/src/data/model/quiz/new/start_session_model.dart';
 import 'package:flutter_template/src/data/model/quiz/new/user_created_quiz_category.dart';
-import 'package:flutter_template/src/data/model/quiz/new/user_created_quiz_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/user_quizzes_model.dart';
 import 'package:flutter_template/src/data/model/quiz/participiant_data_model.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_category.dart';
 import 'package:flutter_template/src/data/model/quiz/quiz_question_model.dart';
-import 'package:flutter_template/src/data/model/quiz/session_data_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/session_data_model.dart';
 import 'package:flutter_template/src/data/model/quiz/session_detail_model.dart';
-import 'package:flutter_template/src/data/model/quiz/user_quiz_model.dart';
+import 'package:flutter_template/src/data/model/quiz/new/user_quiz_model.dart';
 import 'package:flutter_template/src/data/model/quiz/new/user_quiz_response_model.dart';
 import 'package:get/get_core/src/get_main.dart';
+
+import '../../../model/quiz/new/question_list_model.dart';
 
 class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
   final Dio client;
@@ -24,23 +27,22 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
   ///GET
   ///list or user quizzes
   @override
-  Future<List<UserCreatedQuizModel>> getUserQuizzes(int offset) async {
-    final Map<String, dynamic> map = {'offset': 0, 'limit': 5};
+  Future<List<UserQuizzesModel>> getUserQuizzes(int offset) async {
+    final Map<String, dynamic> map = {'offset': offset, 'limit': 10};
     try {
       final res =
           await client.get('/QMS/api/v1.0/public/quiz/', queryParameters: map);
-
       if (res.data != null) {
         Get.log('Category data in data source => ${res.data['results']}');
-        // if (res.data['results'] == null) Get.log("MAP == Nul");
         final resList = res.data['results'];
-        var list = resList.map<UserCreatedQuizModel>((e) {
-          return UserCreatedQuizModel.fromJson(e);
+        Get.log('Category data in data source  resList => $resList');
+        List<UserQuizzesModel> list = resList.map<UserQuizzesModel>((e) {
+          return UserQuizzesModel.fromJson(e);
         }).toList();
-        Get.log("LIST => $list");
-        if (list.length() > 0) {
-          list[0].nextOffset = res.data['nextOffset'] ?? offset + list.length();
+        if (list.isNotEmpty) {
+          list[0].nextOffset = res.data['next_offset'];
         }
+        Get.log('Category data in data source  list => $list');
         return list;
       }
       throw ServerUnknownException();
@@ -82,22 +84,22 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
 
   ///question list for quiz
   @override
-  Future<List<QuizQuestionModel>> getQuestionList(
+  Future<List<QuestionListModel>> getQuestionList(
       int quizId, int offset) async {
-    Map<String, dynamic> queryParams = {
-      'quiz_id': quizId,
-      'offset': offset,
-      'limit': 10
-    };
     try {
-      final res = await client.get('/v1_0/public/quiz/$quizId/question/',
-          queryParameters: queryParams);
+      final res = await client.get('/QMS/api/v1.0/public/quiz/$quizId/question/?limit=10&offset=$offset');
       if (res.data != null) {
         Get.log("QUIZ_REMOTE_DATA_SOURCE getQuestionList DATA => ${res.data}");
-        final results = res.data['results'];
-        final list = results.map((e) {
-          return QuizQuestionModel.fromJson(e);
+        List<dynamic> results = res.data['results'];
+        if(results.isEmpty) {
+          return <QuestionListModel>[];
+        }
+        List<QuestionListModel> list = results.map((e) {
+          return QuestionListModel.fromJson(e);
         }).toList();
+        if (list.isNotEmpty) {
+          list[0].offset = res.data['next_offset'] ?? offset;
+        }
         return list;
       }
       Get.log(
@@ -169,18 +171,23 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
   @override
   Future<List<SessionDataModel>> getActiveSession(int offset) async {
     try {
-      Map<String, dynamic> queryParams = {'limit': 15, 'offset': offset};
-      final res = await client.get('/v1.0/public/session/',
+      Map<String, dynamic> queryParams = {'limit': 15, 'offset': offset, 'history' : true, 'i_org': true};
+      final res = await client.get('/QMS/api/v1.0/public/session/',
           queryParameters: queryParams);
-      Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSession DATA => ${res.data}");
+      Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSession DATA -=> ${res.data}");
       if (res.data != null) {
-        final list = res.data['result'].map((e) {
-          return SessionDataModel.fromJson(e);
+        final results = res.data['results'];
+        Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSession DATA => ${res.data}");
+       List<SessionDataModel>  list =  results.map<SessionDataModel>((e) {
+          Get.log("QUIZ_REMOTE_DATA_SOURCE SessionDataModel DATA => ${SessionDataModel.fromJson(e)}");
+          return SessionDataModel.fromJson(e) ;
         }).toList();
-        list[0].offSet = res.data['next_offset'];
-        Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSession DATA => $list");
-        return list;
+       if(list.isNotEmpty) {
+         list[0].offset = res.data['next_offset'];
+       }
+       return list;
       }
+
       Get.log(
           "QUIZ_REMOTE_DATA_SOURCE getActiveSession FAILURE => res.data == Null");
       throw ServerUnknownException();
@@ -191,6 +198,41 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
         rethrow;
       }
       Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSession FAILURE => $e");
+      throw ServerUnknownException();
+    }
+  }
+
+  ///list of active sessions
+  @override
+  Future<List<SessionDataModel>> getActiveSessionByCat(int offset, int cat) async  {
+    try {
+      Map<String, dynamic> queryParams = {'limit': 15, 'offset': offset, '  category' : cat};
+      final res = await client.get('/QMS/api/v1.0/public/session/',
+          queryParameters: queryParams);
+      Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSessionByCat DATA -=> ${res.data}");
+      if (res.data != null) {
+        final results = res.data['results'];
+        Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSessionByCat DATA => ${res.data}");
+        List<SessionDataModel>  list =  results.map<SessionDataModel>((e) {
+          Get.log("QUIZ_REMOTE_DATA_SOURCE SessionDataModel DATA => ${SessionDataModel.fromJson(e)}");
+          return SessionDataModel.fromJson(e) ;
+        }).toList();
+        if(list.isNotEmpty) {
+          list[0].offset = res.data['next_offset'];
+        }
+        return list;
+      }
+
+      Get.log(
+          "QUIZ_REMOTE_DATA_SOURCE getActiveSessionByCat FAILURE => res.data == Null");
+      throw ServerUnknownException();
+    } catch (e) {
+      if (e is DioError) {
+        Get.log(
+            "QUIZ_REMOTE_DATA_SOURCE getActiveSessionByCat FAILURE => ${e.message}");
+        rethrow;
+      }
+      Get.log("QUIZ_REMOTE_DATA_SOURCE getActiveSessionByCat FAILURE => $e");
       throw ServerUnknownException();
     }
   }
@@ -225,8 +267,8 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
     try {
       Map<String, dynamic> map = {};
       map.addAll({"offset": offset, "limit": 10});
-      if(query.isNotEmpty) {
-        map.addAll({'search' : query});
+      if (query.isNotEmpty) {
+        map.addAll({'search': query});
       }
       final res = await client.get('/QMS/api/v1.0/public/category/',
           queryParameters: map);
@@ -236,7 +278,8 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
         final result = res.data['results'];
         Get.log(
             "QUIZ_REMOTE_DATA_SOURCE getAvailableCategories RESULT DATA => $result");
-        List<UserCreatedQuizCategoryModel> list = result.map<UserCreatedQuizCategoryModel>((e) {
+        List<UserCreatedQuizCategoryModel> list =
+            result.map<UserCreatedQuizCategoryModel>((e) {
           return UserCreatedQuizCategoryModel.fromJson(e);
         }).toList();
 
@@ -284,4 +327,51 @@ class QuizRemoteDataSourceImpl extends QuizRemoteDataSource {
       throw ServerUnknownException();
     }
   }
+
+  ///add question to quiz
+  @override
+  Future<NewQuestionPostResModel> addQuestion(
+      NewQuestionModel newQuestionModel) async {
+    try {
+      final res = await client.post(
+          '/QMS/api/v1.0/public/quiz/${newQuestionModel.addAnswers![0].id}/question/',
+          data: newQuestionModel);
+      Get.log("QUIZ_REMOTE_DATA_SOURCE addQuestion DATA => ${res.data}");
+      if (res.data != null) {
+        Get.log("QUIZ_REMOTE_DATA_SOURCE addQuestion DATA => ${res.data}");
+        return NewQuestionPostResModel.fromJson(res.data);
+      }
+      Get.log("QUIZ_REMOTE_DATA_SOURCE addQuestion res.data => null");
+      throw ServerUnknownException();
+    } catch (e) {
+      if (e is DioError) {
+        Get.log("QUIZ_REMOTE_DATA_SOURCE addQuestion FAILURE => ${e.message}");
+        rethrow;
+      }
+      Get.log("QUIZ_REMOTE_DATA_SOURCE addQuestion FAILURE => $e");
+      throw ServerUnknownException();
+    }
+  }
+
+  ///start session for chosen quiz
+  @override
+  Future<StartSessionResponseModel> startSession(StartSessionModel sessionModel, int id) async {
+    try {
+      final res = await client.post("/QMS/api/v1.0/public/quiz/$id/new_session/", data: sessionModel);
+      Get.log("QUIZ_REMOTE_DATA_SOURCE startSession ${res.data}");
+      if(res.data != null) {
+        return StartSessionResponseModel.fromJson(res.data);
+      }
+      Get.log("QUIZ_REMOTE_DATA_SOURCE startSession FAILURE => res.data == null");
+      throw ServerUnknownException();
+    }catch(e) {
+      if (e is DioError) {
+        Get.log("QUIZ_REMOTE_DATA_SOURCE startSession FAILURE => ${e.message}");
+        rethrow;
+      }
+      Get.log("QUIZ_REMOTE_DATA_SOURCE startSession FAILURE => $e");
+      throw ServerUnknownException();
+    }
+  }
+
 }

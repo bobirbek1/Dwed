@@ -1,4 +1,4 @@
-class SessionDetailModel {
+  class SessionDetailModel {
   int? id;
   int? participantNumber;
   int? questionNumber;

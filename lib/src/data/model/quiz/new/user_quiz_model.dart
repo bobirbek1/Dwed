@@ -9,14 +9,14 @@ class UserQuizModel {
   int? category;
 
   UserQuizModel(
-      {addImages,
-        name,
-        description,
-        questionTime,
-        sendQuestion,
-        sendAnswer,
-        reward,
-        category});
+      {this.addImages,
+        this.name,
+        this.description,
+        this.questionTime,
+        this.sendQuestion,
+        this.sendAnswer,
+        this.reward,
+        this.category});
 
   UserQuizModel.fromJson(Map<String, dynamic> json) {
     if (json['add_images'] != null) {
@@ -53,14 +53,14 @@ class UserQuizModel {
 class AddImages {
   String? file;
 
-  AddImages({file});
+  AddImages({this.file});
 
   AddImages.fromJson(Map<String, dynamic> json) {
     file = json['file'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['file'] = file;
     return data;
   }
