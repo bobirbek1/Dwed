@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.QUIZ_STREAM,
+      initialRoute: AppRoutes.SPLASH,
       getPages: AppPages.getPages,
     );
   }

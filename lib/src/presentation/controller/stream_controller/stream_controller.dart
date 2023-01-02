@@ -137,7 +137,7 @@ class StreamController extends GetxController {
     chewieController?.dispose();
   }
 
-  initializeVideo() {
+  initializeVideo(Widget overlay) {
     videoController = VideoPlayerController.network(
         "https://m.dwed.biz/v1.0/api/streaming/${selectedStream?.channelSlug}/live.m3u8");
 
@@ -147,11 +147,11 @@ class StreamController extends GetxController {
             SizeConfig.screenWidth! / SizeConfig.calculateBlockVertical(240),
         isLive: true,
         allowMuting: false,
+        overlay: overlay,
         allowPlaybackSpeedChanging: false,
         showControls: false,
         showControlsOnInitialize: false,
         autoPlay: true);
-    
   }
 
   void subscribeToChannel(String slugName) async {
@@ -161,11 +161,16 @@ class StreamController extends GetxController {
   void _initChatClient(
     String token,
   ) async {
+    Get.log("initChatClient: called");
     chatClient.init(token);
     await chatClient.connect(() {});
-    if (subscription == null) {
+    Get.log("initChatClient: ${subscription == null}");
+    if (subscription != null) {
       await subscription!.cancel();
+      Get.log("initChatClient: ${subscription.isBlank}");
+      subscription = null;
     }
+    Get.log("initChatClient: ${subscription == null}");
     subscription = chatClient.messages.listen((event) {
       chatMessages[selectedStream?.channelSlug]?.add(event);
       update([chatId]);

@@ -42,4 +42,5 @@ class AppIcons {
   static const String ARROW_DOWN = "assets/icons/arrow_down.svg";
   static const String ICON_SMILE = "assets/icons/icon_smile.svg";
   static const String ICON_DOLLOR = "assets/icons/icon_dollor.svg";
+  static const String PLAY = "assets/icons/icon_play.svg";
 }
