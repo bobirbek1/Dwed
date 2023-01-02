@@ -1,32 +1,4 @@
 
-/*
-
-class OrdersCardModel {
-  String? sellers_type;
-  String? seller;
-  String? total;
-
-  OrdersCardModel ({
-   this.sellers_type,
-   this.seller,
-   this.total,
-  });
-
-  OrdersCardModel.fromJson(Map<String, dynamic> json) {
-   sellers_type = json['sellers_type'];
-   seller = json['seller'];
-   total = json['total'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sellers_type'] = this.sellers_type;
-    data['seller'] = this.seller;
-    data['total'] = this.total;
-
-    return data;
-  }
-}*/
 
 class OrdersCardModel {
   String? sellerType;
@@ -38,18 +10,18 @@ class OrdersCardModel {
   OrdersCardModel.fromJson(Map<String, dynamic> json) {
     sellerType = json['seller_type'];
     seller =
-    json['seller'] != null ? new Seller.fromJson(json['seller']) : null;
-    total = json['total'] != null ? new Total.fromJson(json['total']) : null;
+    json['seller'] != null ? Seller.fromJson(json['seller']) : null;
+    total = json['total'] != null ? Total.fromJson(json['total']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['seller_type'] = this.sellerType;
-    if (this.seller != null) {
-      data['seller'] = this.seller!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['seller_type'] = sellerType;
+    if (seller != null) {
+      data['seller'] = seller!.toJson();
     }
-    if (this.total != null) {
-      data['total'] = this.total!.toJson();
+    if (total != null) {
+      data['total'] = total!.toJson();
     }
     return data;
   }
@@ -84,41 +56,41 @@ class Seller {
     name = json['name'];
     slugName = json['slug_name'];
     category = json['category'] != null
-        ? new Category.fromJson(json['category'])
+        ? Category.fromJson(json['category'])
         : null;
-    subs = json['subs'] != null ? new Subs.fromJson(json['subs']) : null;
+    subs = json['subs'] != null ? Subs.fromJson(json['subs']) : null;
     logo = json['logo'];
     background = json['background'];
     isOfficial = json['is_official'];
     rating =
-    json['rating'] != null ? new Rating.fromJson(json['rating']) : null;
+    json['rating'] != null ? Rating.fromJson(json['rating']) : null;
     if (json['specialists'] != null) {
       specialists = <Specialists>[];
       json['specialists'].forEach((v) {
-        specialists!.add(new Specialists.fromJson(v));
+        specialists!.add(Specialists.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['legal_form'] = this.legalForm;
-    data['name'] = this.name;
-    data['slug_name'] = this.slugName;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['legal_form'] = legalForm;
+    data['name'] = name;
+    data['slug_name'] = slugName;
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
-    if (this.subs != null) {
-      data['subs'] = this.subs!.toJson();
+    if (subs != null) {
+      data['subs'] = subs!.toJson();
     }
-    data['logo'] = this.logo;
-    data['background'] = this.background;
-    data['is_official'] = this.isOfficial;
-    if (this.rating != null) {
-      data['rating'] = this.rating!.toJson();
+    data['logo'] = logo;
+    data['background'] = background;
+    data['is_official'] = isOfficial;
+    if (rating != null) {
+      data['rating'] = rating!.toJson();
     }
-    if (this.specialists != null) {
-      data['specialists'] = this.specialists!.map((v) => v.toJson()).toList();
+    if (specialists != null) {
+      data['specialists'] = specialists!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -150,13 +122,13 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['slug'] = this.slug;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['image'] = this.image;
-    data['has_subs'] = this.hasSubs;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['slug'] = slug;
+    data['name'] = name;
+    data['description'] = description;
+    data['image'] = image;
+    data['has_subs'] = hasSubs;
     return data;
   }
 }
@@ -173,9 +145,9 @@ class Subs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['me'] = this.me;
-    data['subscribed'] = this.subscribed;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['me'] = me;
+    data['subscribed'] = subscribed;
     return data;
   }
 }
@@ -189,26 +161,26 @@ class Rating {
 
   Rating.fromJson(Map<String, dynamic> json) {
     professional = json['professional'] != null
-        ? new Professional.fromJson(json['professional'])
+        ? Professional.fromJson(json['professional'])
         : null;
     ethics = json['ethics'] != null
-        ? new Professional.fromJson(json['ethics'])
+        ? Professional.fromJson(json['ethics'])
         : null;
     aesthetics = json['aesthetics'] != null
-        ? new Professional.fromJson(json['aesthetics'])
+        ? Professional.fromJson(json['aesthetics'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.professional != null) {
-      data['professional'] = this.professional!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (professional != null) {
+      data['professional'] = professional!.toJson();
     }
-    if (this.ethics != null) {
-      data['ethics'] = this.ethics!.toJson();
+    if (ethics != null) {
+      data['ethics'] = ethics!.toJson();
     }
-    if (this.aesthetics != null) {
-      data['aesthetics'] = this.aesthetics!.toJson();
+    if (aesthetics != null) {
+      data['aesthetics'] = aesthetics!.toJson();
     }
     return data;
   }
@@ -228,10 +200,10 @@ class Professional {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['level'] = this.level;
-    data['remaining_score'] = this.remainingScore;
-    data['score'] = this.score;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['level'] = level;
+    data['remaining_score'] = remainingScore;
+    data['score'] = score;
     return data;
   }
 }
@@ -258,37 +230,37 @@ class Specialists {
 
   Specialists.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     specCat = json['spec_cat'] != null
-        ? new SpecCat.fromJson(json['spec_cat'])
+        ? SpecCat.fromJson(json['spec_cat'])
         : null;
-    job = json['job'] != null ? new Category.fromJson(json['job']) : null;
+    job = json['job'] != null ? Category.fromJson(json['job']) : null;
     isWorking = json['is_working'];
     operatingMode = json['operating_mode'] != null
-        ? new OperatingMode.fromJson(json['operating_mode'])
+        ? OperatingMode.fromJson(json['operating_mode'])
         : null;
     isCatHead = json['is_cat_head'];
     position = json['position'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.specCat != null) {
-      data['spec_cat'] = this.specCat!.toJson();
+    if (specCat != null) {
+      data['spec_cat'] = specCat!.toJson();
     }
-    if (this.job != null) {
-      data['job'] = this.job!.toJson();
+    if (job != null) {
+      data['job'] = job!.toJson();
     }
-    data['is_working'] = this.isWorking;
-    if (this.operatingMode != null) {
-      data['operating_mode'] = this.operatingMode!.toJson();
+    data['is_working'] = isWorking;
+    if (operatingMode != null) {
+      data['operating_mode'] = operatingMode!.toJson();
     }
-    data['is_cat_head'] = this.isCatHead;
-    data['position'] = this.position;
+    data['is_cat_head'] = isCatHead;
+    data['position'] = position;
     return data;
   }
 }
@@ -309,11 +281,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['full_name'] = this.fullName;
-    data['avatar'] = this.avatar;
-    data['is_official'] = this.isOfficial;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
+    data['full_name'] = fullName;
+    data['avatar'] = avatar;
+    data['is_official'] = isOfficial;
     return data;
   }
 }
@@ -330,9 +302,9 @@ class SpecCat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -348,33 +320,33 @@ class OperatingMode {
   OperatingMode({this.fri, this.mon, this.sat, this.thu, this.tue, this.wed});
 
   OperatingMode.fromJson(Map<String, dynamic> json) {
-    fri = json['fri'] != null ? new Fri.fromJson(json['fri']) : null;
-    mon = json['mon'] != null ? new Fri.fromJson(json['mon']) : null;
-    sat = json['sat'] != null ? new Fri.fromJson(json['sat']) : null;
-    thu = json['thu'] != null ? new Fri.fromJson(json['thu']) : null;
-    tue = json['tue'] != null ? new Fri.fromJson(json['tue']) : null;
-    wed = json['wed'] != null ? new Fri.fromJson(json['wed']) : null;
+    fri = json['fri'] != null ? Fri.fromJson(json['fri']) : null;
+    mon = json['mon'] != null ?  Fri.fromJson(json['mon']) : null;
+    sat = json['sat'] != null ?  Fri.fromJson(json['sat']) : null;
+    thu = json['thu'] != null ?  Fri.fromJson(json['thu']) : null;
+    tue = json['tue'] != null ?  Fri.fromJson(json['tue']) : null;
+    wed = json['wed'] != null ?  Fri.fromJson(json['wed']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.fri != null) {
-      data['fri'] = this.fri!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (fri != null) {
+      data['fri'] = fri!.toJson();
     }
-    if (this.mon != null) {
-      data['mon'] = this.mon!.toJson();
+    if (mon != null) {
+      data['mon'] = mon!.toJson();
     }
-    if (this.sat != null) {
-      data['sat'] = this.sat!.toJson();
+    if (sat != null) {
+      data['sat'] = sat!.toJson();
     }
-    if (this.thu != null) {
-      data['thu'] = this.thu!.toJson();
+    if (thu != null) {
+      data['thu'] = thu!.toJson();
     }
-    if (this.tue != null) {
-      data['tue'] = this.tue!.toJson();
+    if (tue != null) {
+      data['tue'] = tue!.toJson();
     }
-    if (this.wed != null) {
-      data['wed'] = this.wed!.toJson();
+    if (wed != null) {
+      data['wed'] = wed!.toJson();
     }
     return data;
   }
@@ -395,7 +367,7 @@ class Fri {
     if (json['breaks'] != null) {
       breaks = <Breaks>[];
       json['breaks'].forEach((v) {
-        breaks!.add(new Breaks.fromJson(v));
+        breaks!.add(Breaks.fromJson(v));
       });
     }
     noBreak = json['no_break'];
@@ -403,21 +375,21 @@ class Fri {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['to'] = this.to;
-    data['from'] = this.from;
-    if (this.breaks != null) {
-      data['breaks'] = this.breaks!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['to'] = to;
+    data['from'] = from;
+    if (breaks != null) {
+      data['breaks'] = breaks!.map((v) => v.toJson()).toList();
     }
-    data['no_break'] = this.noBreak;
-    data['proc_interval'] = this.procInterval;
+    data['no_break'] = noBreak;
+    data['proc_interval'] = procInterval;
     return data;
   }
 }
 
 class Breaks {
-  double? to;
-  int? from;
+  num? to;
+  num? from;
 
   Breaks({this.to, this.from});
 
@@ -427,15 +399,15 @@ class Breaks {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['to'] = this.to;
-    data['from'] = this.from;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['to'] = to;
+    data['from'] = from;
     return data;
   }
 }
 
 class Total {
-  int? cost;
+  num? cost;
   int? count;
 
   Total({this.cost, this.count});
@@ -446,9 +418,9 @@ class Total {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cost'] = this.cost;
-    data['count'] = this.count;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cost'] = cost;
+    data['count'] = count;
     return data;
   }
 }

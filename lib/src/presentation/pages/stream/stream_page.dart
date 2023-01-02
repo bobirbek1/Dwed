@@ -200,7 +200,7 @@ class StreamPage extends StatelessWidget {
                         _controller.selectedStream?.channelSlug ??
                             "- - -"] = [];
                   }
-                  _controller.initializeVideo(buildOverlay());
+                  _controller.initializeVideo();
                   _controller.getChatMessages();
                   _controller.subscribeToChannel(
                       _controller.selectedStream?.channelSlug ?? "tmeduz");
