@@ -3,11 +3,11 @@ import 'package:flutter_template/src/data/model/offers/offer_details_model.dart'
 import 'package:flutter_template/src/data/model/offers/offer_gallery.dart';
 import 'package:flutter_template/src/data/model/offers/offer_model.dart';
 import 'package:flutter_template/src/data/model/offers/offers_cat_model.dart';
-import 'package:flutter_template/src/domain/usecase/get_offer_gallery.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers_child.dart';
-import 'package:flutter_template/src/domain/usecase/get_product_page_item.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers.dart';
-import 'package:flutter_template/src/domain/usecase/get_offers_detail.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offer_gallery.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers_child.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_product_page_item.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_offers_detail.dart';
 import 'package:flutter_template/src/presentation/widgets/login/login_page_skeleton.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

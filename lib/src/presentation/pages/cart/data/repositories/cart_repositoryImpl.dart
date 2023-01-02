@@ -1,5 +1,3 @@
-
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/exception_handler.dart';
 import 'package:flutter_template/core/error/failure.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_template/src/presentation/pages/cart/data/models/special
 import 'package:flutter_template/src/presentation/pages/cart/domain/repositories/cart_repository.dart';
 
 class CardRepositoryImpl extends CartRepository {
-
   CardRemoteDataSource cardRemoteDataSource;
   CardLocalDataSource cardLocalDataSource;
   NetworkInfo networkInfo;
@@ -24,48 +21,48 @@ class CardRepositoryImpl extends CartRepository {
 
   @override
   Future<Either<Failure, List<OrdersCardModel>>> getCard() async {
-    if(await networkInfo.isConnected) {
+    if (await networkInfo.isConnected) {
       try {
         final res = await cardRemoteDataSource.getCards();
         return Right(res);
-      }catch (e) {
-        var failure =handleException( e as Exception);
-          return Left(failure);
+      } catch (e) {
+        var failure = handleException(e as Exception);
+        return Left(failure);
       }
-    }else {
+    } else {
       return const Left(NetworkFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<SpecialistItemModel>>> getItems(String org_slug_name, int responsible) async {
-    if(await networkInfo.isConnected) {
+  Future<Either<Failure, List<SpecialistItemModel>>> getItems(
+      String org_slug_name, int responsible) async {
+    if (await networkInfo.isConnected) {
       try {
-      final res = await cardRemoteDataSource.getItems(org_slug_name, responsible);
-      return Right(res);
-      }catch (e) {
+        final res =
+            await cardRemoteDataSource.getItems(org_slug_name, responsible);
+        return Right(res);
+      } catch (e) {
         var failure = handleException(e as Exception);
         return Left(failure);
       }
-    }else {
+    } else {
       return const Left(NetworkFailure());
     }
   }
 
   @override
   Future<Either<Failure, bool>> changeAmount(int id, int amount) async {
-    if(await networkInfo.isConnected) {
+    if (await networkInfo.isConnected) {
       try {
         final res = await cardRemoteDataSource.changeAmount(id, amount);
-        if(res) {
-
-        }
+        if (res) {}
         return const Right(true);
-      }catch (e) {
+      } catch (e) {
         var failure = handleException(e as Exception);
         return Left(failure);
       }
-    }else {
+    } else {
       return const Left(NetworkFailure());
     }
   }

@@ -69,6 +69,20 @@ class AppImages {
   static const String PREVIOUS = "assets/images/previous.png";
   static const String NEXT = "assets/images/next.png";
   static const String APP_BAR_LEFT = "assets/images/appbar_left.png";
+  static const String NO_QUIZ_ASTRANOUT = "assets/images/image_no_quiz.png";
+  static const String ACTION_ITEM = "assets/images/image_action_item.png";
+  static const String NO_QUIZ_ROCKET = "assets/images/image_no_quiz_rocket.png";
+  static const String LOGO_NET = "assets/images/logo_net.png";
+  static const String CONVERT_SHAPE = "assets/images/convertshape.png";
+  static const String PLACE_HOLDER_SECOND = "assets/images/image_place_holder.png";
+  static const String EX = "assets/images/ex.png";
+  static const String SEARCH_NORMAL = "assets/images/search_normal.png";
+  static const String CATEGORY_MAIN = "assets/images/category_main.png";
+  static const String VECTOR = "assets/images/Vector.png";
+  static const String VECTOR_BOTTOM = "assets/images/Vector_bottom.png";
+  static const String CROSS = "assets/images/cross.png";
+  static const String PLACE_HOLDER_AKHROR = "assets/images/placeHolder.jpg";
+  static const String TOWARDS_BOTTOM = "assets/images/towards_botton.png";
 
 
 }

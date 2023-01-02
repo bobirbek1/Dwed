@@ -1,11 +1,11 @@
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
-import 'package:flutter_template/src/data/model/organisation_details_model.dart';
-import 'package:flutter_template/src/data/model/organisation_model.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_details.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_sub.dart';
-import 'package:flutter_template/src/domain/usecase/get_organisation_user_post.dart';
+import 'package:flutter_template/src/data/model/others/organisation_details_model.dart';
+import 'package:flutter_template/src/data/model/others/organisation_model.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_details.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_sub.dart';
+import 'package:flutter_template/src/domain/usecase/others/get_organisation_user_post.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

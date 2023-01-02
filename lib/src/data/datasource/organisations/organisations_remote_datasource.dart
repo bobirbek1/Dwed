@@ -2,8 +2,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_template/core/error/exceptions.dart';
-import 'package:flutter_template/src/data/model/organisation_details_model.dart';
-import 'package:flutter_template/src/data/model/organisation_model.dart';
+import 'package:flutter_template/src/data/model/others/organisation_details_model.dart';
+import 'package:flutter_template/src/data/model/others/organisation_model.dart';
 import 'package:get/get.dart';
 
 abstract class OrganisationsRemoteDatasource {

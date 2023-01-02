@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 

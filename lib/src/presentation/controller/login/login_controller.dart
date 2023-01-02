@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/overlays/overlays.dart';
-import 'package:flutter_template/src/domain/usecase/login.dart';
+import 'package:flutter_template/src/domain/usecase/others/login.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {

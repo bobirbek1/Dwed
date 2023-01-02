@@ -17,15 +17,24 @@ import 'package:flutter_template/src/presentation/pages/login/login/reset_passwo
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_phone.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/login_page.dart';
 import 'package:flutter_template/src/presentation/pages/login/login/reset_password_verify.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/all_quiz_page.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/connection_error_page.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/create_questions.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_quiz.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/create_quiz_image_on_the_top.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/create_variants.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/widgets/game_not_found.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/my_profile.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/no_quiz.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/overall_result.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/user_quiz_history.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/questioning.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/about_quiz.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/result.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/sign_inf_for_test_page.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/time_finished.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/total_results.dart';
+import 'package:flutter_template/src/presentation/pages/quiz/user_quizzes_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_cat_page.dart';
 import 'package:flutter_template/src/presentation/pages/search/offers/offers_sub_sub_cat_page.dart';
@@ -40,6 +49,7 @@ import 'package:flutter_template/src/presentation/pages/search/offers/offer_deta
 import 'package:flutter_template/src/presentation/pages/splash/on_boarding_page.dart';
 import 'package:flutter_template/src/presentation/pages/splash/slpash_page.dart';
 import 'package:flutter_template/src/presentation/pages/stream/stream_detail_page.dart';
+import 'package:flutter_template/src/presentation/quiz_stream_page.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter_template/app/app_routes.dart';
 
@@ -122,6 +132,17 @@ class AppPages {
     GetPage(name: AppRoutes.RESULT, page: () =>  ResultPage()),
     GetPage(name: AppRoutes.OVERALL_RESULT, page: () =>  OverallResult()),
     GetPage(name: AppRoutes.TOTAL_RESULTS, page: () =>  TotalResults()),
+    GetPage(name: AppRoutes.NO_QUIZ, page: () =>  NoQuizPage()),
+    GetPage(name: AppRoutes.GAME_NOT_FOUND, page: () =>  GameNotFoundPage()),
+    GetPage(name: AppRoutes.PLAYER_INFORMATION, page: () =>  PlayerInformationPage()),
+    GetPage(name: AppRoutes.ABOUT_QUIZ, page: () =>  AboutQuizPage()),
+    GetPage(name: AppRoutes.CREATE_QUIZ_IMAGE_ON_TOP, page: () =>  CreateQuizImageOnTheTop()),
+    GetPage(name: AppRoutes.QUIZ_TIME_FINISHED, page: () =>  TimeFinishedPage()),
+    GetPage(name: AppRoutes.QUIZ_STREAM, page: () =>  QuizStreamPage()),
+    GetPage(name: AppRoutes.USER_QUIZZES_PAGE, page: () =>  UserQuizzesPage()),
+    GetPage(name: AppRoutes.CREATE_QUESTION_PAGE, page: () =>  CreateQuestionsPage()),
+    GetPage(name: AppRoutes.ALL_QUIZ_PAGE, page: () =>  AllQuizPage()),
+
 
   ];
 }
