@@ -137,7 +137,7 @@ class StreamController extends GetxController {
     chewieController?.dispose();
   }
 
-  initializeVideo(Widget overlay) {
+  initializeVideo() {
     videoController = VideoPlayerController.network(
         "https://m.dwed.biz/v1.0/api/streaming/${selectedStream?.channelSlug}/live.m3u8");
 
@@ -146,10 +146,8 @@ class StreamController extends GetxController {
         aspectRatio:
             SizeConfig.screenWidth! / SizeConfig.calculateBlockVertical(240),
         isLive: true,
-        allowMuting: false,
-        overlay: overlay,
         allowPlaybackSpeedChanging: false,
-        showControls: false,
+        allowedScreenSleep: false,
         showControlsOnInitialize: false,
         autoPlay: true);
   }
