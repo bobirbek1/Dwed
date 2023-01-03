@@ -17,60 +17,61 @@ class HomePage extends StatelessWidget {
           SizeConfig.calculateBlockHorizontal(16),
           SizeConfig.calculateBlockVertical(157),
         ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: SizeConfig.calculateBlockHorizontal(15),
-                right: SizeConfig.calculateBlockHorizontal(15),
-                bottom: SizeConfig.calculateBlockVertical(24),
-              ),
-              child: SvgPicture.asset(
-                AppIcons.BRO,
-                width: SizeConfig.calculateBlockHorizontal(313),
-                height: SizeConfig.calculateBlockVertical(310),
-              ),
-            ),
-             Text(
-              "No Internet Connection",
-              style: TextStyle(
-                fontSize: SizeConfig.calculateTextSize(24),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-             Text(
-              "Please check your intenet\nconnection and try again",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: SizeConfig.calculateTextSize(16),
-                fontWeight: FontWeight.w400,
-                color: AppColors.SHADOW_BLUE,
-              ),
-            ),
-            SizedBox(
-              height: SizeConfig.calculateBlockVertical(32),
-            ),
-            Container(
-              width: double.infinity,
-              height: SizeConfig.calculateBlockVertical(56),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppColors.BUTTON_BLUE,
-              ),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Try again",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.WHITE,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+        child: const SizedBox(),
+        // child: Column(
+        //   children: [
+        //     Padding(
+        //       padding: EdgeInsets.only(
+        //         left: SizeConfig.calculateBlockHorizontal(15),
+        //         right: SizeConfig.calculateBlockHorizontal(15),
+        //         bottom: SizeConfig.calculateBlockVertical(24),
+        //       ),
+        //       child: SvgPicture.asset(
+        //         AppIcons.BRO,
+        //         width: SizeConfig.calculateBlockHorizontal(313),
+        //         height: SizeConfig.calculateBlockVertical(310),
+        //       ),
+        //     ),
+        //      Text(
+        //       "No Internet Connection",
+        //       style: TextStyle(
+        //         fontSize: SizeConfig.calculateTextSize(24),
+        //         fontWeight: FontWeight.w500,
+        //       ),
+        //     ),
+        //      Text(
+        //       "Please check your intenet\nconnection and try again",
+        //       textAlign: TextAlign.center,
+        //       style: TextStyle(
+        //         fontSize: SizeConfig.calculateTextSize(16),
+        //         fontWeight: FontWeight.w400,
+        //         color: AppColors.SHADOW_BLUE,
+        //       ),
+        //     ),
+        //     SizedBox(
+        //       height: SizeConfig.calculateBlockVertical(32),
+        //     ),
+        //     Container(
+        //       width: double.infinity,
+        //       height: SizeConfig.calculateBlockVertical(56),
+        //       decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(8),
+        //         color: AppColors.BUTTON_BLUE,
+        //       ),
+        //       child: ElevatedButton(
+        //         onPressed: () {},
+        //         child: const Text(
+        //           "Try again",
+        //           style: TextStyle(
+        //             fontSize: 16,
+        //             fontWeight: FontWeight.w500,
+        //             color: AppColors.WHITE,
+        //           ),
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // ),
       ),
     );
   }

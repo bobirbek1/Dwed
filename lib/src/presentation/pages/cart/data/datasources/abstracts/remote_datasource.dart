@@ -1,7 +1,8 @@
 
-import 'package:flutter_template/src/presentation/pages/cart/data/models/specialist_item.dart';
 
-import '../../models/orders_card_model.dart';
+
+import '../../../../../../data/model/models/orders_card_model.dart';
+import '../../../../../../data/model/models/specialist_item.dart';
 
 abstract class CardRemoteDataSource {
   Future<List<OrdersCardModel>> getCards();

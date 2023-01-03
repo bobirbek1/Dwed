@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/user_profile/main_controller.dart';
+import 'package:flutter_template/src/presentation/pages/search/search_page.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../../../../app/app_icons.dart';
 
 class QuizTabBar extends StatefulWidget {
   @override
@@ -26,33 +30,55 @@ class QuizTabBarState extends State<QuizTabBar>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TabBar(
-          controller: _tabController,
-          unselectedLabelColor: Colors.black54,
-          labelColor: Colors.blue,
-          tabs: const [
-            Tab(
-              icon: Text(
-                "Quiz",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 150,
+        elevation: 1,
+        leading: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: SizeConfig.calculateBlockHorizontal(16),
+                right: SizeConfig.calculateBlockHorizontal(6),
               ),
+              child: SvgPicture.asset(AppIcons.SHAPE),
             ),
-            Tab(
-              icon: Text(
-                "Streams",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
+            SvgPicture.asset(
+              AppIcons.DWED,
+              height: SizeConfig.calculateBlockVertical(11),
             ),
           ],
         ),
-        Expanded(
-          child: TabBarView(
-              controller: _tabController,
-              children: [getCategories(), getStreams()]),
-        )
-      ],
+        backgroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          TabBar(
+            controller: _tabController,
+            unselectedLabelColor: Colors.black54,
+            labelColor: Colors.blue,
+            tabs: const [
+              Tab(
+                icon: Text(
+                  "Quiz",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+              Tab(
+                icon: Text(
+                  "Streams",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: [getCategories(), SearchPage()]),
+          )
+        ],
+      ),
     );
   }
 

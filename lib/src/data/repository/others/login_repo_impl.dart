@@ -31,9 +31,9 @@ class LoginRepoImpl extends LoginRepo {
       Get.log("login is connected");
       try {
         final res = await remoteDatasource.login(username, password);
-        if (rememberMe) {
+
           await localDatasource.setToken(res);
-        }
+
         return Right(res);
       } catch (e) {
         final failure = handleException(e as Exception);

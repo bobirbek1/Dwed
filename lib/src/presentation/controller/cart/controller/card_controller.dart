@@ -2,13 +2,14 @@
 
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/specialist_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/change_amount_usecase.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/delete_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get_card_products_impl.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/getitems_usecase.dart';
 import 'package:get/get.dart';
+
+import '../../../../data/model/models/orders_card_model.dart';
+import '../../../../data/model/models/specialist_item.dart';
 
 class CardController extends GetxController {
   // usecases

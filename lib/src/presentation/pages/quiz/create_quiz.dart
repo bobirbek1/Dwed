@@ -15,10 +15,6 @@ class CreateQuiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    onWillPop: () async {
-      _controller.backButtonPressed();
-      return false;
-    };
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -143,7 +139,7 @@ class CreateQuiz extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            _controller.backButtonPressed();
+            Get.back();
           },
           child: SizedBox(
             child: Image.asset(AppImages.APP_BAR_LEFT),

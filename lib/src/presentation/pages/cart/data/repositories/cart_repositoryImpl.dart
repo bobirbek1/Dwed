@@ -4,9 +4,10 @@ import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/platform/network_info.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/local_datasource.dart';
 import 'package:flutter_template/src/presentation/pages/cart/data/datasources/abstracts/remote_datasource.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/specialist_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/repositories/cart_repository.dart';
+
+import '../../../../../data/model/models/orders_card_model.dart';
+import '../../../../../data/model/models/specialist_item.dart';
 
 class CardRepositoryImpl extends CartRepository {
   CardRemoteDataSource cardRemoteDataSource;

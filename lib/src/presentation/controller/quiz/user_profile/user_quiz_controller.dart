@@ -4,14 +4,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/src/data/model/quiz/new/user_quiz_model.dart';
-import 'package:flutter_template/src/data/model/quiz/new/user_quizzes_model.dart' ;
+import 'package:flutter_template/src/data/model/quiz/new/user_quizzes_model.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/widgets/quiz_category.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../data/model/quiz/new/user_created_quiz_category.dart';
-import '../../../../data/model/quiz/new/user_quiz_response_model.dart' hide AddImages;
+import '../../../../data/model/quiz/new/user_quiz_response_model.dart'
+    hide AddImages;
 import '../../../../domain/usecase/quiz/get/abstract/get_available_quiz_categories.dart';
 import '../../../../domain/usecase/quiz/get/abstract/get_quiz_category_list_usecase.dart';
 import '../../../../domain/usecase/quiz/post/abstract/create_quiz_usecase.dart';
@@ -143,7 +144,9 @@ class UserQuizController extends GetxController {
         updateBottomButton();
         setAllNull();
         response.timeLimit = _newQuiz.questionTime;
-        Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE, arguments: response,
+        Get.toNamed(
+          AppRoutes.CREATE_QUESTION_PAGE,
+          arguments: response,
         );
       });
     }
@@ -189,10 +192,10 @@ class UserQuizController extends GetxController {
     }, (response) {
       Get.log("UserQuizController onLoading response => $response");
       list.addAll(response);
-      if(response.isNotEmpty) {
-      _offset = response[0].nextOffset ?? _offset;
-      refreshController.loadComplete();
-      }else {
+      if (response.isNotEmpty) {
+        _offset = response[0].nextOffset ?? _offset;
+        refreshController.loadComplete();
+      } else {
         refreshController.loadNoData();
       }
       userQuizState = UserQuizState.loaded;
@@ -216,8 +219,12 @@ class UserQuizController extends GetxController {
       Get.log("UserQuizController onRefresh response => $response");
       list.clear();
       list.addAll(response);
-      _offset = response[0].nextOffset ?? 0;
-      refreshController.refreshCompleted();
+      if (response.isNotEmpty) {
+        _offset = response[0].nextOffset ?? 0;
+        refreshController.refreshCompleted();
+      } else {
+        refreshController.loadNoData();
+      }
       userQuizState = UserQuizState.loaded;
       updateList();
     });
@@ -286,7 +293,7 @@ class UserQuizController extends GetxController {
   ///change the file into string for posting new quiz
   void encodeImages() {
     imageFiles.map((e) async {
-      final bytes = await  e.readAsBytes();
+      final bytes = await e.readAsBytes();
       String image = base64Encode(bytes);
       _newQuiz.addImages?.add(AddImages(file: image));
     });
@@ -314,10 +321,8 @@ class UserQuizController extends GetxController {
     }
   }
 
-
   ///navigating to CREATE_QUESTION_PAGE by pressing quiz item in the list
   void userQuizItemPresses(UserQuizzesModel item) {
-
     var res = UserQuizResponseModel(
         id: item.id,
         questionNumber: item.questionNumber,
@@ -331,8 +336,7 @@ class UserQuizController extends GetxController {
         category: item.category?.id);
     Get.log("Arguments $res");
     res.timeLimit = item.questionTime;
-    Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE, arguments:res
-    );
+    Get.toNamed(AppRoutes.CREATE_QUESTION_PAGE, arguments: res);
   }
 
   void backButtonPressed() {
@@ -348,14 +352,13 @@ class UserQuizController extends GetxController {
     quizPrizeMoneyController.clear();
   }
 
-
   ///bottom button in bottom sheet of categories pressed
   void catBottomPressed() {
     Get.back();
   }
 
   void setValueToCategoryText(String category) {
-    this.category =  category;
+    this.category = category;
     updateCatValue();
   }
 

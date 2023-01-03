@@ -136,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: Colors.white,
       centerTitle: true,
       elevation: 0.3,
-      leading: leading,
+     // leading: leading,
       leadingWidth: leadingWidth,
       title: title,
       actions: [

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/checkout/presentation/controller/checkout_page_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
 import '../../../../../../app/app_icons.dart';
+import '../../../../controller/checkout/controller/checkout_page_controller.dart';
 
 class CheckoutPage extends StatelessWidget {
   final _controller = Get.find<CheckoutPageController>();

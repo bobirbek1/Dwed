@@ -4,11 +4,10 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_icons.dart';
 import 'package:flutter_template/app/app_routes.dart';
 import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
-import 'package:flutter_template/src/presentation/pages/cart/presentation/widgets/bottom_button.dart';
-import 'package:flutter_template/src/presentation/pages/cart/presentation/widgets/counter_widget.dart';
 import 'package:get/get.dart';
-import '../controller/card_controller.dart';
+
+import '../../../../../data/model/models/orders_card_model.dart';
+import '../../../../controller/cart/controller/card_controller.dart';
 
 class CartPage extends StatelessWidget {
   final _controller = Get.find<CardController>();
@@ -32,7 +31,7 @@ class CartPage extends StatelessWidget {
           init: _controller,
           id: _controller.cardsId,
           builder: (context) {
-            final data = _controller.orderList;
+            final data = _controller.orderList as List<OrdersCardModel>;
             Get.log(
                 "state: ${_controller.cardsState}, data: ${_controller.orderList}");
             return Column(

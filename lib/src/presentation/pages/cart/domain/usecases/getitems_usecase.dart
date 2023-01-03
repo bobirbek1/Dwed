@@ -4,8 +4,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/failure.dart';
 import 'package:flutter_template/core/usecases/usecase.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/specialist_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/repositories/cart_repository.dart';
+
+import '../../../../../data/model/models/specialist_item.dart';
 
 class GetItemsUseCase extends Usecase<List<SpecialistItemModel>, GetItemsUseCaseParams>{
   final CartRepository cartRepository;

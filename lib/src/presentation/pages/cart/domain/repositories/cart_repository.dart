@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/error/failure.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/orders_card_model.dart';
-import 'package:flutter_template/src/presentation/pages/cart/data/models/specialist_item.dart';
+
+import '../../../../../data/model/models/orders_card_model.dart';
+import '../../../../../data/model/models/specialist_item.dart';
 
 abstract class CartRepository {
 

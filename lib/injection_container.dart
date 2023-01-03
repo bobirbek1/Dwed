@@ -54,6 +54,8 @@ import 'package:flutter_template/src/domain/usecase/quiz/post/add_question_useca
 import 'package:flutter_template/src/domain/usecase/quiz/post/create_quiz_usecase_impl.dart';
 import 'package:flutter_template/src/domain/usecase/quiz/get/get_quiz_catgegory_list_usecase.dart';
 import 'package:flutter_template/src/presentation/controller/Search/organisation_controller.dart';
+import 'package:flutter_template/src/presentation/controller/cart/controller/card_controller.dart';
+import 'package:flutter_template/src/presentation/controller/checkout/controller/checkout_page_controller.dart';
 import 'package:flutter_template/src/presentation/controller/create_account/create_account_controller.dart';
 import 'package:flutter_template/src/presentation/controller/login/login_controller.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/sessions_controller.dart';
@@ -75,8 +77,6 @@ import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/cha
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/delete_item.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/get_card_products_impl.dart';
 import 'package:flutter_template/src/presentation/pages/cart/domain/usecases/getitems_usecase.dart';
-import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
-import 'package:flutter_template/src/presentation/pages/checkout/presentation/controller/checkout_page_controller.dart';
 import 'package:flutter_template/src/presentation/controller/offers/offers_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

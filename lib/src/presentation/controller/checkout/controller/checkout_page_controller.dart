@@ -1,5 +1,6 @@
-import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
 import 'package:get/get.dart';
+
+import '../../cart/controller/card_controller.dart';
 
 class CheckoutPageController extends GetxController{
   final _cartController = Get.find<CardController>();

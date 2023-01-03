@@ -3,6 +3,7 @@ import 'package:flutter_template/app/app_colors.dart';
 import 'package:flutter_template/app/app_images.dart';
 import 'package:flutter_template/src/presentation/controller/quiz/user_profile/user_quiz_controller.dart';
 import 'package:flutter_template/src/presentation/pages/quiz/no_quiz.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -24,7 +25,11 @@ class UserQuizzesPage extends StatelessWidget {
             child: SizedBox(
                 width: SizeConfig.calculateBlockHorizontal(7),
                 height: SizeConfig.calculateBlockVertical(16),
-                child: Image.asset(AppImages.LEFT_ARROW)),
+                child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Image.asset(AppImages.LEFT_ARROW))),
           ),
           title: const Text(
             'Quiz',

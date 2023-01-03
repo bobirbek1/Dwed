@@ -1,9 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/material.dart';
-import 'package:flutter_template/core/utils/size_config.dart';
-import 'package:flutter_template/src/presentation/pages/cart/presentation/controller/card_controller.dart';
-import 'package:get/get.dart';
 //
 // class BottomButtonWidget extends StatefulWidget {
 //   int total;
